@@ -3,723 +3,1153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel de Projetos | Inpactas & SEMCTI — Benjamin Constant/AM</title>
-<meta name="description" content="Painel interativo dos projetos da Incubadora Inpactas e da SEMCTI de Benjamin Constant - AM submetidos aos editais FAPEAM 2026">
+<title>Painel FAPEAM 2026 | Inpactas & SEMCTI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg:        #0A1612;
-  --surf:      #0F2018;
-  --surf2:     #152A1E;
-  --surf3:     #1A3226;
-  --border:    rgba(0,210,150,0.10);
-  --borderHov: rgba(0,210,150,0.28);
-  --teal:      #00D496;
-  --tealDim:   rgba(0,212,150,0.13);
-  --tealGlow:  0 0 16px rgba(0,212,150,0.25);
-  --gold:      #F0A500;
-  --goldDim:   rgba(240,165,0,0.13);
-  --rosa:      #E05585;
-  --azul:      #3B9EE8;
-  --roxo:      #9B6FE8;
-  --neon:      #5AE87A;
-  --text1:     #E4F5EE;
-  --text2:     #8FBBA6;
-  --text3:     #547A65;
-  --r:         12px;
-  --rLg:       18px;
-  --ease:      0.2s ease;
+  --bg:       #EEF2F7;
+  --surf:     #FFFFFF;
+  --surf2:    #F8FAFC;
+  --border:   #E2E8F0;
+  --border2:  #CBD5E1;
+
+  --blue:     #2563EB;
+  --blue-l:   #EFF6FF;
+  --blue-m:   #BFDBFE;
+  --green:    #059669;
+  --green-l:  #ECFDF5;
+  --orange:   #D97706;
+  --orange-l: #FFFBEB;
+  --rosa:     #DB2777;
+  --rosa-l:   #FDF2F8;
+  --teal:     #0891B2;
+  --teal-l:   #ECFEFF;
+  --roxo:     #7C3AED;
+  --roxo-l:   #F5F3FF;
+
+  --txt1:  #1E293B;
+  --txt2:  #475569;
+  --txt3:  #94A3B8;
+  --txt4:  #CBD5E1;
+
+  --sidebar-w: 52px;
+  --top-h:     52px;
+  --r:         10px;
+  --rLg:       14px;
+  --shadow:    0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --ease:      0.18s ease;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;display:flex;flex-direction:column;font-size:13px;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt1);min-height:100vh;font-size:13px;display:flex;flex-direction:column;}
 ::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--surf);}
-::-webkit-scrollbar-thumb{background:var(--surf3);border-radius:10px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
 
-/* ── TOPBAR ── */
-.topbar{background:var(--surf);border-bottom:1px solid var(--border);padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:1rem;}
-.logo{display:flex;align-items:center;gap:0.55rem;flex-shrink:0;}
-.logo-icon{width:26px;height:26px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;}
-.logo-text{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--text1);}
-.logo-text span{color:var(--teal);}
-.topbar-center{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text1);opacity:0.85;}
-.topbar-right{display:flex;align-items:center;gap:0.7rem;flex-shrink:0;}
-.tbadge{background:var(--tealDim);border:1px solid rgba(0,212,150,0.2);color:var(--teal);font-size:0.68rem;font-weight:700;padding:0.22rem 0.65rem;border-radius:100px;letter-spacing:0.4px;text-transform:uppercase;white-space:nowrap;}
-.tdate{font-size:0.72rem;color:var(--text3);white-space:nowrap;}
+/* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+.topbar {
+  height: var(--top-h);
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow);
+  gap: 0;
+}
 
-/* ── LAYOUT ── */
-.layout{display:flex;flex:1;min-height:0;overflow:hidden;}
+/* Logo zone */
+.topbar-logo {
+  width: var(--sidebar-w);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #059669, #2563EB);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
 
-/* ── SIDEBAR ── */
-.sidebar{width:210px;background:var(--surf);border-right:1px solid var(--border);padding:1rem 0.8rem;display:flex;flex-direction:column;gap:0.5rem;overflow-y:auto;flex-shrink:0;}
-@media(max-width:860px){.sidebar{display:none;}}
+/* Brand */
+.topbar-brand {
+  padding: 0 1rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--txt1);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.brand-sub {
+  font-size: 0.62rem;
+  color: var(--txt3);
+  white-space: nowrap;
+}
 
-/* KPI cards na sidebar */
-.skpi{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r);padding:0.8rem 0.9rem;cursor:pointer;transition:border-color var(--ease),box-shadow var(--ease);position:relative;overflow:hidden;}
-.skpi:hover,.skpi.active{border-color:var(--borderHov);box-shadow:var(--tealGlow);}
-.skpi.active::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;}
-.skpi-1.active::after{background:var(--teal);}
-.skpi-2.active::after{background:var(--gold);}
-.skpi-3.active::after{background:var(--azul);}
-.skpi-4.active::after{background:var(--rosa);}
-.skpi-lbl{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:0.25rem;}
-.skpi-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1;}
-.skpi-1 .skpi-val{color:var(--teal);}
-.skpi-2 .skpi-val{color:var(--gold);}
-.skpi-3 .skpi-val{color:var(--azul);}
-.skpi-4 .skpi-val{color:var(--rosa);}
-.skpi-desc{font-size:0.68rem;color:var(--text3);margin-top:0.15rem;}
+/* Nav pills */
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0 0.8rem;
+  height: 100%;
+  border-right: 1px solid var(--border);
+}
+.tnav {
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--txt2);
+  cursor: pointer;
+  transition: all var(--ease);
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.tnav:hover { background: var(--bg); color: var(--txt1); }
+.tnav.active {
+  background: var(--blue-l);
+  color: var(--blue);
+  border-color: var(--blue-m);
+  font-weight: 600;
+}
 
-.sidebar-sep{height:1px;background:var(--border);margin:0.3rem 0;}
-.sidebar-label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--text3);padding:0.2rem 0.3rem;}
+/* Filtros inline no top */
+.topbar-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.8rem;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border-right: 1px solid var(--border);
+  overflow-x: auto;
+}
+.tf-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--txt3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-w {
+  position: relative;
+  flex: 1;
+  min-width: 140px;
+  max-width: 220px;
+  flex-shrink: 0;
+}
+.search-ic {
+  position: absolute;
+  left: 0.6rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--txt3);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+.tf-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.38rem 0.6rem 0.38rem 1.85rem;
+  font-size: 0.78rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--txt1);
+  background: var(--bg);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.tf-input::placeholder { color: var(--txt3); }
+.tf-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); background: var(--surf); }
+.tf-sel {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.38rem 1.6rem 0.38rem 0.6rem;
+  font-size: 0.76rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--txt2);
+  background: var(--bg);
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  cursor: pointer;
+  transition: border-color var(--ease);
+  min-width: 110px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.tf-sel:focus { outline: none; border-color: var(--blue); }
+.clear-btn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--txt2);
+  padding: 0.38rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: all var(--ease);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.clear-btn:hover { border-color: var(--rosa); color: var(--rosa); background: var(--rosa-l); }
 
-/* Edital items interativos */
-.edital-item{display:flex;align-items:center;gap:0.55rem;padding:0.5rem 0.6rem;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all var(--ease);user-select:none;}
-.edital-item:hover{background:var(--surf2);border-color:var(--border);}
-.edital-item.active{border-color:var(--borderHov);}
-.edital-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.edital-name{flex:1;font-size:0.76rem;font-weight:500;color:var(--text2);line-height:1.3;}
-.edital-item.active .edital-name{color:var(--text1);font-weight:600;}
-.edital-cnt{font-size:0.62rem;font-weight:700;padding:0.12rem 0.4rem;border-radius:100px;background:var(--surf3);color:var(--text3);}
-.edital-item.active .edital-cnt{color:var(--text1);}
+/* Chips */
+.top-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--blue-l);
+  border: 1px solid var(--blue-m);
+  color: var(--blue);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.18rem 0.45rem;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip:hover { background: var(--blue-m); }
 
-.sidebar-foot{margin-top:auto;padding-top:0.8rem;border-top:1px solid var(--border);font-size:0.68rem;color:var(--text3);line-height:1.6;}
+/* Info direita */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0 0.8rem;
+  flex-shrink: 0;
+}
+.res-badge {
+  font-size: 0.72rem;
+  color: var(--txt2);
+  white-space: nowrap;
+}
+.res-badge strong { color: var(--blue); font-size: 0.82rem; font-weight: 700; }
+.date-badge {
+  font-size: 0.7rem;
+  color: var(--txt3);
+  white-space: nowrap;
+}
+.year-badge {
+  background: var(--blue);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
 
-/* ── MAIN ── */
-.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow-y:auto;}
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
 
-/* ── FILTROS (TOPO) ── */
-.filters-bar{background:var(--surf);border-bottom:1px solid var(--border);padding:0.7rem 1.2rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.55rem;position:sticky;top:0;z-index:90;}
-.filters-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);white-space:nowrap;}
-.search-wrap{position:relative;flex:1;min-width:160px;max-width:260px;}
-.search-icon{position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:0.75rem;pointer-events:none;}
-.search-input{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:0.48rem 0.7rem 0.48rem 2rem;font-size:0.8rem;font-family:'Inter',sans-serif;color:var(--text1);transition:border-color var(--ease),box-shadow var(--ease);}
-.search-input::placeholder{color:var(--text3);}
-.search-input:focus{outline:none;border-color:rgba(0,212,150,0.4);box-shadow:0 0 0 3px rgba(0,212,150,0.08);}
-.fselect{background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:0.48rem 1.8rem 0.48rem 0.75rem;font-size:0.78rem;font-family:'Inter',sans-serif;color:var(--text2);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23547A65' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.6rem center;min-width:120px;transition:border-color var(--ease);}
-.fselect:focus{outline:none;border-color:rgba(0,212,150,0.4);}
-.res-info{font-size:0.72rem;color:var(--text3);margin-left:auto;white-space:nowrap;}
-.res-info strong{color:var(--teal);font-size:0.82rem;}
-.clear-btn{background:transparent;border:1px solid rgba(224,85,133,0.3);color:var(--rosa);padding:0.45rem 0.85rem;border-radius:8px;cursor:pointer;font-size:0.72rem;font-family:'Inter',sans-serif;font-weight:500;transition:all var(--ease);white-space:nowrap;}
-.clear-btn:hover{background:rgba(224,85,133,0.12);border-color:var(--rosa);}
-/* chip de filtro ativo */
-.active-chip{display:inline-flex;align-items:center;gap:0.3rem;background:var(--tealDim);border:1px solid rgba(0,212,150,0.25);color:var(--teal);font-size:0.68rem;font-weight:600;padding:0.2rem 0.5rem;border-radius:100px;cursor:pointer;white-space:nowrap;}
-.active-chip:hover{background:rgba(0,212,150,0.22);}
+/* ═══════════════════════════════════════════
+   SIDEBAR (ícones)
+═══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surf);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8rem 0;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+@media(max-width:700px){.sidebar{display:none;}}
 
-/* ── CONTENT AREA ── */
-.content{padding:1rem 1.2rem 2rem;display:flex;flex-direction:column;gap:1rem;}
+.sico {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--ease);
+  color: var(--txt3);
+  position: relative;
+}
+.sico:hover { background: var(--bg); color: var(--txt1); }
+.sico.active { background: var(--blue-l); color: var(--blue); }
+.sico[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--txt1);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 999;
+}
 
-/* ── CHARTS ROW ── */
-.charts-row{display:grid;grid-template-columns:1.5fr 0.9fr 0.9fr;gap:0.8rem;}
-@media(max-width:1000px){.charts-row{grid-template-columns:1fr 1fr;}}
-@media(max-width:640px){.charts-row{grid-template-columns:1fr;}}
+.sidebar-sep { width: 28px; height: 1px; background: var(--border); margin: 0.2rem 0; }
+.sidebar-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
 
-.panel{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color var(--ease);}
-.panel:hover{border-color:var(--borderHov);}
-.panel-head{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem 0.6rem;border-bottom:1px solid var(--border);}
-.panel-title{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text1);}
-.panel-sub{font-size:0.62rem;color:var(--text3);margin-top:0.08rem;}
-.pbadge{background:var(--surf3);color:var(--text2);font-size:0.6rem;font-weight:700;padding:0.15rem 0.45rem;border-radius:100px;}
-.panel-body{padding:0.8rem 1rem;}
-.chart-wrap{position:relative;}
-.cwH{height:175px;}
-.cwS{height:155px;}
+/* ═══════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════ */
+.main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
 
-/* ── PROJECTS ── */
-.projects-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
-.projects-title{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text1);}
+/* ── KPI ROW ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
 
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.7rem;}
+.kpi {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 0.9rem 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: box-shadow var(--ease), border-color var(--ease), transform var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.kpi:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
+.kpi.active { border-color: currentColor; }
+.kpi-1 { --kc: var(--blue);   --kl: var(--blue-l); }
+.kpi-2 { --kc: var(--teal);   --kl: var(--teal-l); }
+.kpi-3 { --kc: var(--green);  --kl: var(--green-l); }
+.kpi-4 { --kc: var(--orange); --kl: var(--orange-l); }
+.kpi.active { background: var(--kl); }
 
-.pcard{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease);display:flex;flex-direction:column;position:relative;}
-.pcard:hover{border-color:var(--borderHov);transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.4),var(--tealGlow);}
-.pcard-accent{height:2px;width:100%;}
-[data-key="013"] .pcard-accent{background:linear-gradient(90deg,var(--rosa),#C44488);}
-[data-key="009"] .pcard-accent{background:linear-gradient(90deg,var(--teal),#00A876);}
-[data-key="008"] .pcard-accent{background:linear-gradient(90deg,var(--azul),#2D7BC4);}
-[data-key="002"] .pcard-accent{background:linear-gradient(90deg,var(--gold),#D49000);}
-[data-key="004"] .pcard-accent{background:linear-gradient(90deg,var(--roxo),#7850D0);}
-[data-key="007"] .pcard-accent{background:linear-gradient(90deg,var(--neon),#3CB85A);}
-.pcard-num{position:absolute;top:0.6rem;right:0.6rem;background:var(--surf3);color:var(--text3);font-size:0.6rem;font-weight:700;padding:0.12rem 0.4rem;border-radius:100px;border:1px solid var(--border);}
-.pcard-body{padding:0.75rem 0.75rem 0.5rem;flex:1;}
-.ptag{display:inline-flex;align-items:center;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;padding:0.18rem 0.5rem;border-radius:100px;margin-bottom:0.55rem;margin-right:1.8rem;}
-.ptag-013{background:rgba(224,85,133,0.14);color:var(--rosa);border:1px solid rgba(224,85,133,0.22);}
-.ptag-009{background:var(--tealDim);color:var(--teal);border:1px solid rgba(0,212,150,0.22);}
-.ptag-008{background:rgba(59,158,232,0.12);color:var(--azul);border:1px solid rgba(59,158,232,0.22);}
-.ptag-002{background:var(--goldDim);color:var(--gold);border:1px solid rgba(240,165,0,0.22);}
-.ptag-004{background:rgba(155,111,232,0.12);color:var(--roxo);border:1px solid rgba(155,111,232,0.22);}
-.ptag-007{background:rgba(90,232,122,0.10);color:var(--neon);border:1px solid rgba(90,232,122,0.18);}
-.ptitle{font-size:0.8rem;font-weight:600;color:var(--text1);line-height:1.38;margin-bottom:0.5rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.prow{display:flex;gap:0.35rem;font-size:0.7rem;margin-bottom:0.28rem;color:var(--text2);align-items:flex-start;}
-.prowlbl{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:var(--text3);min-width:62px;flex-shrink:0;padding-top:1px;}
-.pcard-foot{padding:0.5rem 0.75rem;border-top:1px solid var(--border);background:var(--surf2);display:flex;justify-content:space-between;align-items:center;}
-.pfoot-info{font-size:0.62rem;color:var(--text3);}
-.pcta{font-size:0.68rem;font-weight:600;color:var(--teal);opacity:0.7;display:flex;align-items:center;gap:0.2rem;transition:opacity var(--ease),gap var(--ease);}
-.pcard:hover .pcta{opacity:1;gap:0.35rem;}
+.kpi-icon {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  background: var(--kl);
+}
+.kpi-1 .kpi-icon { background: var(--blue-l); }
+.kpi-2 .kpi-icon { background: var(--teal-l); }
+.kpi-3 .kpi-icon { background: var(--green-l); }
+.kpi-4 .kpi-icon { background: var(--orange-l); }
+
+.kpi-info { flex: 1; min-width: 0; }
+.kpi-val {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--kc);
+  margin-bottom: 0.15rem;
+}
+.kpi-lbl { font-size: 0.68rem; color: var(--txt2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
+.kpi-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.1rem; }
+
+.kpi-chart { width: 55px; height: 35px; flex-shrink: 0; }
+
+/* ── CHARTS + TABLE ROW ── */
+.mid-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.85fr 0.85fr;
+  gap: 0.8rem;
+}
+@media(max-width:960px){.mid-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:620px){.mid-row{grid-template-columns:1fr;}}
+
+.panel {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color var(--ease);
+}
+.panel:hover { border-color: var(--border2); }
+
+.ph {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surf2);
+  gap: 0.5rem;
+}
+.ph-title {
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--txt1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ph-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.05rem; }
+.ph-badge {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--txt2);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.12rem 0.42rem;
+  border-radius: 100px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pb { padding: 0.8rem 1rem; }
+.cw { position: relative; }
+.cw-lg { height: 190px; }
+.cw-md { height: 170px; }
+
+/* ── EDITAL LIST (sidebar do painel) ── */
+.edital-list { display: flex; flex-direction: column; gap: 0.35rem; }
+.ei {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 7px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--ease);
+}
+.ei:hover { background: var(--bg); border-color: var(--border); }
+.ei.active { border-color: currentColor; }
+.ei-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.ei-name { flex: 1; font-size: 0.76rem; font-weight: 500; color: var(--txt2); line-height: 1.3; }
+.ei.active .ei-name { font-weight: 700; }
+.ei-bar-wrap { width: 60px; height: 5px; background: var(--bg); border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+.ei-bar { height: 100%; border-radius: 10px; }
+.ei-cnt { font-size: 0.68rem; font-weight: 700; color: var(--txt3); min-width: 14px; text-align: right; flex-shrink: 0; }
+
+/* ── PROJECTS TABLE / GRID ── */
+.proj-section { display: flex; flex-direction: column; gap: 0.6rem; }
+.proj-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.proj-title {
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--txt1);
+}
+.view-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.2rem;
+}
+.vbtn {
+  padding: 0.28rem 0.55rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--txt3);
+  transition: all var(--ease);
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+}
+.vbtn.active { background: var(--surf); color: var(--blue); font-weight: 600; box-shadow: var(--shadow); }
+
+/* Cards grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.65rem;
+}
+
+.pc {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.pc:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
+.pc-top { height: 3px; width: 100%; }
+[data-k="013"] .pc-top { background: linear-gradient(90deg,#DB2777,#9333EA); }
+[data-k="009"] .pc-top { background: linear-gradient(90deg,#059669,#0891B2); }
+[data-k="008"] .pc-top { background: linear-gradient(90deg,#2563EB,#0891B2); }
+[data-k="002"] .pc-top { background: linear-gradient(90deg,#D97706,#DC2626); }
+[data-k="004"] .pc-top { background: linear-gradient(90deg,#7C3AED,#2563EB); }
+[data-k="007"] .pc-top { background: linear-gradient(90deg,#059669,#65A30D); }
+
+.pc-num {
+  position: absolute;
+  top: 0.55rem; right: 0.55rem;
+  background: var(--bg);
+  color: var(--txt3);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.1rem 0.38rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+.pc-body { padding: 0.7rem 0.75rem 0.5rem; flex: 1; }
+.ptag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 0.15rem 0.45rem;
+  border-radius: 100px;
+  margin-bottom: 0.45rem;
+  margin-right: 1.8rem;
+}
+.t013{background:#FDF2F8;color:#DB2777;border:1px solid #FBCFE8;}
+.t009{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
+.t008{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;}
+.t002{background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;}
+.t004{background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;}
+.t007{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;}
+
+.ptitle {
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: var(--txt1);
+  line-height: 1.38;
+  margin-bottom: 0.45rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.prow { display: flex; gap: 0.3rem; font-size: 0.7rem; margin-bottom: 0.25rem; color: var(--txt2); align-items: flex-start; }
+.prowlbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--txt3); min-width: 60px; flex-shrink: 0; padding-top: 1px; }
+
+.pc-foot {
+  padding: 0.45rem 0.75rem;
+  border-top: 1px solid var(--border);
+  background: var(--surf2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pfi { font-size: 0.6rem; color: var(--txt3); }
+.pcta { font-size: 0.68rem; font-weight: 600; color: var(--blue); opacity: 0.7; display: flex; align-items: center; gap: 0.2rem; transition: all var(--ease); }
+.pc:hover .pcta { opacity: 1; gap: 0.35rem; }
+
+/* Table view */
+.proj-table { width: 100%; border-collapse: collapse; background: var(--surf); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+.proj-table th {
+  background: var(--surf2);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--txt3);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.proj-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.76rem;
+  color: var(--txt1);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.proj-table tr:last-child td { border-bottom: none; }
+.proj-table tbody tr { cursor: pointer; transition: background var(--ease); }
+.proj-table tbody tr:hover { background: var(--surf2); }
+.td-title { max-width: 300px; font-weight: 500; color: var(--txt1); line-height: 1.35; }
+.td-title span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.td-tag { white-space: nowrap; }
+.td-num { font-weight: 700; color: var(--txt3); font-size: 0.68rem; text-align: center; }
 
 /* Empty */
-.empty{grid-column:1/-1;text-align:center;padding:2.5rem;background:var(--surf);border:1px solid var(--border);border-radius:var(--r);}
-.empty-icon{font-size:2rem;margin-bottom:0.5rem;opacity:0.25;}
-.empty h3{font-size:0.9rem;color:var(--text2);margin-bottom:0.25rem;}
-.empty p{font-size:0.78rem;color:var(--text3);}
+.empty { grid-column:1/-1; text-align:center; padding:2.5rem; background:var(--surf); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow); }
+.empty-ico { font-size:2rem; margin-bottom:0.5rem; opacity:0.3; }
+.empty h3 { font-size:0.9rem; color:var(--txt2); margin-bottom:0.25rem; }
+.empty p { font-size:0.78rem; color:var(--txt3); }
 
-/* ── MODAL ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(5,12,8,0.88);z-index:300;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;backdrop-filter:blur(8px);}
-.overlay.on{display:flex;}
-.modal{background:var(--surf);max-width:760px;width:100%;border-radius:var(--rLg);overflow:hidden;border:1px solid var(--borderHov);box-shadow:0 20px 60px rgba(0,0,0,0.7);animation:pop .28s cubic-bezier(.34,1.56,.64,1);}
-@keyframes pop{from{opacity:0;transform:translateY(20px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
-.mhead{background:var(--surf2);padding:1.5rem 1.8rem;border-bottom:1px solid var(--border);position:relative;}
-.maccent{position:absolute;top:0;left:0;right:0;height:3px;}
-.mnum{font-size:0.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.5rem;}
-.mnum::before{content:'';width:16px;height:1px;background:var(--teal);opacity:0.6;}
-.mtitle{font-family:'Syne',sans-serif;font-size:clamp(0.95rem,2vw,1.25rem);font-weight:700;line-height:1.3;color:var(--text1);padding-right:2.5rem;}
-.mclose{position:absolute;top:1.2rem;right:1.2rem;background:var(--surf3);border:1px solid var(--border);color:var(--text2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all var(--ease);}
-.mclose:hover{background:rgba(224,85,133,0.15);border-color:var(--rosa);color:var(--rosa);}
-.mbody{padding:1.5rem 1.8rem;}
-.mlabel{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--teal);margin-bottom:0.3rem;}
-.mval{font-size:0.88rem;color:var(--text1);margin-bottom:1rem;line-height:1.5;}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:1rem;}
+/* ═══════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════ */
+.overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.55); z-index:500; align-items:flex-start; justify-content:center; padding:2rem 1rem; overflow-y:auto; backdrop-filter:blur(4px); }
+.overlay.on { display:flex; }
+.modal { background:var(--surf); max-width:720px; width:100%; border-radius:var(--rLg); overflow:hidden; border:1px solid var(--border); box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:pop .26s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pop { from{opacity:0;transform:translateY(18px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);} }
+.mh { background:var(--surf2); padding:1.4rem 1.6rem; border-bottom:1px solid var(--border); position:relative; }
+.maccent { position:absolute; top:0; left:0; right:0; height:3px; }
+.mnum { font-size:0.65rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.7px; font-weight:600; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.5rem; }
+.mnum::before { content:''; width:14px; height:2px; border-radius:2px; background:var(--blue); }
+.mtitle { font-size:clamp(0.9rem,2vw,1.15rem); font-weight:700; line-height:1.3; color:var(--txt1); padding-right:2.5rem; }
+.mclose { position:absolute; top:1.1rem; right:1.1rem; background:var(--bg); border:1px solid var(--border); color:var(--txt2); width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all var(--ease); }
+.mclose:hover { background:var(--rosa-l); border-color:var(--rosa); color:var(--rosa); }
+.mb { padding:1.4rem 1.6rem; }
+.mlbl { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--blue); margin-bottom:0.25rem; }
+.mval { font-size:0.87rem; color:var(--txt1); margin-bottom:1rem; line-height:1.5; }
+.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1rem; }
 @media(max-width:500px){.mgrid{grid-template-columns:1fr;}}
-.mstat{background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:0.8rem 1rem;}
-.mstat .mlabel{margin-bottom:0.2rem;}
-.mstat .mval{margin-bottom:0;font-weight:600;font-size:0.84rem;}
-.minst{background:var(--tealDim);border:1px solid rgba(0,212,150,0.15);border-radius:8px;padding:0.8rem 1rem;font-size:0.8rem;color:var(--text2);line-height:1.6;}
-.minst strong{color:var(--teal);}
+.mstat { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.75rem 0.9rem; }
+.mstat .mlbl { margin-bottom:0.18rem; }
+.mstat .mval { margin-bottom:0; font-weight:600; font-size:0.83rem; }
+.minst { background:var(--blue-l); border:1px solid var(--blue-m); border-radius:8px; padding:0.75rem 0.9rem; font-size:0.79rem; color:var(--txt2); line-height:1.6; }
+.minst strong { color:var(--blue); }
+.mbtns { margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
+.mbtn { padding:0.4rem 0.8rem; border-radius:7px; font-size:0.73rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--ease); border:1px solid; }
 
-/* ── FOOTER ── */
-footer{background:var(--surf);border-top:1px solid var(--border);padding:0.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.4rem;}
-.fbrand{font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;color:var(--text2);}
-.fbrand span{color:var(--teal);}
-.fmeta{font-size:0.68rem;color:var(--text3);}
+/* footer */
+footer { background:var(--surf); border-top:1px solid var(--border); padding:0.7rem 1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem; }
+.fbrand { font-size:0.73rem; font-weight:700; color:var(--txt1); }
+.fbrand span { color:var(--blue); }
+.fmeta { font-size:0.65rem; color:var(--txt3); }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- ═══ TOPBAR ═══ -->
 <header class="topbar">
-  <div class="logo">
-    <div class="logo-icon">🌿</div>
-    <div class="logo-text">INPACTAS <span>&</span> SEMCTI</div>
+  <div class="topbar-logo">
+    <div class="logo-mark">🌿</div>
   </div>
-  <div class="topbar-center">OVERVIEW</div>
+
+  <div class="topbar-brand">
+    <div class="brand-name">INPACTAS & SEMCTI</div>
+    <div class="brand-sub">Benjamin Constant — AM</div>
+  </div>
+
+  <nav class="topbar-nav">
+    <div class="tnav active">Painel</div>
+    <div class="tnav">Projetos</div>
+    <div class="tnav">Editais</div>
+    <div class="tnav">Relatórios</div>
+  </nav>
+
+  <div class="topbar-filters">
+    <span class="tf-label">Filtrar</span>
+    <div class="search-w">
+      <span class="search-ic">🔍</span>
+      <input type="text" class="tf-input" id="search" placeholder="Buscar projeto, autor…">
+    </div>
+    <select class="tf-sel" id="fEdital"><option value="">Todos os editais</option></select>
+    <select class="tf-sel" id="fProp"><option value="">Todos os proponentes</option></select>
+    <select class="tf-sel" id="fAutor"><option value="">Todos os autores</option></select>
+    <div class="top-chips" id="topChips"></div>
+    <button class="clear-btn" id="clearBtn">✕ Limpar</button>
+  </div>
+
   <div class="topbar-right">
-    <span class="tbadge">FAPEAM 2026</span>
-    <span class="tdate" id="tDate"></span>
+    <span class="res-badge">Exibindo <strong id="resCount">22</strong></span>
+    <span class="date-badge" id="tDate"></span>
+    <span class="year-badge">FAPEAM 2026</span>
   </div>
 </header>
 
+<!-- ═══ LAYOUT ═══ -->
 <div class="layout">
 
-  <!-- ── SIDEBAR ── -->
-  <aside class="sidebar" id="sidebar">
-
-    <!-- KPI cards -->
-    <div class="skpi skpi-1" id="skpi-all" onclick="clearFilters()">
-      <div class="skpi-lbl">Total Projetos</div>
-      <div class="skpi-val" id="skpiTotal">22</div>
-      <div class="skpi-desc">Submetidos em 2026</div>
-    </div>
-    <div class="skpi skpi-2">
-      <div class="skpi-lbl">Editais</div>
-      <div class="skpi-val">6</div>
-      <div class="skpi-desc">Programas FAPEAM</div>
-    </div>
-    <div class="skpi skpi-3">
-      <div class="skpi-lbl">Proponentes</div>
-      <div class="skpi-val" id="skpiProp">12</div>
-      <div class="skpi-desc">Pesquisadores líderes</div>
-    </div>
-    <div class="skpi skpi-4">
-      <div class="skpi-lbl">Autores</div>
-      <div class="skpi-val" id="skpiAut">9</div>
-      <div class="skpi-desc">Redatores envolvidos</div>
-    </div>
-
+  <!-- SIDEBAR ÍCONES -->
+  <aside class="sidebar">
+    <div class="sico active" title="Painel">📊</div>
+    <div class="sico" title="Projetos">📁</div>
+    <div class="sico" title="Editais">📋</div>
+    <div class="sico" title="Proponentes">🔬</div>
     <div class="sidebar-sep"></div>
-    <div class="sidebar-label">Por Edital</div>
-
-    <!-- Editais interativos -->
-    <div class="edital-item" id="ei-013" onclick="filterByEdital('013')" data-key="013">
-      <div class="edital-dot" style="background:var(--rosa)"></div>
-      <div class="edital-name">Amazônidas 013</div>
-      <div class="edital-cnt">2</div>
-    </div>
-    <div class="edital-item" id="ei-009" onclick="filterByEdital('009')" data-key="009">
-      <div class="edital-dot" style="background:var(--teal)"></div>
-      <div class="edital-name">Socio Tech 009</div>
-      <div class="edital-cnt">4</div>
-    </div>
-    <div class="edital-item" id="ei-008" onclick="filterByEdital('008')" data-key="008">
-      <div class="edital-dot" style="background:var(--azul)"></div>
-      <div class="edital-name">Provida-AM 008</div>
-      <div class="edital-cnt">2</div>
-    </div>
-    <div class="edital-item" id="ei-002" onclick="filterByEdital('002')" data-key="002">
-      <div class="edital-dot" style="background:var(--gold)"></div>
-      <div class="edital-name">Pop CT&I 002</div>
-      <div class="edital-cnt">12</div>
-    </div>
-    <div class="edital-item" id="ei-004" onclick="filterByEdital('004')" data-key="004">
-      <div class="edital-dot" style="background:var(--roxo)"></div>
-      <div class="edital-name">Prospam 004</div>
-      <div class="edital-cnt">1</div>
-    </div>
-    <div class="edital-item" id="ei-007" onclick="filterByEdital('007')" data-key="007">
-      <div class="edital-dot" style="background:var(--neon)"></div>
-      <div class="edital-name">Painter Eco 007</div>
-      <div class="edital-cnt">1</div>
-    </div>
-
+    <div class="sico" title="Relatórios">📈</div>
+    <div class="sico" title="Configurações">⚙️</div>
     <div class="sidebar-foot">
-      Benjamin Constant — AM<br>UFAM/INC · Alto Solimões
+      <div class="sico" title="Ajuda">❓</div>
     </div>
   </aside>
 
-  <!-- ── MAIN ── -->
-  <div class="main">
+  <!-- MAIN -->
+  <main class="main">
 
-    <!-- FILTROS NO TOPO -->
-    <div class="filters-bar" id="filtersBar">
-      <span class="filters-label">Explorar</span>
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" class="search-input" id="search" placeholder="Buscar projeto, autor…">
+    <!-- KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi kpi-1" id="kpi-all" onclick="clearFilters()" title="Ver todos">
+        <div class="kpi-icon">🌿</div>
+        <div class="kpi-info">
+          <div class="kpi-val" id="kpiTotal">22</div>
+          <div class="kpi-lbl">Total Projetos</div>
+          <div class="kpi-sub">Submetidos 2026</div>
+        </div>
+        <canvas class="kpi-chart" id="kpiChart1"></canvas>
       </div>
-      <select class="fselect" id="fEdital"><option value="">Todos os editais</option></select>
-      <select class="fselect" id="fProp"><option value="">Todos os proponentes</option></select>
-      <select class="fselect" id="fAutor"><option value="">Todos os autores</option></select>
-      <span class="res-info">Exibindo <strong id="resCount">22</strong></span>
-      <button class="clear-btn" id="clearBtn" onclick="clearFilters()">✕ Limpar</button>
+      <div class="kpi kpi-2">
+        <div class="kpi-icon">📋</div>
+        <div class="kpi-info">
+          <div class="kpi-val">6</div>
+          <div class="kpi-lbl">Editais</div>
+          <div class="kpi-sub">Programas FAPEAM</div>
+        </div>
+        <canvas class="kpi-chart" id="kpiChart2"></canvas>
+      </div>
+      <div class="kpi kpi-3">
+        <div class="kpi-icon">🔬</div>
+        <div class="kpi-info">
+          <div class="kpi-val" id="kpiProp">12</div>
+          <div class="kpi-lbl">Proponentes</div>
+          <div class="kpi-sub">Pesquisadores líderes</div>
+        </div>
+        <canvas class="kpi-chart" id="kpiChart3"></canvas>
+      </div>
+      <div class="kpi kpi-4">
+        <div class="kpi-icon">✍️</div>
+        <div class="kpi-info">
+          <div class="kpi-val" id="kpiAut">9</div>
+          <div class="kpi-lbl">Autores</div>
+          <div class="kpi-sub">Redatores envolvidos</div>
+        </div>
+        <canvas class="kpi-chart" id="kpiChart4"></canvas>
+      </div>
     </div>
-    <!-- chips de filtros ativos -->
-    <div id="activeChips" style="display:none;padding:0.4rem 1.2rem;background:var(--surf);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
-      <span style="font-size:0.62rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;">Filtros ativos:</span>
-      <div id="chipsInner"></div>
+
+    <!-- CHARTS + EDITAL LIST -->
+    <div class="mid-row">
+
+      <!-- Barras por edital -->
+      <div class="panel">
+        <div class="ph">
+          <div><div class="ph-title">Projetos por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
+          <span class="ph-badge">6 editais</span>
+        </div>
+        <div class="pb"><div class="cw cw-lg"><canvas id="cEdital"></canvas></div></div>
+      </div>
+
+      <!-- Donut -->
+      <div class="panel">
+        <div class="ph">
+          <div><div class="ph-title">Por Programa</div><div class="ph-sub">Proporção</div></div>
+        </div>
+        <div class="pb"><div class="cw cw-lg"><canvas id="cDonut"></canvas></div></div>
+      </div>
+
+      <!-- Lista por edital -->
+      <div class="panel">
+        <div class="ph">
+          <div><div class="ph-title">Por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
+        </div>
+        <div class="pb">
+          <div class="edital-list" id="editalList"></div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="content">
-
-      <!-- GRÁFICOS COMPACTOS -->
-      <div class="charts-row">
-
-        <!-- Barras por edital — clicável -->
-        <div class="panel">
-          <div class="panel-head">
-            <div><div class="panel-title">Projetos por Edital</div><div class="panel-sub">Clique numa barra para filtrar</div></div>
-            <span class="pbadge">6 editais</span>
-          </div>
-          <div class="panel-body"><div class="chart-wrap cwH"><canvas id="cEdital"></canvas></div></div>
+    <!-- PROJETOS -->
+    <div class="proj-section">
+      <div class="proj-header">
+        <div class="proj-title">Projetos</div>
+        <div class="view-toggle">
+          <button class="vbtn active" id="vGrid" onclick="setView('grid')">▦ Cards</button>
+          <button class="vbtn" id="vTable" onclick="setView('table')">≡ Tabela</button>
         </div>
-
-        <!-- Donut — clicável -->
-        <div class="panel">
-          <div class="panel-head">
-            <div><div class="panel-title">Por Programa</div><div class="panel-sub">Clique para filtrar</div></div>
-          </div>
-          <div class="panel-body"><div class="chart-wrap cwH"><canvas id="cDonut"></canvas></div></div>
-        </div>
-
-        <!-- Top autores — clicável -->
-        <div class="panel">
-          <div class="panel-head">
-            <div><div class="panel-title">Top Autores</div><div class="panel-sub">Clique para filtrar</div></div>
-          </div>
-          <div class="panel-body"><div class="chart-wrap cwH"><canvas id="cAutor"></canvas></div></div>
-        </div>
-
       </div>
+      <div id="projContainer"></div>
+    </div>
 
-      <!-- CARDS DE PROJETOS -->
-      <div>
-        <div class="projects-header">
-          <div class="projects-title">Projetos</div>
-        </div>
-        <div style="height:0.6rem"></div>
-        <div class="projects-grid" id="grid"></div>
-      </div>
-
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /layout -->
+  </main>
+</div>
 
 <!-- MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal">
-    <div class="mhead">
+    <div class="mh">
       <div class="maccent" id="mAccent"></div>
       <button class="mclose" id="mClose">×</button>
       <div class="mnum" id="mNum"></div>
       <h2 class="mtitle" id="mTitle"></h2>
     </div>
-    <div class="mbody" id="mBody"></div>
+    <div class="mb" id="mBody"></div>
   </div>
 </div>
 
 <footer>
   <div class="fbrand">INPACTAS <span>&</span> SEMCTI — Benjamin Constant/AM</div>
-  <div class="fmeta">Atualizado em <span id="fDate"></span> · FAPEAM 2026</div>
+  <div class="fmeta">Atualizado em <span id="fDate"></span> · Editais FAPEAM 2026</div>
 </footer>
 
 <script>
-// ============================================================
+// ════════════════════════════════════════════════
 // DADOS
-// ============================================================
-const projetos = [
-  {id:"01",key:"013",curto:"Amazônidas 013/2026",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira",proponente:"Maria Angélica de Almeida Corrêa",autor:"Alícia Nascimento"},
-  {id:"02",key:"013",curto:"Amazônidas 013/2026",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia",proponente:"Leonor Farias Abreu",autor:"Andreza Hilário"},
-  {id:"03",key:"009",curto:"SOCIO TECH 009/2026",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Juventude Amazônica e Cidadania Digital: Desenvolvimento e Aplicação de Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"04",key:"009",curto:"SOCIO TECH 009/2026",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Óleos da Floresta: Desenvolvimento e Aplicação de Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Andreza Hilário"},
-  {id:"05",key:"009",curto:"SOCIO TECH 009/2026",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário como Instrumento de Acesso a Direitos e Políticas Públicas para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"06",key:"009",curto:"SOCIO TECH 009/2026",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"SocioCastanha: Tecnologia Social de Baixo Custo para Gestão Comunitária, Rastreabilidade e Fortalecimento da Cadeia da Castanha-do-Brasil em Amaturá, Amazonas",proponente:"Leonor Farias Abreu",autor:"Jailson Franco Aguiar"},
-  {id:"07",key:"008",curto:"PROVIDA-AM 008/2026",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas no Município de Benjamin Constant, Amazonas",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"08",key:"008",curto:"PROVIDA-AM 008/2026",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"RAPID-AM: Desenvolvimento e Validação de Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"09",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant",proponente:"Pedro Henrique Mariosa",autor:"Pedro Henrique Mariosa"},
-  {id:"10",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"11",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões",proponente:"Cleyton Cid da Silva Ferreira",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"12",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant",proponente:"Marinete Lourenço Mota",autor:"Murana Arenilhas Oliveira"},
-  {id:"13",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Alícia Nascimento"},
-  {id:"14",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões",proponente:"Leonor Farias Abreu",autor:"Murana Arenilhas Oliveira"},
-  {id:"15",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant",proponente:"Alícia Michely Silva do Nascimento",autor:"Andreza Hilário"},
-  {id:"16",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários",proponente:"Jose Edinaldo Zane",autor:"Wiily Alejandro"},
-  {id:"17",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica",proponente:"Juvan Reis Nogueira",autor:"Mateus Reinaldo Garcia"},
-  {id:"18",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"1ª Feira de CT&I da Tríplice Fronteira: Evento de CT&I com alcance Brasil-Colômbia-Peru",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"19",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Runa Salatta"},
-  {id:"20",key:"002",curto:"POP CT&I 002/2026",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões",proponente:"Bruna Salatta (Nome Social: Runa Salatta)",autor:"Runa Salatta"},
-  {id:"21",key:"004",curto:"PROSPAM 004/2026",edital:"Edital N.º 004/2026 — PROSPAM FAPEAM",titulo:"Sistema inteligente de manejo sustentável e aumento da produtividade do Tambaqui (Colossoma macropomum sp.) em açude no Alto Solimões com base em monitoramento digital e tecnologias de baixo custo",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"22",key:"007",curto:"PAINTER ECOTURISMO 007/2026",edital:"Edital N.º 007/2026 — PAINTER ECOTURISMO FAPEAM",titulo:"Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável de Comunidades Ribeirinhas e Indígenas do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"}
+// ════════════════════════════════════════════════
+const P = [
+  {id:"01",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira",proponente:"Maria Angélica de Almeida Corrêa",autor:"Alícia Nascimento"},
+  {id:"02",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia",proponente:"Leonor Farias Abreu",autor:"Andreza Hilário"},
+  {id:"03",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Juventude Amazônica e Cidadania Digital: Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
+  {id:"04",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Óleos da Floresta: Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Andreza Hilário"},
+  {id:"05",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"06",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"SocioCastanha: Tecnologia Social para Gestão Comunitária e Rastreabilidade da Castanha-do-Brasil em Amaturá, Amazonas",proponente:"Leonor Farias Abreu",autor:"Jailson Franco Aguiar"},
+  {id:"07",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas em Benjamin Constant, Amazonas",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"08",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"RAPID-AM: Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"09",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant",proponente:"Pedro Henrique Mariosa",autor:"Pedro Henrique Mariosa"},
+  {id:"10",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"11",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões",proponente:"Cleyton Cid da Silva Ferreira",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"12",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant",proponente:"Marinete Lourenço Mota",autor:"Murana Arenilhas Oliveira"},
+  {id:"13",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Alícia Nascimento"},
+  {id:"14",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões",proponente:"Leonor Farias Abreu",autor:"Murana Arenilhas Oliveira"},
+  {id:"15",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant",proponente:"Alícia Michely Silva do Nascimento",autor:"Andreza Hilário"},
+  {id:"16",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários",proponente:"Jose Edinaldo Zane",autor:"Wiily Alejandro"},
+  {id:"17",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica",proponente:"Juvan Reis Nogueira",autor:"Mateus Reinaldo Garcia"},
+  {id:"18",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"1ª Feira de CT&I da Tríplice Fronteira: Evento com alcance Brasil-Colômbia-Peru",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
+  {id:"19",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Runa Salatta"},
+  {id:"20",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões",proponente:"Bruna Salatta (Nome Social: Runa Salatta)",autor:"Runa Salatta"},
+  {id:"21",k:"004",curto:"Prospam 004",edital:"Edital N.º 004/2026 — PROSPAM FAPEAM",titulo:"Sistema inteligente de manejo sustentável do Tambaqui (Colossoma macropomum sp.) no Alto Solimões com monitoramento digital e tecnologias de baixo custo",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
+  {id:"22",k:"007",curto:"Painter Eco 007",edital:"Edital N.º 007/2026 — PAINTER ECOTURISMO FAPEAM",titulo:"Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"}
 ];
 
-const CORES = {
-  "013":{c:"#E05585",label:"Amazônidas 013/2026"},
-  "009":{c:"#00D496",label:"SOCIO TECH 009/2026"},
-  "008":{c:"#3B9EE8",label:"PROVIDA-AM 008/2026"},
-  "002":{c:"#F0A500",label:"POP CT&I 002/2026"},
-  "004":{c:"#9B6FE8",label:"PROSPAM 004/2026"},
-  "007":{c:"#5AE87A",label:"PAINTER ECO 007/2026"}
+const C = {
+  "013":{c:"#DB2777",label:"Amazônidas 013/2026"},
+  "009":{c:"#059669",label:"Socio Tech 009/2026"},
+  "008":{c:"#2563EB",label:"Provida-AM 008/2026"},
+  "002":{c:"#D97706",label:"Pop CT&I 002/2026"},
+  "004":{c:"#7C3AED",label:"Prospam 004/2026"},
+  "007":{c:"#15803D",label:"Painter Eco 007/2026"}
 };
 
-// ============================================================
+// ════════════════════════════════════════════════
 // ESTADO
-// ============================================================
+// ════════════════════════════════════════════════
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
-let state = {search:'', edital:'', proponente:'', autor:''};
+let st = {search:'', edital:'', proponente:'', autor:''};
+let view = 'grid';
 let charts = {};
 
-// ============================================================
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+function init() {
+  const now = new Date();
+  $('#tDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
+  $('#fDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  populaSelects();
+  buildKpiCharts();
+  buildCharts();
+  buildEditalList();
+  render();
+
+  $('#search').addEventListener('input', e => { st.search = e.target.value.toLowerCase().trim(); apply(); });
+  $('#fEdital').addEventListener('change', e => { st.edital = e.target.value; apply(); });
+  $('#fProp').addEventListener('change', e => { st.proponente = e.target.value; apply(); });
+  $('#fAutor').addEventListener('change', e => { st.autor = e.target.value; apply(); });
+  $('#clearBtn').addEventListener('click', clearFilters);
+  $('#mClose').addEventListener('click', closeModal);
+  $('#overlay').addEventListener('click', e => { if(e.target.id==='overlay') closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+}
+
+// ════════════════════════════════════════════════
 // SELECTS
-// ============================================================
+// ════════════════════════════════════════════════
 function populaSelects() {
-  [...new Set(projetos.map(p=>p.edital))].sort().forEach(e=>
+  [...new Set(P.map(p=>p.edital))].sort().forEach(e =>
     $('#fEdital').insertAdjacentHTML('beforeend',`<option value="${e}">${e}</option>`));
-  [...new Set(projetos.map(p=>p.proponente))].sort().forEach(p=>
+  [...new Set(P.map(p=>p.proponente))].sort().forEach(p =>
     $('#fProp').insertAdjacentHTML('beforeend',`<option value="${p}">${p}</option>`));
-  [...new Set(projetos.map(p=>p.autor))].sort().forEach(a=>
+  [...new Set(P.map(p=>p.autor))].sort().forEach(a =>
     $('#fAutor').insertAdjacentHTML('beforeend',`<option value="${a}">${a}</option>`));
 }
 
-// ============================================================
+// ════════════════════════════════════════════════
 // FILTRO
-// ============================================================
+// ════════════════════════════════════════════════
 function filtrar() {
-  return projetos.filter(p => {
-    const q = state.search;
-    const okQ = !q || [p.titulo,p.edital,p.proponente,p.autor].some(v=>v.toLowerCase().includes(q));
-    const okE = !state.edital || p.edital === state.edital;
-    const okP = !state.proponente || p.proponente === state.proponente;
-    const okA = !state.autor || p.autor === state.autor;
-    return okQ && okE && okP && okA;
+  return P.filter(p => {
+    const q = st.search;
+    return (!q || [p.titulo,p.edital,p.proponente,p.autor].some(v=>v.toLowerCase().includes(q)))
+      && (!st.edital || p.edital===st.edital)
+      && (!st.proponente || p.proponente===st.proponente)
+      && (!st.autor || p.autor===st.autor);
   });
-}
-
-function applyState() {
-  renderCards();
-  updateCharts();
-  updateSidebar();
-  updateChips();
 }
 
 function clearFilters() {
-  state = {search:'',edital:'',proponente:'',autor:''};
-  $('#search').value=''; $('#fEdital').value=''; $('#fProp').value=''; $('#fAutor').value='';
-  applyState();
+  st = {search:'',edital:'',proponente:'',autor:''};
+  ['search','fEdital','fProp','fAutor'].forEach(id => { const el=$('#'+id); if(el) el.value=''; });
+  apply();
 }
 
-// ============================================================
-// SIDEBAR — filtrar por edital (toggle)
-// ============================================================
-function filterByEdital(key) {
-  const editalFull = projetos.find(p=>p.key===key)?.edital || '';
-  if (state.edital === editalFull) {
-    state.edital = '';
-    $('#fEdital').value = '';
-  } else {
-    state.edital = editalFull;
-    $('#fEdital').value = editalFull;
-  }
-  applyState();
-}
+function apply() { render(); updateCharts(); updateEditalList(); updateChips(); }
 
-function updateSidebar() {
-  $$('.edital-item').forEach(el => {
-    const key = el.dataset.key;
-    const editalFull = projetos.find(p=>p.key===key)?.edital || '';
-    el.classList.toggle('active', state.edital === editalFull);
-    const cor = CORES[key]?.c || '#547A65';
-    el.style.borderColor = state.edital === editalFull ? cor+'55' : '';
-    el.style.background  = state.edital === editalFull ? cor+'15' : '';
-  });
-}
-
-// ============================================================
-// CHIPS DE FILTROS ATIVOS
-// ============================================================
+// ════════════════════════════════════════════════
+// CHIPS
+// ════════════════════════════════════════════════
 function updateChips() {
   const chips = [];
-  if (state.edital) chips.push({label: state.edital.split('—')[0].trim(), clear: ()=>{state.edital='';$('#fEdital').value='';applyState();}});
-  if (state.proponente) chips.push({label: state.proponente.split(' ')[0], clear: ()=>{state.proponente='';$('#fProp').value='';applyState();}});
-  if (state.autor) chips.push({label: state.autor.split(' ')[0], clear: ()=>{state.autor='';$('#fAutor').value='';applyState();}});
-  if (state.search) chips.push({label: `"${state.search}"`, clear: ()=>{state.search='';$('#search').value='';applyState();}});
-
-  const bar = $('#activeChips');
-  const inner = $('#chipsInner');
-  if (!chips.length) { bar.style.display='none'; return; }
-  bar.style.display='flex';
-  inner.innerHTML = chips.map((c,i)=>
-    `<span class="active-chip" data-chip="${i}">${c.label} ✕</span>`
-  ).join('');
-  $$('#chipsInner .active-chip').forEach((el,i)=>el.addEventListener('click',chips[i].clear));
+  if(st.edital) chips.push({l: st.edital.split('—')[0].trim(), clr: ()=>{st.edital='';$('#fEdital').value='';apply();}});
+  if(st.proponente) chips.push({l: st.proponente.split(' ')[0], clr: ()=>{st.proponente='';$('#fProp').value='';apply();}});
+  if(st.autor) chips.push({l: st.autor.split(' ')[0], clr: ()=>{st.autor='';$('#fAutor').value='';apply();}});
+  if(st.search) chips.push({l: `"${st.search}"`, clr: ()=>{st.search='';$('#search').value='';apply();}});
+  const el = $('#topChips');
+  el.innerHTML = chips.map((c,i)=>`<span class="chip" data-i="${i}">${c.l} ✕</span>`).join('');
+  $$('#topChips .chip').forEach((s,i)=>s.addEventListener('click',chips[i].clr));
 }
 
-// ============================================================
-// CARDS
-// ============================================================
-function renderCards() {
+// ════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════
+function render() {
   const lista = filtrar();
   $('#resCount').textContent = lista.length;
-  const grid = $('#grid');
-  if (!lista.length) {
-    grid.innerHTML=`<div class="empty"><div class="empty-icon">🌿</div><h3>Nenhum projeto encontrado</h3><p>Ajuste ou limpe os filtros.</p></div>`;
-    return;
-  }
-  grid.innerHTML = lista.map(p=>`
-    <article class="pcard" data-key="${p.key}" data-id="${p.id}">
-      <div class="pcard-accent"></div>
-      <span class="pcard-num">#${p.id}</span>
-      <div class="pcard-body">
-        <span class="ptag ptag-${p.key}">${p.curto}</span>
+
+  if(view==='grid') renderGrid(lista);
+  else renderTable(lista);
+}
+
+function setView(v) {
+  view = v;
+  $('#vGrid').classList.toggle('active', v==='grid');
+  $('#vTable').classList.toggle('active', v==='table');
+  render();
+}
+
+function renderGrid(lista) {
+  if(!lista.length) { $('#projContainer').innerHTML=`<div class="cards-grid"><div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div></div>`; return; }
+  $('#projContainer').innerHTML = `<div class="cards-grid">${lista.map(p=>`
+    <article class="pc" data-k="${p.k}" data-id="${p.id}">
+      <div class="pc-top"></div>
+      <span class="pc-num">#${p.id}</span>
+      <div class="pc-body">
+        <span class="ptag t${p.k}">${p.curto}</span>
         <h3 class="ptitle">${p.titulo}</h3>
         <div class="prow"><span class="prowlbl">Proponente</span><span>${p.proponente}</span></div>
         <div class="prow"><span class="prowlbl">Autor</span><span>${p.autor}</span></div>
       </div>
-      <div class="pcard-foot">
-        <span class="pfoot-info">FAPEAM 2026</span>
-        <span class="pcta">Detalhes →</span>
-      </div>
-    </article>
-  `).join('');
-  $$('.pcard').forEach(c=>c.addEventListener('click',()=>abrirModal(c.dataset.id)));
+      <div class="pc-foot"><span class="pfi">FAPEAM 2026</span><span class="pcta">Detalhes →</span></div>
+    </article>`).join('')}</div>`;
+  $$('.pc').forEach(c=>c.addEventListener('click',()=>openModal(c.dataset.id)));
 }
 
-// ============================================================
-// GRÁFICOS — com onClick para filtrar
-// ============================================================
-const chartCfg = {
+function renderTable(lista) {
+  if(!lista.length) { $('#projContainer').innerHTML=`<div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div>`; return; }
+  $('#projContainer').innerHTML = `<table class="proj-table">
+    <thead><tr>
+      <th>#</th><th>Edital</th><th>Título</th><th>Proponente</th><th>Autor</th>
+    </tr></thead>
+    <tbody>${lista.map(p=>`<tr data-id="${p.id}">
+      <td class="td-num">${p.id}</td>
+      <td class="td-tag"><span class="ptag t${p.k}">${p.curto}</span></td>
+      <td class="td-title"><span>${p.titulo}</span></td>
+      <td>${p.proponente.split(' ').slice(0,2).join(' ')}</td>
+      <td>${p.autor.split(' ')[0]}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+  $$('.proj-table tbody tr').forEach(r=>r.addEventListener('click',()=>openModal(r.dataset.id)));
+}
+
+// ════════════════════════════════════════════════
+// LISTA DE EDITAIS INTERATIVA
+// ════════════════════════════════════════════════
+function buildEditalList() {
+  const total = P.length;
+  const el = $('#editalList');
+  el.innerHTML = Object.entries(C).map(([key,cfg])=>{
+    const n = P.filter(p=>p.k===key).length;
+    const pct = Math.round(n/total*100);
+    return `<div class="ei" data-k="${key}" onclick="filterEdital('${key}')">
+      <div class="ei-dot" style="background:${cfg.c}"></div>
+      <div class="ei-name">${cfg.label}</div>
+      <div class="ei-bar-wrap"><div class="ei-bar" style="width:${pct}%;background:${cfg.c}"></div></div>
+      <div class="ei-cnt">${n}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateEditalList() {
+  $$('.ei').forEach(el => {
+    const key = el.dataset.k;
+    const edFull = P.find(p=>p.k===key)?.edital||'';
+    const isActive = st.edital === edFull;
+    el.classList.toggle('active', isActive);
+    el.style.color = isActive ? C[key].c : '';
+    el.style.background = isActive ? C[key].c+'12' : '';
+    el.style.borderColor = isActive ? C[key].c+'55' : '';
+  });
+}
+
+function filterEdital(key) {
+  const edFull = P.find(p=>p.k===key)?.edital||'';
+  st.edital = st.edital===edFull ? '' : edFull;
+  $('#fEdital').value = st.edital;
+  apply();
+}
+
+// ════════════════════════════════════════════════
+// KPI MINI CHARTS
+// ════════════════════════════════════════════════
+function buildKpiCharts() {
+  const edKeys = Object.keys(C);
+  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
+  const colors = edKeys.map(k=>C[k].c);
+
+  // Mini bar
+  new Chart($('#kpiChart1'),{type:'bar',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'88'),borderColor:colors,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:800}}});
+
+  // Mini donut
+  new Chart($('#kpiChart2'),{type:'doughnut',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'99'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:900}}});
+
+  // Proponentes mini bar
+  const porProp={};
+  P.forEach(p=>porProp[p.proponente]=(porProp[p.proponente]||0)+1);
+  const topProp=Object.entries(porProp).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  new Chart($('#kpiChart3'),{type:'bar',data:{labels:topProp.map(([k])=>k.split(' ')[0]),datasets:[{data:topProp.map(([,v])=>v),backgroundColor:'#05966999',borderColor:'#059669',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1000}}});
+
+  // Autores mini bar
+  const porAut={};
+  P.forEach(p=>porAut[p.autor]=(porAut[p.autor]||0)+1);
+  const topAut=Object.entries(porAut).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  new Chart($('#kpiChart4'),{type:'bar',data:{labels:topAut.map(([k])=>k.split(' ')[0]),datasets:[{data:topAut.map(([,v])=>v),backgroundColor:'#D9770699',borderColor:'#D97706',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1100}}});
+}
+
+// ════════════════════════════════════════════════
+// GRÁFICOS PRINCIPAIS (clicáveis)
+// ════════════════════════════════════════════════
+const baseOpts = {
   responsive:true, maintainAspectRatio:false,
-  animation:{duration:600,easing:'easeOutQuart'},
-  plugins:{legend:{labels:{font:{family:"'Inter',sans-serif",size:9},color:'#547A65',boxWidth:8,padding:8}}}
+  animation:{duration:500,easing:'easeOutQuart'},
+  plugins:{legend:{labels:{font:{family:"'Inter',sans-serif",size:10},color:'#94A3B8',boxWidth:8,padding:8}}}
 };
 
-function porEdital() {
-  const map={};
-  projetos.forEach(p=>map[p.key]=(map[p.key]||0)+1);
-  return map;
-}
-function porAutor() {
-  const map={};
-  projetos.forEach(p=>map[p.autor]=(map[p.autor]||0)+1);
-  return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,8);
-}
-
 function buildCharts() {
-  const ed = porEdital();
-  const keys = Object.keys(ed);
-  const colors = keys.map(k=>CORES[k]?.c||'#547A65');
+  const edKeys = Object.keys(C);
+  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
+  const colors = edKeys.map(k=>C[k].c);
 
-  // ── Barras por edital
-  charts.edital = new Chart($('#cEdital'), {
+  charts.edital = new Chart($('#cEdital'),{
     type:'bar',
     data:{
-      labels: keys.map(k=>CORES[k]?.label.split(' ')[0]||k),
-      datasets:[{
-        data: keys.map(k=>ed[k]),
-        backgroundColor: colors.map(c=>c+'33'),
-        borderColor: colors,
-        borderWidth:2, borderRadius:5, borderSkipped:false
-      }]
+      labels: edKeys.map(k=>C[k].label.split(' ').slice(0,2).join(' ')),
+      datasets:[{data:counts,backgroundColor:colors.map(c=>c+'33'),borderColor:colors,borderWidth:2,borderRadius:6,borderSkipped:false}]
     },
-    options:{
-      ...chartCfg,
-      plugins:{...chartCfg.plugins, legend:{display:false},
-        tooltip:{callbacks:{title:ctx=>CORES[keys[ctx[0].dataIndex]]?.label||'',label:ctx=>` ${ctx.parsed.y} projeto(s)`}}
+    options:{...baseOpts,
+      plugins:{...baseOpts.plugins,legend:{display:false},
+        tooltip:{callbacks:{title:ctx=>C[edKeys[ctx[0].dataIndex]]?.label||'',label:ctx=>` ${ctx.parsed.y} projeto(s)`}}
       },
       scales:{
-        x:{ticks:{color:'#547A65',font:{size:9}},grid:{color:'rgba(0,212,150,0.05)'}},
-        y:{beginAtZero:true,ticks:{stepSize:1,color:'#547A65',font:{size:9}},grid:{color:'rgba(0,212,150,0.06)'}}
+        x:{ticks:{color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}},
+        y:{beginAtZero:true,ticks:{stepSize:1,color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.05)'}}
       },
-      onClick(evt,els){
-        if(!els.length) return;
-        const key = keys[els[0].index];
-        filterByEdital(key);
-      },
-      onHover(evt,els){ evt.native.target.style.cursor = els.length?'pointer':'default'; }
+      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
+      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
     }
   });
 
-  // ── Donut
-  charts.donut = new Chart($('#cDonut'), {
+  charts.donut = new Chart($('#cDonut'),{
     type:'doughnut',
-    data:{
-      labels: keys.map(k=>CORES[k]?.label||k),
-      datasets:[{data:keys.map(k=>ed[k]),backgroundColor:colors.map(c=>c+'55'),borderColor:colors,borderWidth:2,hoverOffset:8}]
-    },
-    options:{
-      ...chartCfg, cutout:'62%',
-      plugins:{...chartCfg.plugins,
-        tooltip:{callbacks:{label:ctx=>` ${CORES[keys[ctx.dataIndex]]?.label}: ${ctx.parsed}`}}
-      },
-      onClick(evt,els){
-        if(!els.length) return;
-        filterByEdital(keys[els[0].index]);
-      },
-      onHover(evt,els){ evt.native.target.style.cursor = els.length?'pointer':'default'; }
-    }
-  });
-
-  // ── Top autores
-  const autores = porAutor();
-  const autorColors = ['#00D496','#F0A500','#E05585','#3B9EE8','#9B6FE8','#5AE87A','#E07B45','#547A65'];
-  charts.autor = new Chart($('#cAutor'), {
-    type:'bar',
-    data:{
-      labels: autores.map(([k])=>k.split(' ')[0]),
-      datasets:[{
-        data: autores.map(([,v])=>v),
-        backgroundColor: autorColors.map(c=>c+'44'),
-        borderColor: autorColors,
-        borderWidth:2, borderRadius:5, borderSkipped:false
-      }]
-    },
-    options:{
-      ...chartCfg,
-      plugins:{...chartCfg.plugins, legend:{display:false},
-        tooltip:{callbacks:{title:ctx=>autores[ctx[0].dataIndex][0], label:ctx=>` ${ctx.parsed.y} projeto(s)`}}
-      },
-      scales:{
-        x:{ticks:{color:'#547A65',font:{size:9}},grid:{color:'rgba(0,212,150,0.05)'}},
-        y:{beginAtZero:true,ticks:{stepSize:1,color:'#547A65',font:{size:9}},grid:{color:'rgba(0,212,150,0.06)'}}
-      },
-      onClick(evt,els){
-        if(!els.length) return;
-        const autor = autores[els[0].index][0];
-        state.autor = autor;
-        $('#fAutor').value = autor;
-        applyState();
-      },
-      onHover(evt,els){ evt.native.target.style.cursor = els.length?'pointer':'default'; }
+    data:{labels:edKeys.map(k=>C[k].label),datasets:[{data:counts,backgroundColor:colors.map(c=>c+'55'),borderColor:colors,borderWidth:2,hoverOffset:6}]},
+    options:{...baseOpts,cutout:'60%',
+      plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:ctx=>` ${C[edKeys[ctx.dataIndex]]?.label}: ${ctx.parsed}`}}},
+      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
+      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
     }
   });
 }
 
-// Atualiza visual dos gráficos refletindo filtros ativos
 function updateCharts() {
-  const lista = filtrar();
-  const ed = porEdital();
-  const keys = Object.keys(ed);
+  const activeKey = P.find(p=>p.edital===st.edital)?.k||null;
+  const edKeys = Object.keys(C);
+  const colors = edKeys.map(k=>C[k].c);
 
-  // Destaque nas barras de edital
-  if (charts.edital) {
-    const activeKey = projetos.find(p=>p.edital===state.edital)?.key || null;
-    charts.edital.data.datasets[0].backgroundColor = keys.map(k=>
-      !activeKey || k===activeKey ? (CORES[k]?.c||'#547A65')+'55' : '#547A6522'
-    );
-    charts.edital.data.datasets[0].borderColor = keys.map(k=>
-      !activeKey || k===activeKey ? (CORES[k]?.c||'#547A65') : '#547A6544'
-    );
+  if(charts.edital){
+    charts.edital.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'44':c+'11');
+    charts.edital.data.datasets[0].borderColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c:c+'33');
     charts.edital.update('none');
   }
-  if (charts.donut) {
-    const activeKey = projetos.find(p=>p.edital===state.edital)?.key || null;
-    charts.donut.data.datasets[0].backgroundColor = keys.map(k=>
-      !activeKey || k===activeKey ? (CORES[k]?.c||'#547A65')+'66' : '#547A6522'
-    );
+  if(charts.donut){
+    charts.donut.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'66':c+'18');
     charts.donut.update('none');
   }
 }
 
-// ============================================================
+// ════════════════════════════════════════════════
 // MODAL
-// ============================================================
-function abrirModal(id) {
-  const p = projetos.find(x=>x.id===id); if(!p) return;
-  const cor = CORES[p.key]?.c||'#00D496';
+// ════════════════════════════════════════════════
+function openModal(id) {
+  const p = P.find(x=>x.id===id); if(!p) return;
+  const cor = C[p.k]?.c||'#2563EB';
   $('#mAccent').style.background = `linear-gradient(90deg,${cor},${cor}88)`;
   $('#mNum').textContent = `Projeto Nº ${p.id}  ·  ${p.curto}`;
   $('#mTitle').textContent = p.titulo;
   $('#mBody').innerHTML = `
-    <div class="mlabel">Edital</div><div class="mval">${p.edital}</div>
+    <div class="mlbl">Edital</div><div class="mval">${p.edital}</div>
     <div class="mgrid">
-      <div class="mstat"><div class="mlabel">Proponente</div><div class="mval">${p.proponente}</div></div>
-      <div class="mstat"><div class="mlabel">Autor / Redator</div><div class="mval">${p.autor}</div></div>
-      <div class="mstat"><div class="mlabel">Nº do Projeto</div><div class="mval">${p.id}</div></div>
-      <div class="mstat"><div class="mlabel">Agência Financiadora</div><div class="mval">FAPEAM — 2026</div></div>
+      <div class="mstat"><div class="mlbl">Proponente</div><div class="mval">${p.proponente}</div></div>
+      <div class="mstat"><div class="mlbl">Autor / Redator</div><div class="mval">${p.autor}</div></div>
+      <div class="mstat"><div class="mlbl">Nº do Projeto</div><div class="mval">${p.id}</div></div>
+      <div class="mstat"><div class="mlbl">Agência Financiadora</div><div class="mval">FAPEAM — 2026</div></div>
     </div>
     <div class="minst"><strong>Instituições Envolvidas</strong><br>
     Incubadora Inpactas &nbsp;·&nbsp; SEMCTI Benjamin Constant &nbsp;·&nbsp; UFAM/INC — Instituto de Natureza e Cultura</div>
-  `;
-  // Botão: filtrar por este edital
-  $('#mBody').insertAdjacentHTML('beforeend',`
-    <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-      <button onclick="filterByEdital('${p.key}');fecharModal();" style="background:${cor}22;border:1px solid ${cor}44;color:${cor};padding:0.4rem 0.85rem;border-radius:8px;cursor:pointer;font-size:0.75rem;font-weight:600;font-family:'Inter',sans-serif;transition:all .2s;">
-        Ver todos do ${p.curto}
-      </button>
-      <button onclick="state.autor='${p.autor}';$('#fAutor').value='${p.autor}';applyState();fecharModal();" style="background:var(--surf3);border:1px solid var(--border);color:var(--text2);padding:0.4rem 0.85rem;border-radius:8px;cursor:pointer;font-size:0.75rem;font-weight:600;font-family:'Inter',sans-serif;">
-        Ver projetos de ${p.autor.split(' ')[0]}
-      </button>
-    </div>
-  `);
+    <div class="mbtns">
+      <button class="mbtn" style="background:${cor}15;border-color:${cor}44;color:${cor};" onclick="filterEdital('${p.k}');closeModal();">Ver todos do ${p.curto}</button>
+      <button class="mbtn" style="background:#EFF6FF;border-color:#BFDBFE;color:#2563EB;" onclick="st.autor='${p.autor}';$('#fAutor').value='${p.autor}';apply();closeModal();">Projetos de ${p.autor.split(' ')[0]}</button>
+    </div>`;
   $('#overlay').classList.add('on');
   document.body.style.overflow='hidden';
 }
-function fecharModal(){$('#overlay').classList.remove('on');document.body.style.overflow='';}
-
-// ============================================================
-// INIT
-// ============================================================
-function init() {
-  const now = new Date();
-  const fmt = {day:'2-digit',month:'short',year:'numeric'};
-  $('#tDate').textContent = now.toLocaleDateString('pt-BR',fmt);
-  $('#fDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-
-  populaSelects();
-  buildCharts();
-  renderCards();
-  updateChips();
-
-  $('#search').addEventListener('input',e=>{state.search=e.target.value.toLowerCase().trim();applyState();});
-  $('#fEdital').addEventListener('change',e=>{state.edital=e.target.value;applyState();});
-  $('#fProp').addEventListener('change',e=>{state.proponente=e.target.value;applyState();});
-  $('#fAutor').addEventListener('change',e=>{state.autor=e.target.value;applyState();});
-
-  $('#mClose').addEventListener('click',fecharModal);
-  $('#overlay').addEventListener('click',e=>{if(e.target.id==='overlay')fecharModal();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
-}
+function closeModal(){$('#overlay').classList.remove('on');document.body.style.overflow='';}
 
 init();
 </script>
