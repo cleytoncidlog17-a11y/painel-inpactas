@@ -3,1155 +3,1181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel FAPEAM 2026 | Inpactas & SEMCTI</title>
+<title>Editais FAPEAM 2026 — Inpactas & SEMCTI Benjamin Constant</title>
+<meta name="description" content="Painel institucional dos 22 projetos submetidos aos editais FAPEAM 2026 pela Incubadora Inpactas, SEMCTI e UFAM/INC Benjamin Constant — Alto Solimões, Amazonas.">
+<meta property="og:title" content="Editais FAPEAM 2026 — Inpactas & SEMCTI Benjamin Constant">
+<meta property="og:description" content="22 projetos de ciência, tecnologia e inovação submetidos aos editais FAPEAM 2026 no Alto Solimões.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg:       #EEF2F7;
-  --surf:     #FFFFFF;
-  --surf2:    #F8FAFC;
-  --border:   #E2E8F0;
-  --border2:  #CBD5E1;
-
-  --blue:     #2563EB;
-  --blue-l:   #EFF6FF;
-  --blue-m:   #BFDBFE;
-  --green:    #059669;
-  --green-l:  #ECFDF5;
-  --orange:   #D97706;
-  --orange-l: #FFFBEB;
-  --rosa:     #DB2777;
-  --rosa-l:   #FDF2F8;
-  --teal:     #0891B2;
-  --teal-l:   #ECFEFF;
-  --roxo:     #7C3AED;
-  --roxo-l:   #F5F3FF;
-
-  --txt1:  #1E293B;
-  --txt2:  #475569;
-  --txt3:  #94A3B8;
-  --txt4:  #CBD5E1;
-
-  --sidebar-w: 52px;
-  --top-h:     52px;
-  --r:         10px;
-  --rLg:       14px;
-  --shadow:    0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
-  --ease:      0.18s ease;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt1);min-height:100vh;font-size:13px;display:flex;flex-direction:column;}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
-
-/* ═══════════════════════════════════════════
-   TOPBAR
-═══════════════════════════════════════════ */
-.topbar {
-  height: var(--top-h);
-  background: var(--surf);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  padding: 0 1rem 0 0;
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  box-shadow: var(--shadow);
-  gap: 0;
+    /* Palette - clean institutional, inspired by Lovable */
+    --bg:           #FDFCF9;
+    --bg-soft:      #F5F2EB;
+    --bg-card:     #FFFFFF;
+    --ink:          #1A1A1A;
+    --ink-soft:    #404040;
+    --muted:       #6B6B6B;
+    --muted-soft:  #9A9A9A;
+    --line:        #E8E4DA;
+    --line-soft:   #F0EDE5;
+    --accent:      #2D5F3F;   /* deep institutional green */
+    --accent-soft: #E8F0EA;
+    --accent-ink:  #1F4530;
+    --warm:        #C4633B;
+    --gold:        #D4A52D;
+    --berry:       #A8336E;
+    --plum:        #5C3A6E;
+    --sky:         #2E7AAC;
+    --teal:        #3D8B85;
+    --radius:      14px;
+    --radius-lg:   22px;
+    --shadow-sm:   0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+    --shadow:      0 4px 12px rgba(40,30,15,0.06), 0 2px 4px rgba(40,30,15,0.04);
+    --shadow-lg:   0 12px 32px rgba(40,30,15,0.08), 0 4px 8px rgba(40,30,15,0.04);
 }
 
-/* Logo zone */
-.topbar-logo {
-  width: var(--sidebar-w);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.logo-mark {
-  width: 30px; height: 30px;
-  background: linear-gradient(135deg, #059669, #2563EB);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-feature-settings: 'ss01', 'cv01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
-/* Brand */
-.topbar-brand {
-  padding: 0 1rem;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  flex-shrink: 0;
+/* ============ NAV ============ */
+.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(253, 252, 249, 0.85);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line-soft);
 }
-.brand-name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--txt1);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+.nav-inner {
+    max-width: 1180px; margin: 0 auto; padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 2rem;
 }
-.brand-sub {
-  font-size: 0.62rem;
-  color: var(--txt3);
-  white-space: nowrap;
+.brand {
+    display: flex; flex-direction: column; line-height: 1.15;
+    text-decoration: none; color: var(--ink);
+}
+.brand-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem; font-weight: 600;
+}
+.brand-sub { font-size: 0.72rem; color: var(--muted); font-weight: 500; }
+.nav-links { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+.nav-links a {
+    color: var(--ink-soft); text-decoration: none;
+    padding: 0.5rem 0.9rem; border-radius: 100px;
+    font-size: 0.88rem; font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+}
+.nav-links a:hover { background: var(--bg-soft); color: var(--ink); }
+.nav-cta {
+    background: var(--ink); color: white !important;
+    padding: 0.55rem 1.1rem !important;
+    border-radius: 100px;
+}
+.nav-cta:hover { background: var(--accent-ink) !important; }
+
+@media (max-width: 820px) {
+    .nav-inner { padding: 0.8rem 1.2rem; gap: 0.8rem; }
+    .nav-links { display: none; }
+    .nav-links.mobile-on { display: flex; flex-direction: column; align-items: stretch; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); padding: 0.5rem 1rem 1rem; border-bottom: 1px solid var(--line); }
+    .menu-toggle { display: inline-flex !important; }
+}
+.menu-toggle {
+    display: none; background: none; border: 1px solid var(--line);
+    padding: 0.4rem 0.7rem; border-radius: 8px; cursor: pointer;
+    font-size: 0.85rem; color: var(--ink);
 }
 
-/* Nav pills */
-.topbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0 0.8rem;
-  height: 100%;
-  border-right: 1px solid var(--border);
+/* ============ HERO ============ */
+.hero {
+    padding: 5rem 2rem 4rem;
+    background: var(--bg);
+    position: relative; overflow: hidden;
 }
-.tnav {
-  padding: 0.35rem 0.7rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--txt2);
-  cursor: pointer;
-  transition: all var(--ease);
-  white-space: nowrap;
-  border: 1px solid transparent;
+.hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+        radial-gradient(circle at 80% 10%, rgba(45,95,63,0.05), transparent 50%),
+        radial-gradient(circle at 10% 80%, rgba(196,99,59,0.04), transparent 50%);
 }
-.tnav:hover { background: var(--bg); color: var(--txt1); }
-.tnav.active {
-  background: var(--blue-l);
-  color: var(--blue);
-  border-color: var(--blue-m);
-  font-weight: 600;
+.hero-inner {
+    max-width: 1180px; margin: 0 auto; position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: center;
+}
+@media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 3rem 1.2rem 2.5rem; }
+}
+.hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent-soft); color: var(--accent-ink);
+    padding: 0.4rem 0.9rem; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+}
+.hero-tag::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+}
+.hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+}
+.hero h1 em {
+    font-style: italic; color: var(--accent);
+    font-weight: 500;
+}
+.hero p.lead {
+    font-size: clamp(1rem, 1.7vw, 1.2rem);
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+.hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.4rem; border-radius: 100px;
+    font-weight: 600; font-size: 0.92rem; cursor: pointer;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s, color 0.15s;
+    font-family: inherit;
+}
+.btn-primary { background: var(--ink); color: white; }
+.btn-primary:hover { background: var(--accent-ink); transform: translateY(-1px); }
+.btn-secondary { border-color: var(--line); color: var(--ink); background: transparent; }
+.btn-secondary:hover { border-color: var(--ink); background: var(--bg-soft); }
+.btn-arrow::after { content: '→'; font-size: 1rem; }
+
+.hero-aside {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+.aside-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.aside-stat {
+    padding: 1.1rem 1rem;
+    border-radius: var(--radius);
+    background: var(--bg-soft);
+}
+.aside-stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem; font-weight: 600;
+    color: var(--accent-ink); line-height: 1;
+    margin-bottom: 0.25rem;
+}
+.aside-stat-label {
+    font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-weight: 600;
+}
+.aside-foot {
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem; color: var(--muted);
+    display: flex; gap: 0.5rem; align-items: center;
 }
 
-/* Filtros inline no top */
-.topbar-filters {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.8rem;
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border-right: 1px solid var(--border);
-  overflow-x: auto;
+/* ============ SECTIONS ============ */
+section.block {
+    padding: 5rem 2rem;
+    border-top: 1px solid var(--line-soft);
 }
-.tf-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--txt3);
-  white-space: nowrap;
-  flex-shrink: 0;
+section.block.alt { background: var(--bg-soft); }
+section.block.dark { background: var(--ink); color: rgba(255,255,255,0.92); }
+.block-inner { max-width: 1180px; margin: 0 auto; }
+.eyebrow {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: inline-block;
 }
-.search-w {
-  position: relative;
-  flex: 1;
-  min-width: 140px;
-  max-width: 220px;
-  flex-shrink: 0;
+section.block.dark .eyebrow { color: rgba(255,255,255,0.6); }
+.section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    max-width: 800px;
 }
-.search-ic {
-  position: absolute;
-  left: 0.6rem; top: 50%;
-  transform: translateY(-50%);
-  color: var(--txt3);
-  font-size: 0.72rem;
-  pointer-events: none;
+section.block.dark .section-title { color: white; }
+.section-title em { font-style: italic; color: var(--accent); font-weight: 500; }
+section.block.dark .section-title em { color: #8DC9A3; }
+.section-lede {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 700px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
 }
-.tf-input {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.38rem 0.6rem 0.38rem 1.85rem;
-  font-size: 0.78rem;
-  font-family: 'Inter', sans-serif;
-  color: var(--txt1);
-  background: var(--bg);
-  transition: border-color var(--ease), box-shadow var(--ease);
-}
-.tf-input::placeholder { color: var(--txt3); }
-.tf-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); background: var(--surf); }
-.tf-sel {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.38rem 1.6rem 0.38rem 0.6rem;
-  font-size: 0.76rem;
-  font-family: 'Inter', sans-serif;
-  color: var(--txt2);
-  background: var(--bg);
-  appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.55rem center;
-  cursor: pointer;
-  transition: border-color var(--ease);
-  min-width: 110px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-.tf-sel:focus { outline: none; border-color: var(--blue); }
-.clear-btn {
-  background: transparent;
-  border: 1px solid var(--border2);
-  color: var(--txt2);
-  padding: 0.38rem 0.7rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  transition: all var(--ease);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.clear-btn:hover { border-color: var(--rosa); color: var(--rosa); background: var(--rosa-l); }
+section.block.dark .section-lede { color: rgba(255,255,255,0.75); }
 
-/* Chips */
-.top-chips {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-}
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: var(--blue-l);
-  border: 1px solid var(--blue-m);
-  color: var(--blue);
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.18rem 0.45rem;
-  border-radius: 100px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.chip:hover { background: var(--blue-m); }
-
-/* Info direita */
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0 0.8rem;
-  flex-shrink: 0;
-}
-.res-badge {
-  font-size: 0.72rem;
-  color: var(--txt2);
-  white-space: nowrap;
-}
-.res-badge strong { color: var(--blue); font-size: 0.82rem; font-weight: 700; }
-.date-badge {
-  font-size: 0.7rem;
-  color: var(--txt3);
-  white-space: nowrap;
-}
-.year-badge {
-  background: var(--blue);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.2rem 0.55rem;
-  border-radius: 100px;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
+@media (max-width: 700px) {
+    section.block { padding: 3rem 1.2rem; }
 }
 
-/* ═══════════════════════════════════════════
-   LAYOUT
-═══════════════════════════════════════════ */
-.layout {
-  display: flex;
-  flex: 1;
-  min-height: 0;
+/* ============ EDITAIS GRID ============ */
+.editais-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+.edital-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    min-height: 200px;
+}
+.edital-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--ink);
+}
+.edital-dot {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 0.85rem;
+}
+.edital-card h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+}
+.edital-card p {
+    font-size: 0.88rem; color: var(--muted); line-height: 1.5;
+    flex-grow: 1;
+}
+.edital-meta {
+    margin-top: 1.2rem; padding-top: 1rem;
+    border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; align-items: baseline;
+}
+.edital-count {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem; font-weight: 600;
+    color: var(--accent-ink);
+    line-height: 1;
+}
+.edital-count-label {
+    font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
 }
 
-/* ═══════════════════════════════════════════
-   SIDEBAR (ícones)
-═══════════════════════════════════════════ */
-.sidebar {
-  width: var(--sidebar-w);
-  background: var(--surf);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.8rem 0;
-  gap: 0.3rem;
-  flex-shrink: 0;
+/* ============ ANALYTICS ============ */
+.analytics-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
-@media(max-width:700px){.sidebar{display:none;}}
+@media (max-width: 800px) { .analytics-grid { grid-template-columns: 1fr; } }
+.chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+.chart-card h4 {
+    font-size: 0.95rem; font-weight: 600; color: var(--ink);
+    margin-bottom: 1.2rem;
+}
+.chart-wrap { position: relative; height: 280px; }
 
-.sico {
-  width: 36px; height: 36px;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all var(--ease);
-  color: var(--txt3);
-  position: relative;
+/* ============ FILTERS ============ */
+.filters {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
 }
-.sico:hover { background: var(--bg); color: var(--txt1); }
-.sico.active { background: var(--blue-l); color: var(--blue); }
-.sico[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--txt1);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.25rem 0.55rem;
-  border-radius: 5px;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 999;
+.filter-row {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr) auto;
+    gap: 0.7rem;
+    align-items: end;
 }
+@media (max-width: 800px) { .filter-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 500px) { .filter-row { grid-template-columns: 1fr; } }
 
-.sidebar-sep { width: 28px; height: 1px; background: var(--border); margin: 0.2rem 0; }
-.sidebar-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field label {
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.field input, .field select {
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: var(--bg-card);
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.btn-clear {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+.btn-clear:hover { border-color: var(--warm); color: var(--warm); }
 
-/* ═══════════════════════════════════════════
-   MAIN CONTENT
-═══════════════════════════════════════════ */
-.main {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+.results-info {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.2rem; padding: 0 0.4rem;
+    font-size: 0.88rem; color: var(--muted);
+    flex-wrap: wrap; gap: 0.5rem;
 }
+.results-info strong { color: var(--ink); font-weight: 700; }
 
-/* ── KPI ROW ── */
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.8rem;
+/* ============ PROJECT CARDS ============ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 1.2rem;
 }
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
+.project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex; flex-direction: column;
+    position: relative;
+}
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--ink);
+}
+.project-bar { height: 4px; width: 100%; }
+.project-num {
+    position: absolute; top: 1rem; right: 1.2rem;
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem; color: var(--muted-soft);
+    font-weight: 600;
+}
+.project-body { padding: 1.5rem 1.5rem 1.2rem; flex: 1; display: flex; flex-direction: column; }
+.project-tag {
+    display: inline-flex;
+    font-size: 0.7rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 100px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    width: fit-content;
+}
+.project-card h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.project-meta {
+    margin-top: auto;
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: flex; flex-direction: column; gap: 0.3rem;
+}
+.project-meta-row { display: flex; gap: 0.4rem; align-items: baseline; }
+.project-meta-label {
+    color: var(--muted-soft);
+    text-transform: uppercase;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    min-width: 70px;
+}
+.project-meta-value { color: var(--ink-soft); font-weight: 500; }
+.project-foot {
+    padding: 0.9rem 1.5rem;
+    border-top: 1px solid var(--line-soft);
+    background: var(--bg-soft);
+    font-size: 0.82rem;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.project-foot-cta { color: var(--accent); font-weight: 600; }
 
-.kpi {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 0.9rem 1rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  transition: box-shadow var(--ease), border-color var(--ease), transform var(--ease);
-  position: relative;
-  overflow: hidden;
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--bg-card);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
 }
-.kpi:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
-.kpi.active { border-color: currentColor; }
-.kpi-1 { --kc: var(--blue);   --kl: var(--blue-l); }
-.kpi-2 { --kc: var(--teal);   --kl: var(--teal-l); }
-.kpi-3 { --kc: var(--green);  --kl: var(--green-l); }
-.kpi-4 { --kc: var(--orange); --kl: var(--orange-l); }
-.kpi.active { background: var(--kl); }
+.empty h3 { font-family: 'Fraunces', serif; color: var(--ink-soft); margin-bottom: 0.4rem; font-weight: 600; }
+.empty p { color: var(--muted); }
 
-.kpi-icon {
-  width: 38px; height: 38px;
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  background: var(--kl);
+/* ============ TEAM ============ */
+.team-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
 }
-.kpi-1 .kpi-icon { background: var(--blue-l); }
-.kpi-2 .kpi-icon { background: var(--teal-l); }
-.kpi-3 .kpi-icon { background: var(--green-l); }
-.kpi-4 .kpi-icon { background: var(--orange-l); }
-
-.kpi-info { flex: 1; min-width: 0; }
-.kpi-val {
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--kc);
-  margin-bottom: 0.15rem;
+@media (max-width: 800px) { .team-grid { grid-template-columns: 1fr; } }
+.team-col h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 1.2rem;
+    display: flex; align-items: baseline; gap: 0.6rem;
 }
-.kpi-lbl { font-size: 0.68rem; color: var(--txt2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
-.kpi-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.1rem; }
-
-.kpi-chart { width: 55px; height: 35px; flex-shrink: 0; }
-
-/* ── CHARTS + TABLE ROW ── */
-.mid-row {
-  display: grid;
-  grid-template-columns: 1.4fr 0.85fr 0.85fr;
-  gap: 0.8rem;
+.team-col h4 .count {
+    font-size: 0.85rem; color: var(--muted);
+    font-family: 'Inter', sans-serif; font-weight: 500;
 }
-@media(max-width:960px){.mid-row{grid-template-columns:1fr 1fr;}}
-@media(max-width:620px){.mid-row{grid-template-columns:1fr;}}
-
-.panel {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: border-color var(--ease);
+.team-list { display: flex; flex-direction: column; gap: 0.3rem; }
+.team-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.85rem 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 0.92rem;
+    transition: border-color 0.15s;
 }
-.panel:hover { border-color: var(--border2); }
-
-.ph {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--surf2);
-  gap: 0.5rem;
-}
-.ph-title {
-  font-size: 0.73rem;
-  font-weight: 700;
-  color: var(--txt1);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.ph-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.05rem; }
-.ph-badge {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--txt2);
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 0.12rem 0.42rem;
-  border-radius: 100px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.pb { padding: 0.8rem 1rem; }
-.cw { position: relative; }
-.cw-lg { height: 190px; }
-.cw-md { height: 170px; }
-
-/* ── EDITAL LIST (sidebar do painel) ── */
-.edital-list { display: flex; flex-direction: column; gap: 0.35rem; }
-.ei {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 0.6rem;
-  border-radius: 7px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all var(--ease);
-}
-.ei:hover { background: var(--bg); border-color: var(--border); }
-.ei.active { border-color: currentColor; }
-.ei-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.ei-name { flex: 1; font-size: 0.76rem; font-weight: 500; color: var(--txt2); line-height: 1.3; }
-.ei.active .ei-name { font-weight: 700; }
-.ei-bar-wrap { width: 60px; height: 5px; background: var(--bg); border-radius: 10px; overflow: hidden; flex-shrink: 0; }
-.ei-bar { height: 100%; border-radius: 10px; }
-.ei-cnt { font-size: 0.68rem; font-weight: 700; color: var(--txt3); min-width: 14px; text-align: right; flex-shrink: 0; }
-
-/* ── PROJECTS TABLE / GRID ── */
-.proj-section { display: flex; flex-direction: column; gap: 0.6rem; }
-.proj-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.proj-title {
-  font-size: 0.73rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--txt1);
-}
-.view-toggle {
-  display: flex;
-  gap: 0.25rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 0.2rem;
-}
-.vbtn {
-  padding: 0.28rem 0.55rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  color: var(--txt3);
-  transition: all var(--ease);
-  border: none;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-}
-.vbtn.active { background: var(--surf); color: var(--blue); font-weight: 600; box-shadow: var(--shadow); }
-
-/* Cards grid */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 0.65rem;
+.team-item:hover { border-color: var(--ink); }
+.team-name { color: var(--ink); font-weight: 500; flex: 1; min-width: 0; }
+.team-badge {
+    background: var(--accent-soft); color: var(--accent-ink);
+    padding: 0.2rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700;
 }
 
-.pc {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
-  display: flex;
-  flex-direction: column;
-  position: relative;
+/* ============ MATERIALS ============ */
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
 }
-.pc:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
-.pc-top { height: 3px; width: 100%; }
-[data-k="013"] .pc-top { background: linear-gradient(90deg,#DB2777,#9333EA); }
-[data-k="009"] .pc-top { background: linear-gradient(90deg,#059669,#0891B2); }
-[data-k="008"] .pc-top { background: linear-gradient(90deg,#2563EB,#0891B2); }
-[data-k="002"] .pc-top { background: linear-gradient(90deg,#D97706,#DC2626); }
-[data-k="004"] .pc-top { background: linear-gradient(90deg,#7C3AED,#2563EB); }
-[data-k="007"] .pc-top { background: linear-gradient(90deg,#059669,#65A30D); }
-
-.pc-num {
-  position: absolute;
-  top: 0.55rem; right: 0.55rem;
-  background: var(--bg);
-  color: var(--txt3);
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 0.1rem 0.38rem;
-  border-radius: 100px;
-  border: 1px solid var(--border);
+.material-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex; flex-direction: column; gap: 0.7rem;
 }
-.pc-body { padding: 0.7rem 0.75rem 0.5rem; flex: 1; }
-.ptag {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  padding: 0.15rem 0.45rem;
-  border-radius: 100px;
-  margin-bottom: 0.45rem;
-  margin-right: 1.8rem;
+.material-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--ink);
 }
-.t013{background:#FDF2F8;color:#DB2777;border:1px solid #FBCFE8;}
-.t009{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
-.t008{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;}
-.t002{background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;}
-.t004{background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;}
-.t007{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;}
-
-.ptitle {
-  font-size: 0.79rem;
-  font-weight: 600;
-  color: var(--txt1);
-  line-height: 1.38;
-  margin-bottom: 0.45rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.material-type {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--muted); letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
-.prow { display: flex; gap: 0.3rem; font-size: 0.7rem; margin-bottom: 0.25rem; color: var(--txt2); align-items: flex-start; }
-.prowlbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--txt3); min-width: 60px; flex-shrink: 0; padding-top: 1px; }
-
-.pc-foot {
-  padding: 0.45rem 0.75rem;
-  border-top: 1px solid var(--border);
-  background: var(--surf2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.material-type-icon {
+    background: var(--ink); color: white;
+    padding: 0.18rem 0.5rem;
+    border-radius: 5px; font-size: 0.65rem; font-weight: 800;
 }
-.pfi { font-size: 0.6rem; color: var(--txt3); }
-.pcta { font-size: 0.68rem; font-weight: 600; color: var(--blue); opacity: 0.7; display: flex; align-items: center; gap: 0.2rem; transition: all var(--ease); }
-.pc:hover .pcta { opacity: 1; gap: 0.35rem; }
-
-/* Table view */
-.proj-table { width: 100%; border-collapse: collapse; background: var(--surf); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
-.proj-table th {
-  background: var(--surf2);
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--txt3);
-  padding: 0.55rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+.material-card h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem; font-weight: 600; color: var(--ink);
+    line-height: 1.35;
 }
-.proj-table td {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.76rem;
-  color: var(--txt1);
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
+.material-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+.material-link {
+    color: var(--accent); font-weight: 600;
+    font-size: 0.88rem;
+    margin-top: auto;
 }
-.proj-table tr:last-child td { border-bottom: none; }
-.proj-table tbody tr { cursor: pointer; transition: background var(--ease); }
-.proj-table tbody tr:hover { background: var(--surf2); }
-.td-title { max-width: 300px; font-weight: 500; color: var(--txt1); line-height: 1.35; }
-.td-title span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.td-tag { white-space: nowrap; }
-.td-num { font-weight: 700; color: var(--txt3); font-size: 0.68rem; text-align: center; }
 
-/* Empty */
-.empty { grid-column:1/-1; text-align:center; padding:2.5rem; background:var(--surf); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow); }
-.empty-ico { font-size:2rem; margin-bottom:0.5rem; opacity:0.3; }
-.empty h3 { font-size:0.9rem; color:var(--txt2); margin-bottom:0.25rem; }
-.empty p { font-size:0.78rem; color:var(--txt3); }
+/* ============ MODAL ============ */
+.modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(20,16,10,0.55);
+    z-index: 100;
+    align-items: flex-start; justify-content: center;
+    padding: 3rem 1rem;
+    overflow-y: auto;
+    backdrop-filter: blur(8px);
+}
+.modal-overlay.active { display: flex; }
+.modal {
+    background: var(--bg-card);
+    max-width: 800px; width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    animation: rise 0.3s ease;
+}
+@keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.modal-head {
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+}
+.modal-eyebrow {
+    font-size: 0.72rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; margin-bottom: 0.8rem;
+}
+.modal-head h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem; font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    padding-right: 3rem;
+    letter-spacing: -0.01em;
+}
+.modal-close {
+    position: absolute; top: 1.4rem; right: 1.4rem;
+    width: 36px; height: 36px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    color: var(--ink); border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}
+.modal-close:hover { background: var(--ink); color: white; }
+.modal-body { padding: 1.8rem 2rem 2rem; }
+.modal-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+@media (max-width: 600px) { .modal-grid { grid-template-columns: 1fr; } }
+.modal-stat {
+    background: var(--bg-soft);
+    border: 1px solid var(--line-soft);
+    padding: 0.95rem 1.1rem;
+    border-radius: 10px;
+}
+.modal-stat-l { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin-bottom: 0.3rem; }
+.modal-stat-v { font-size: 0.95rem; color: var(--ink); font-weight: 500; line-height: 1.35; }
+.modal-section { margin-bottom: 1rem; }
+.modal-section h5 {
+    font-size: 0.74rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.5rem;
+}
+.modal-section p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.55; }
 
-/* ═══════════════════════════════════════════
-   MODAL
-═══════════════════════════════════════════ */
-.overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.55); z-index:500; align-items:flex-start; justify-content:center; padding:2rem 1rem; overflow-y:auto; backdrop-filter:blur(4px); }
-.overlay.on { display:flex; }
-.modal { background:var(--surf); max-width:720px; width:100%; border-radius:var(--rLg); overflow:hidden; border:1px solid var(--border); box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:pop .26s cubic-bezier(.34,1.56,.64,1); }
-@keyframes pop { from{opacity:0;transform:translateY(18px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);} }
-.mh { background:var(--surf2); padding:1.4rem 1.6rem; border-bottom:1px solid var(--border); position:relative; }
-.maccent { position:absolute; top:0; left:0; right:0; height:3px; }
-.mnum { font-size:0.65rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.7px; font-weight:600; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.5rem; }
-.mnum::before { content:''; width:14px; height:2px; border-radius:2px; background:var(--blue); }
-.mtitle { font-size:clamp(0.9rem,2vw,1.15rem); font-weight:700; line-height:1.3; color:var(--txt1); padding-right:2.5rem; }
-.mclose { position:absolute; top:1.1rem; right:1.1rem; background:var(--bg); border:1px solid var(--border); color:var(--txt2); width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all var(--ease); }
-.mclose:hover { background:var(--rosa-l); border-color:var(--rosa); color:var(--rosa); }
-.mb { padding:1.4rem 1.6rem; }
-.mlbl { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--blue); margin-bottom:0.25rem; }
-.mval { font-size:0.87rem; color:var(--txt1); margin-bottom:1rem; line-height:1.5; }
-.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1rem; }
-@media(max-width:500px){.mgrid{grid-template-columns:1fr;}}
-.mstat { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.75rem 0.9rem; }
-.mstat .mlbl { margin-bottom:0.18rem; }
-.mstat .mval { margin-bottom:0; font-weight:600; font-size:0.83rem; }
-.minst { background:var(--blue-l); border:1px solid var(--blue-m); border-radius:8px; padding:0.75rem 0.9rem; font-size:0.79rem; color:var(--txt2); line-height:1.6; }
-.minst strong { color:var(--blue); }
-.mbtns { margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
-.mbtn { padding:0.4rem 0.8rem; border-radius:7px; font-size:0.73rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--ease); border:1px solid; }
+/* ============ FOOTER ============ */
+footer {
+    padding: 4rem 2rem 3rem;
+    background: var(--ink); color: rgba(255,255,255,0.8);
+}
+.foot-inner {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
+}
+@media (max-width: 800px) { .foot-inner { grid-template-columns: 1fr; gap: 2rem; } }
+.foot h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: white; margin-bottom: 1rem;
+}
+.foot p { font-size: 0.88rem; line-height: 1.55; margin-bottom: 0.6rem; }
+.foot a { color: rgba(255,255,255,0.7); text-decoration: none; }
+.foot a:hover { color: white; }
+.foot ul { list-style: none; }
+.foot ul li { margin-bottom: 0.45rem; font-size: 0.88rem; }
+.foot-meta {
+    max-width: 1180px; margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
 
-/* footer */
-footer { background:var(--surf); border-top:1px solid var(--border); padding:0.7rem 1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem; }
-.fbrand { font-size:0.73rem; font-weight:700; color:var(--txt1); }
-.fbrand span { color:var(--blue); }
-.fmeta { font-size:0.65rem; color:var(--txt3); }
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ TOPBAR ═══ -->
-<header class="topbar">
-  <div class="topbar-logo">
-    <div class="logo-mark">🌿</div>
-  </div>
-
-  <div class="topbar-brand">
-    <div class="brand-name">INPACTAS & SEMCTI</div>
-    <div class="brand-sub">Benjamin Constant — AM</div>
-  </div>
-
-  <nav class="topbar-nav">
-    <div class="tnav active">Painel</div>
-    <div class="tnav">Projetos</div>
-    <div class="tnav">Editais</div>
-    <div class="tnav">Relatórios</div>
-  </nav>
-
-  <div class="topbar-filters">
-    <span class="tf-label">Filtrar</span>
-    <div class="search-w">
-      <span class="search-ic">🔍</span>
-      <input type="text" class="tf-input" id="search" placeholder="Buscar projeto, autor…">
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a class="brand" href="#top">
+            <span class="brand-mark">Inpactas <em>&amp;</em> SEMCTI</span>
+            <span class="brand-sub">Benjamin Constant · Alto Solimões</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle">Menu</button>
+        <div class="nav-links" id="navLinks">
+            <a href="#sobre">Sobre</a>
+            <a href="#editais">Editais</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#equipe">Equipe</a>
+            <a href="#materiais">Materiais</a>
+            <a class="nav-cta" href="#projetos">Explorar painel</a>
+        </div>
     </div>
-    <select class="tf-sel" id="fEdital"><option value="">Todos os editais</option></select>
-    <select class="tf-sel" id="fProp"><option value="">Todos os proponentes</option></select>
-    <select class="tf-sel" id="fAutor"><option value="">Todos os autores</option></select>
-    <div class="top-chips" id="topChips"></div>
-    <button class="clear-btn" id="clearBtn">✕ Limpar</button>
-  </div>
+</nav>
 
-  <div class="topbar-right">
-    <span class="res-badge">Exibindo <strong id="resCount">22</strong></span>
-    <span class="date-badge" id="tDate"></span>
-    <span class="year-badge">FAPEAM 2026</span>
-  </div>
+<!-- HERO -->
+<header class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+        <div>
+            <div class="hero-tag">Editais FAPEAM 2026 · Benjamin Constant</div>
+            <h1>Ciência e inovação <em>articuladas</em> no Alto Solimões.</h1>
+            <p class="lead">22 projetos de Ciência, Tecnologia e Inovação submetidos pela Incubadora Inpactas, pela SEMCTI e pelo INC/UFAM aos editais FAPEAM 2026 — com foco em bioeconomia, saúde pública, popularização da ciência, ecoturismo, inclusão digital e protagonismo feminino.</p>
+            <div class="hero-ctas">
+                <a class="btn btn-primary btn-arrow" href="#projetos">Explorar os projetos</a>
+                <a class="btn btn-secondary" href="#editais">Conhecer os editais</a>
+            </div>
+        </div>
+        <aside class="hero-aside">
+            <div class="aside-stats">
+                <div class="aside-stat">
+                    <div class="aside-stat-num" id="heroTotal">22</div>
+                    <div class="aside-stat-label">Projetos</div>
+                </div>
+                <div class="aside-stat">
+                    <div class="aside-stat-num" id="heroEditais">6</div>
+                    <div class="aside-stat-label">Editais</div>
+                </div>
+                <div class="aside-stat">
+                    <div class="aside-stat-num" id="heroProp">11</div>
+                    <div class="aside-stat-label">Proponentes</div>
+                </div>
+                <div class="aside-stat">
+                    <div class="aside-stat-num" id="heroAut">9</div>
+                    <div class="aside-stat-label">Autores</div>
+                </div>
+            </div>
+            <div class="aside-foot">
+                📍 Alto Solimões — Tríplice Fronteira BR/CO/PE
+            </div>
+        </aside>
+    </div>
 </header>
 
-<!-- ═══ LAYOUT ═══ -->
-<div class="layout">
-
-  <!-- SIDEBAR ÍCONES -->
-  <aside class="sidebar">
-    <div class="sico active" title="Painel">📊</div>
-    <div class="sico" title="Projetos">📁</div>
-    <div class="sico" title="Editais">📋</div>
-    <div class="sico" title="Proponentes">🔬</div>
-    <div class="sidebar-sep"></div>
-    <div class="sico" title="Relatórios">📈</div>
-    <div class="sico" title="Configurações">⚙️</div>
-    <div class="sidebar-foot">
-      <div class="sico" title="Ajuda">❓</div>
+<!-- SOBRE -->
+<section class="block" id="sobre">
+    <div class="block-inner">
+        <span class="eyebrow">Sobre o painel</span>
+        <h2 class="section-title">Um portfólio articulado de pesquisa <em>com a Amazônia.</em></h2>
+        <p class="section-lede">A Incubadora Inpactas (Incubadora de Negócios de Impacto Socioambiental do Alto Solimões), a Secretaria Municipal de Ciência, Tecnologia e Inovação (SEMCTI) e o Instituto de Natureza e Cultura da UFAM (INC) consolidaram, em Benjamin Constant, a maior submissão coletiva de projetos da região aos editais FAPEAM 2026. Este painel reúne, em um único lugar, a visão completa dessas 22 propostas — para apoiar a equipe, parceiros e o público interessado no acompanhamento dessa carteira.</p>
     </div>
-  </aside>
+</section>
 
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- KPI CARDS -->
-    <div class="kpi-row">
-      <div class="kpi kpi-1" id="kpi-all" onclick="clearFilters()" title="Ver todos">
-        <div class="kpi-icon">🌿</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiTotal">22</div>
-          <div class="kpi-lbl">Total Projetos</div>
-          <div class="kpi-sub">Submetidos 2026</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart1"></canvas>
-      </div>
-      <div class="kpi kpi-2">
-        <div class="kpi-icon">📋</div>
-        <div class="kpi-info">
-          <div class="kpi-val">6</div>
-          <div class="kpi-lbl">Editais</div>
-          <div class="kpi-sub">Programas FAPEAM</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart2"></canvas>
-      </div>
-      <div class="kpi kpi-3">
-        <div class="kpi-icon">🔬</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiProp">12</div>
-          <div class="kpi-lbl">Proponentes</div>
-          <div class="kpi-sub">Pesquisadores líderes</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart3"></canvas>
-      </div>
-      <div class="kpi kpi-4">
-        <div class="kpi-icon">✍️</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiAut">9</div>
-          <div class="kpi-lbl">Autores</div>
-          <div class="kpi-sub">Redatores envolvidos</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart4"></canvas>
-      </div>
+<!-- EDITAIS -->
+<section class="block alt" id="editais">
+    <div class="block-inner">
+        <span class="eyebrow">Editais FAPEAM 2026</span>
+        <h2 class="section-title">Seis editais, <em>uma estratégia integrada.</em></h2>
+        <p class="section-lede">Cada edital aborda um eixo temático específico de Ciência, Tecnologia e Inovação. Juntos, articulam saúde, bioeconomia, popularização da ciência, equidade, ecoturismo e tecnologias sociais para o desenvolvimento sustentável do Alto Solimões.</p>
+        <div class="editais-grid" id="editaisGrid"></div>
     </div>
+</section>
 
-    <!-- CHARTS + EDITAL LIST -->
-    <div class="mid-row">
+<!-- PROJETOS -->
+<section class="block" id="projetos">
+    <div class="block-inner">
+        <span class="eyebrow">Os 22 projetos</span>
+        <h2 class="section-title">Explore o portfólio <em>de forma interativa.</em></h2>
+        <p class="section-lede">Use os filtros para navegar por edital, proponente ou autor. Clique em qualquer projeto para ver os detalhes completos.</p>
 
-      <!-- Barras por edital -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Projetos por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
-          <span class="ph-badge">6 editais</span>
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <h4>Distribuição por edital</h4>
+                <div class="chart-wrap"><canvas id="chartEdital"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h4>Produtividade por autor</h4>
+                <div class="chart-wrap"><canvas id="chartAutor"></canvas></div>
+            </div>
         </div>
-        <div class="pb"><div class="cw cw-lg"><canvas id="cEdital"></canvas></div></div>
-      </div>
 
-      <!-- Donut -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Por Programa</div><div class="ph-sub">Proporção</div></div>
+        <div class="filters">
+            <div class="filter-row">
+                <div class="field">
+                    <label for="search">Buscar</label>
+                    <input type="text" id="search" placeholder="Título, proponente, autor, palavra-chave...">
+                </div>
+                <div class="field">
+                    <label for="filterEdital">Edital</label>
+                    <select id="filterEdital"><option value="">Todos</option></select>
+                </div>
+                <div class="field">
+                    <label for="filterProponente">Proponente</label>
+                    <select id="filterProponente"><option value="">Todos</option></select>
+                </div>
+                <div class="field">
+                    <label for="filterAutor">Autor</label>
+                    <select id="filterAutor"><option value="">Todos</option></select>
+                </div>
+                <button class="btn-clear" id="clearBtn">Limpar</button>
+            </div>
         </div>
-        <div class="pb"><div class="cw cw-lg"><canvas id="cDonut"></canvas></div></div>
-      </div>
 
-      <!-- Lista por edital -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
+        <div class="results-info">
+            <span>Exibindo <strong id="resultCount">22</strong> de 22 projeto(s)</span>
+            <span>Clique em um card para ver detalhes</span>
         </div>
-        <div class="pb">
-          <div class="edital-list" id="editalList"></div>
-        </div>
-      </div>
 
+        <div class="projects-grid" id="projectsGrid"></div>
     </div>
+</section>
 
-    <!-- PROJETOS -->
-    <div class="proj-section">
-      <div class="proj-header">
-        <div class="proj-title">Projetos</div>
-        <div class="view-toggle">
-          <button class="vbtn active" id="vGrid" onclick="setView('grid')">▦ Cards</button>
-          <button class="vbtn" id="vTable" onclick="setView('table')">≡ Tabela</button>
+<!-- EQUIPE -->
+<section class="block alt" id="equipe">
+    <div class="block-inner">
+        <span class="eyebrow">Quem está por trás</span>
+        <h2 class="section-title">Pesquisadores e autores <em>da nossa equipe.</em></h2>
+        <p class="section-lede">A articulação envolve onze proponentes pesquisadores e nove autores responsáveis pela redação das propostas — uma rede que une Inpactas, SEMCTI, UFAM/INC e profissionais parceiros da região.</p>
+        <div class="team-grid">
+            <div class="team-col">
+                <h4>Proponentes <span class="count" id="propCount">— 11 pesquisadores</span></h4>
+                <div class="team-list" id="proponentesList"></div>
+            </div>
+            <div class="team-col">
+                <h4>Autores <span class="count" id="autCount">— 9 redatores</span></h4>
+                <div class="team-list" id="autoresList"></div>
+            </div>
         </div>
-      </div>
-      <div id="projContainer"></div>
     </div>
+</section>
 
-  </main>
-</div>
-
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="mh">
-      <div class="maccent" id="mAccent"></div>
-      <button class="mclose" id="mClose">×</button>
-      <div class="mnum" id="mNum"></div>
-      <h2 class="mtitle" id="mTitle"></h2>
+<!-- MATERIAIS -->
+<section class="block" id="materiais">
+    <div class="block-inner">
+        <span class="eyebrow">Materiais</span>
+        <h2 class="section-title">Tudo o que você precisa <em>em um só lugar.</em></h2>
+        <p class="section-lede">Baixe o relatório executivo em PDF, compartilhe o link do painel com a equipe ou acesse outros materiais relacionados.</p>
+        <div class="materials-grid">
+            <a class="material-card" href="Relatorio_Executivo_Inpactas_SEMCTI_FAPEAM_2026.pdf" target="_blank">
+                <div class="material-type"><span class="material-type-icon">PDF</span> Relatório</div>
+                <h4>Relatório Executivo dos 22 Projetos</h4>
+                <p>Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital.</p>
+                <span class="material-link">Baixar PDF →</span>
+            </a>
+            <a class="material-card" href="https://cleytoncidlog17-a11y.github.io/painel-impactos/" target="_blank">
+                <div class="material-type"><span class="material-type-icon" style="background:var(--accent);">LINK</span> Painel online</div>
+                <h4>Versão pública do painel</h4>
+                <p>Link permanente para compartilhar com a equipe, parceiros e o público interessado. Acessível de qualquer dispositivo.</p>
+                <span class="material-link">Acessar painel →</span>
+            </a>
+            <a class="material-card" href="#projetos">
+                <div class="material-type"><span class="material-type-icon" style="background:var(--warm);">DATA</span> Dados</div>
+                <h4>Lista interativa filtrável</h4>
+                <p>Use os filtros por edital, proponente e autor diretamente no painel desta página para navegar pelos projetos.</p>
+                <span class="material-link">Ir para projetos →</span>
+            </a>
+        </div>
     </div>
-    <div class="mb" id="mBody"></div>
-  </div>
-</div>
+</section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="fbrand">INPACTAS <span>&</span> SEMCTI — Benjamin Constant/AM</div>
-  <div class="fmeta">Atualizado em <span id="fDate"></span> · Editais FAPEAM 2026</div>
+    <div class="foot-inner">
+        <div class="foot">
+            <h5>Inpactas &amp; SEMCTI</h5>
+            <p>Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC</p>
+            <p>Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM</p>
+            <p>Brasil · Tríplice Fronteira</p>
+        </div>
+        <div class="foot">
+            <h5>Navegar</h5>
+            <ul>
+                <li><a href="#sobre">Sobre o painel</a></li>
+                <li><a href="#editais">Editais FAPEAM 2026</a></li>
+                <li><a href="#projetos">Lista de projetos</a></li>
+                <li><a href="#equipe">Equipe</a></li>
+                <li><a href="#materiais">Materiais</a></li>
+            </ul>
+        </div>
+        <div class="foot">
+            <h5>Parcerias</h5>
+            <ul>
+                <li>FAPEAM</li>
+                <li>UFAM — INC</li>
+                <li>Prefeitura de Benjamin Constant</li>
+                <li>SEMCTI</li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-meta">
+        <span>© 2026 · Inpactas &amp; SEMCTI Benjamin Constant. Todos os direitos reservados.</span>
+        <span id="lastUpdate"></span>
+    </div>
 </footer>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-head">
+            <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+            <div class="modal-eyebrow" id="modalEyebrow"></div>
+            <h2 id="modalTitle"></h2>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
 <script>
-// ════════════════════════════════════════════════
-// DADOS
-// ════════════════════════════════════════════════
-const P = [
-  {id:"01",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira",proponente:"Maria Angélica de Almeida Corrêa",autor:"Alícia Nascimento"},
-  {id:"02",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia",proponente:"Leonor Farias Abreu",autor:"Andreza Hilário"},
-  {id:"03",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Juventude Amazônica e Cidadania Digital: Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"04",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Óleos da Floresta: Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Andreza Hilário"},
-  {id:"05",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"06",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"SocioCastanha: Tecnologia Social para Gestão Comunitária e Rastreabilidade da Castanha-do-Brasil em Amaturá, Amazonas",proponente:"Leonor Farias Abreu",autor:"Jailson Franco Aguiar"},
-  {id:"07",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas em Benjamin Constant, Amazonas",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"08",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"RAPID-AM: Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"09",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant",proponente:"Pedro Henrique Mariosa",autor:"Pedro Henrique Mariosa"},
-  {id:"10",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"11",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões",proponente:"Cleyton Cid da Silva Ferreira",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"12",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant",proponente:"Marinete Lourenço Mota",autor:"Murana Arenilhas Oliveira"},
-  {id:"13",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Alícia Nascimento"},
-  {id:"14",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões",proponente:"Leonor Farias Abreu",autor:"Murana Arenilhas Oliveira"},
-  {id:"15",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant",proponente:"Alícia Michely Silva do Nascimento",autor:"Andreza Hilário"},
-  {id:"16",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários",proponente:"Jose Edinaldo Zane",autor:"Wiily Alejandro"},
-  {id:"17",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica",proponente:"Juvan Reis Nogueira",autor:"Mateus Reinaldo Garcia"},
-  {id:"18",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"1ª Feira de CT&I da Tríplice Fronteira: Evento com alcance Brasil-Colômbia-Peru",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"19",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Runa Salatta"},
-  {id:"20",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões",proponente:"Bruna Salatta (Nome Social: Runa Salatta)",autor:"Runa Salatta"},
-  {id:"21",k:"004",curto:"Prospam 004",edital:"Edital N.º 004/2026 — PROSPAM FAPEAM",titulo:"Sistema inteligente de manejo sustentável do Tambaqui (Colossoma macropomum sp.) no Alto Solimões com monitoramento digital e tecnologias de baixo custo",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"22",k:"007",curto:"Painter Eco 007",edital:"Edital N.º 007/2026 — PAINTER ECOTURISMO FAPEAM",titulo:"Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"}
+// ========================================
+// DADOS DOS PROJETOS (22 submissões FAPEAM 2026)
+// ========================================
+const projetos = [
+    { id: "01", edital: "Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026", editalKey: "013", editalCurto: "Amazônidas 013/2026", editalTema: "Meninas e Mulheres na Ciência", titulo: "Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira", proponente: "Maria Angélica de Almeida Corrêa", autor: "Alícia Nascimento" },
+    { id: "02", edital: "Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026", editalKey: "013", editalCurto: "Amazônidas 013/2026", editalTema: "Meninas e Mulheres na Ciência", titulo: "BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia", proponente: "Leonor Farias Abreu", autor: "Andreza Hilário" },
+    { id: "03", edital: "Edital N.º 009/2026 — SOCIO TECH FAPEAM", editalKey: "009", editalCurto: "SOCIO TECH 009/2026", editalTema: "Tecnologia Social", titulo: "Juventude Amazônica e Cidadania Digital: Desenvolvimento e Aplicação de Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM", proponente: "Raimundo Valdan Pereira Lopes", autor: "Alícia Nascimento" },
+    { id: "04", edital: "Edital N.º 009/2026 — SOCIO TECH FAPEAM", editalKey: "009", editalCurto: "SOCIO TECH 009/2026", editalTema: "Tecnologia Social", titulo: "Óleos da Floresta: Desenvolvimento e Aplicação de Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões", proponente: "Pedro Henrique Mariosa", autor: "Andreza Hilário" },
+    { id: "05", edital: "Edital N.º 009/2026 — SOCIO TECH FAPEAM", editalKey: "009", editalCurto: "SOCIO TECH 009/2026", editalTema: "Tecnologia Social", titulo: "Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário como Instrumento de Acesso a Direitos e Políticas Públicas para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM", proponente: "Danilo Egle Santos Barbosa", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "06", edital: "Edital N.º 009/2026 — SOCIO TECH FAPEAM", editalKey: "009", editalCurto: "SOCIO TECH 009/2026", editalTema: "Tecnologia Social", titulo: "SocioCastanha: Tecnologia Social de Baixo Custo para Gestão Comunitária, Rastreabilidade e Fortalecimento da Cadeia da Castanha-do-Brasil em Amaturá, Amazonas", proponente: "Leonor Farias Abreu", autor: "Jailson Franco Aguiar" },
+    { id: "07", edital: "Edital N.º 008/2026 — PROVIDA-AM FAPEAM", editalKey: "008", editalCurto: "PROVIDA-AM 008/2026", editalTema: "Saúde Pública", titulo: "VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas no Município de Benjamin Constant, Amazonas", proponente: "Pedro Henrique Mariosa", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "08", edital: "Edital N.º 008/2026 — PROVIDA-AM FAPEAM", editalKey: "008", editalCurto: "PROVIDA-AM 008/2026", editalTema: "Saúde Pública", titulo: "RAPID-AM: Desenvolvimento e Validação de Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas", proponente: "Ciderjânio Farling Salvador da Costa", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "09", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant", proponente: "Pedro Henrique Mariosa", autor: "Pedro Henrique Mariosa" },
+    { id: "10", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal", proponente: "Danilo Egle Santos Barbosa", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "11", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões", proponente: "Cleyton Cid da Silva Ferreira", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "12", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant", proponente: "Marinete Lourenço Mota", autor: "Murana Arenilhas Oliveira" },
+    { id: "13", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira", proponente: "Ciderjânio Farling Salvador da Costa", autor: "Alícia Nascimento" },
+    { id: "14", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões", proponente: "Leonor Farias Abreu", autor: "Murana Arenilhas Oliveira" },
+    { id: "15", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant", proponente: "Alícia Michely Silva do Nascimento", autor: "Andreza Hilário" },
+    { id: "16", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários", proponente: "Jose Edinaldo Zane", autor: "Wiily Alejandro" },
+    { id: "17", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica", proponente: "Juvan Reis Nogueira", autor: "Mateus Reinaldo Garcia" },
+    { id: "18", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "1ª Feira de CT&I da Tríplice Fronteira: Evento de CT&I com alcance Brasil-Colômbia-Peru", proponente: "Raimundo Valdan Pereira Lopes", autor: "Alícia Nascimento" },
+    { id: "19", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões", proponente: "Pedro Henrique Mariosa", autor: "Runa Salatta" },
+    { id: "20", edital: "Edital N.º 002/2026 — POP CT&I FAPEAM", editalKey: "002", editalCurto: "POP CT&I 002/2026", editalTema: "Popularização da Ciência", titulo: "Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões", proponente: "Bruna Salatta (Nome Social: Runa Salatta)", autor: "Runa Salatta" },
+    { id: "21", edital: "Edital N.º 004/2026 — PROSPAM FAPEAM", editalKey: "004", editalCurto: "PROSPAM 004/2026", editalTema: "Produtividade Pesqueira", titulo: "Sistema inteligente de manejo sustentável e aumento da produtividade do Tambaqui (Colossoma macropomum sp.) em açude no Alto Solimões com base em monitoramento digital e tecnologias de baixo custo", proponente: "Pedro Henrique Mariosa", autor: "Cleyton Cid da Silva Ferreira" },
+    { id: "22", edital: "Edital N.º 007/2026 — PAINTER ECOTURISMO FAPEAM", editalKey: "007", editalCurto: "PAINTER ECOTURISMO 007/2026", editalTema: "Ecoturismo Científico", titulo: "Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável de Comunidades Ribeirinhas e Indígenas do Alto Solimões", proponente: "Pedro Henrique Mariosa", autor: "Cleyton Cid da Silva Ferreira" }
 ];
 
-const C = {
-  "013":{c:"#DB2777",label:"Amazônidas 013/2026"},
-  "009":{c:"#059669",label:"Socio Tech 009/2026"},
-  "008":{c:"#2563EB",label:"Provida-AM 008/2026"},
-  "002":{c:"#D97706",label:"Pop CT&I 002/2026"},
-  "004":{c:"#7C3AED",label:"Prospam 004/2026"},
-  "007":{c:"#15803D",label:"Painter Eco 007/2026"}
+// Cores por edital
+const EDITAL_COLORS = {
+    "013": "#A8336E",
+    "009": "#2D5F3F",
+    "008": "#2E7AAC",
+    "002": "#D4A52D",
+    "004": "#5C3A6E",
+    "007": "#3D8B85"
 };
 
-// ════════════════════════════════════════════════
-// ESTADO
-// ════════════════════════════════════════════════
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
-let st = {search:'', edital:'', proponente:'', autor:''};
-let view = 'grid';
-let charts = {};
+// Descrições dos editais
+const EDITAL_INFO = {
+    "013": { nome: "Amazônidas", desc: "Meninas e Mulheres na Ciência. Fomenta o protagonismo feminino na pesquisa científica amazônica." },
+    "009": { nome: "SOCIO TECH", desc: "Tecnologias sociais de baixo custo para fortalecer comunidades tradicionais da Amazônia." },
+    "008": { nome: "PROVIDA-AM", desc: "Saúde pública e desenvolvimento de protocolos diagnósticos para o interior do Amazonas." },
+    "002": { nome: "POP CT&I", desc: "Popularização da Ciência, Tecnologia e Inovação junto à comunidade amazônica." },
+    "004": { nome: "PROSPAM", desc: "Produtividade pesqueira sustentável com tecnologias de monitoramento digital." },
+    "007": { nome: "PAINTER ECOTURISMO", desc: "Plataformas digitais e tecnologias imersivas para ecoturismo científico amazônico." }
+};
 
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
-function init() {
-  const now = new Date();
-  $('#tDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-  $('#fDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+let filtros = { search: '', edital: '', proponente: '', autor: '' };
 
-  populaSelects();
-  buildKpiCharts();
-  buildCharts();
-  buildEditalList();
-  render();
-
-  $('#search').addEventListener('input', e => { st.search = e.target.value.toLowerCase().trim(); apply(); });
-  $('#fEdital').addEventListener('change', e => { st.edital = e.target.value; apply(); });
-  $('#fProp').addEventListener('change', e => { st.proponente = e.target.value; apply(); });
-  $('#fAutor').addEventListener('change', e => { st.autor = e.target.value; apply(); });
-  $('#clearBtn').addEventListener('click', clearFilters);
-  $('#mClose').addEventListener('click', closeModal);
-  $('#overlay').addEventListener('click', e => { if(e.target.id==='overlay') closeModal(); });
-  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+function popularFiltros() {
+    const editais = [...new Set(projetos.map(p => p.edital))].sort();
+    const proponentes = [...new Set(projetos.map(p => p.proponente))].sort();
+    const autores = [...new Set(projetos.map(p => p.autor))].sort();
+    editais.forEach(e => $('#filterEdital').insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+    proponentes.forEach(p => $('#filterProponente').insertAdjacentHTML('beforeend', `<option value="${p}">${p}</option>`));
+    autores.forEach(a => $('#filterAutor').insertAdjacentHTML('beforeend', `<option value="${a}">${a}</option>`));
 }
 
-// ════════════════════════════════════════════════
-// SELECTS
-// ════════════════════════════════════════════════
-function populaSelects() {
-  [...new Set(P.map(p=>p.edital))].sort().forEach(e =>
-    $('#fEdital').insertAdjacentHTML('beforeend',`<option value="${e}">${e}</option>`));
-  [...new Set(P.map(p=>p.proponente))].sort().forEach(p =>
-    $('#fProp').insertAdjacentHTML('beforeend',`<option value="${p}">${p}</option>`));
-  [...new Set(P.map(p=>p.autor))].sort().forEach(a =>
-    $('#fAutor').insertAdjacentHTML('beforeend',`<option value="${a}">${a}</option>`));
+function renderEditais() {
+    const counts = {};
+    projetos.forEach(p => counts[p.editalKey] = (counts[p.editalKey]||0)+1);
+    const grid = $('#editaisGrid');
+    grid.innerHTML = Object.keys(EDITAL_INFO).map(key => {
+        const info = EDITAL_INFO[key];
+        const count = counts[key] || 0;
+        const cor = EDITAL_COLORS[key];
+        return `
+        <article class="edital-card" data-key="${key}" onclick="filtrarPorEdital('${key}')">
+            <div class="edital-dot" style="background:${cor}">${key}</div>
+            <h3>${info.nome}</h3>
+            <p>${info.desc}</p>
+            <div class="edital-meta">
+                <div>
+                    <div class="edital-count">${count}</div>
+                    <div class="edital-count-label">projeto(s)</div>
+                </div>
+                <span style="font-size:0.78rem;color:var(--muted);">Edital ${key}/2026</span>
+            </div>
+        </article>`;
+    }).join('');
 }
 
-// ════════════════════════════════════════════════
-// FILTRO
-// ════════════════════════════════════════════════
+function filtrarPorEdital(key) {
+    const editalCompleto = projetos.find(p => p.editalKey === key)?.edital;
+    if (editalCompleto) {
+        $('#filterEdital').value = editalCompleto;
+        filtros.edital = editalCompleto;
+        renderProjetos();
+        document.getElementById('projetos').scrollIntoView({behavior:'smooth'});
+    }
+}
+window.filtrarPorEdital = filtrarPorEdital;
+
 function filtrar() {
-  return P.filter(p => {
-    const q = st.search;
-    return (!q || [p.titulo,p.edital,p.proponente,p.autor].some(v=>v.toLowerCase().includes(q)))
-      && (!st.edital || p.edital===st.edital)
-      && (!st.proponente || p.proponente===st.proponente)
-      && (!st.autor || p.autor===st.autor);
-  });
+    return projetos.filter(p => {
+        const s = filtros.search;
+        const matchS = !s || p.titulo.toLowerCase().includes(s) || p.edital.toLowerCase().includes(s) ||
+                       p.proponente.toLowerCase().includes(s) || p.autor.toLowerCase().includes(s);
+        const matchE = !filtros.edital || p.edital === filtros.edital;
+        const matchP = !filtros.proponente || p.proponente === filtros.proponente;
+        const matchA = !filtros.autor || p.autor === filtros.autor;
+        return matchS && matchE && matchP && matchA;
+    });
 }
 
-function clearFilters() {
-  st = {search:'',edital:'',proponente:'',autor:''};
-  ['search','fEdital','fProp','fAutor'].forEach(id => { const el=$('#'+id); if(el) el.value=''; });
-  apply();
-}
-
-function apply() { render(); updateCharts(); updateEditalList(); updateChips(); }
-
-// ════════════════════════════════════════════════
-// CHIPS
-// ════════════════════════════════════════════════
-function updateChips() {
-  const chips = [];
-  if(st.edital) chips.push({l: st.edital.split('—')[0].trim(), clr: ()=>{st.edital='';$('#fEdital').value='';apply();}});
-  if(st.proponente) chips.push({l: st.proponente.split(' ')[0], clr: ()=>{st.proponente='';$('#fProp').value='';apply();}});
-  if(st.autor) chips.push({l: st.autor.split(' ')[0], clr: ()=>{st.autor='';$('#fAutor').value='';apply();}});
-  if(st.search) chips.push({l: `"${st.search}"`, clr: ()=>{st.search='';$('#search').value='';apply();}});
-  const el = $('#topChips');
-  el.innerHTML = chips.map((c,i)=>`<span class="chip" data-i="${i}">${c.l} ✕</span>`).join('');
-  $$('#topChips .chip').forEach((s,i)=>s.addEventListener('click',chips[i].clr));
-}
-
-// ════════════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════════════
-function render() {
-  const lista = filtrar();
-  $('#resCount').textContent = lista.length;
-
-  if(view==='grid') renderGrid(lista);
-  else renderTable(lista);
-}
-
-function setView(v) {
-  view = v;
-  $('#vGrid').classList.toggle('active', v==='grid');
-  $('#vTable').classList.toggle('active', v==='table');
-  render();
-}
-
-function renderGrid(lista) {
-  if(!lista.length) { $('#projContainer').innerHTML=`<div class="cards-grid"><div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div></div>`; return; }
-  $('#projContainer').innerHTML = `<div class="cards-grid">${lista.map(p=>`
-    <article class="pc" data-k="${p.k}" data-id="${p.id}">
-      <div class="pc-top"></div>
-      <span class="pc-num">#${p.id}</span>
-      <div class="pc-body">
-        <span class="ptag t${p.k}">${p.curto}</span>
-        <h3 class="ptitle">${p.titulo}</h3>
-        <div class="prow"><span class="prowlbl">Proponente</span><span>${p.proponente}</span></div>
-        <div class="prow"><span class="prowlbl">Autor</span><span>${p.autor}</span></div>
-      </div>
-      <div class="pc-foot"><span class="pfi">FAPEAM 2026</span><span class="pcta">Detalhes →</span></div>
-    </article>`).join('')}</div>`;
-  $$('.pc').forEach(c=>c.addEventListener('click',()=>openModal(c.dataset.id)));
-}
-
-function renderTable(lista) {
-  if(!lista.length) { $('#projContainer').innerHTML=`<div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div>`; return; }
-  $('#projContainer').innerHTML = `<table class="proj-table">
-    <thead><tr>
-      <th>#</th><th>Edital</th><th>Título</th><th>Proponente</th><th>Autor</th>
-    </tr></thead>
-    <tbody>${lista.map(p=>`<tr data-id="${p.id}">
-      <td class="td-num">${p.id}</td>
-      <td class="td-tag"><span class="ptag t${p.k}">${p.curto}</span></td>
-      <td class="td-title"><span>${p.titulo}</span></td>
-      <td>${p.proponente.split(' ').slice(0,2).join(' ')}</td>
-      <td>${p.autor.split(' ')[0]}</td>
-    </tr>`).join('')}</tbody>
-  </table>`;
-  $$('.proj-table tbody tr').forEach(r=>r.addEventListener('click',()=>openModal(r.dataset.id)));
-}
-
-// ════════════════════════════════════════════════
-// LISTA DE EDITAIS INTERATIVA
-// ════════════════════════════════════════════════
-function buildEditalList() {
-  const total = P.length;
-  const el = $('#editalList');
-  el.innerHTML = Object.entries(C).map(([key,cfg])=>{
-    const n = P.filter(p=>p.k===key).length;
-    const pct = Math.round(n/total*100);
-    return `<div class="ei" data-k="${key}" onclick="filterEdital('${key}')">
-      <div class="ei-dot" style="background:${cfg.c}"></div>
-      <div class="ei-name">${cfg.label}</div>
-      <div class="ei-bar-wrap"><div class="ei-bar" style="width:${pct}%;background:${cfg.c}"></div></div>
-      <div class="ei-cnt">${n}</div>
-    </div>`;
-  }).join('');
-}
-
-function updateEditalList() {
-  $$('.ei').forEach(el => {
-    const key = el.dataset.k;
-    const edFull = P.find(p=>p.k===key)?.edital||'';
-    const isActive = st.edital === edFull;
-    el.classList.toggle('active', isActive);
-    el.style.color = isActive ? C[key].c : '';
-    el.style.background = isActive ? C[key].c+'12' : '';
-    el.style.borderColor = isActive ? C[key].c+'55' : '';
-  });
-}
-
-function filterEdital(key) {
-  const edFull = P.find(p=>p.k===key)?.edital||'';
-  st.edital = st.edital===edFull ? '' : edFull;
-  $('#fEdital').value = st.edital;
-  apply();
-}
-
-// ════════════════════════════════════════════════
-// KPI MINI CHARTS
-// ════════════════════════════════════════════════
-function buildKpiCharts() {
-  const edKeys = Object.keys(C);
-  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
-  const colors = edKeys.map(k=>C[k].c);
-
-  // Mini bar
-  new Chart($('#kpiChart1'),{type:'bar',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'88'),borderColor:colors,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:800}}});
-
-  // Mini donut
-  new Chart($('#kpiChart2'),{type:'doughnut',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'99'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:900}}});
-
-  // Proponentes mini bar
-  const porProp={};
-  P.forEach(p=>porProp[p.proponente]=(porProp[p.proponente]||0)+1);
-  const topProp=Object.entries(porProp).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  new Chart($('#kpiChart3'),{type:'bar',data:{labels:topProp.map(([k])=>k.split(' ')[0]),datasets:[{data:topProp.map(([,v])=>v),backgroundColor:'#05966999',borderColor:'#059669',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1000}}});
-
-  // Autores mini bar
-  const porAut={};
-  P.forEach(p=>porAut[p.autor]=(porAut[p.autor]||0)+1);
-  const topAut=Object.entries(porAut).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  new Chart($('#kpiChart4'),{type:'bar',data:{labels:topAut.map(([k])=>k.split(' ')[0]),datasets:[{data:topAut.map(([,v])=>v),backgroundColor:'#D9770699',borderColor:'#D97706',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1100}}});
-}
-
-// ════════════════════════════════════════════════
-// GRÁFICOS PRINCIPAIS (clicáveis)
-// ════════════════════════════════════════════════
-const baseOpts = {
-  responsive:true, maintainAspectRatio:false,
-  animation:{duration:500,easing:'easeOutQuart'},
-  plugins:{legend:{labels:{font:{family:"'Inter',sans-serif",size:10},color:'#94A3B8',boxWidth:8,padding:8}}}
-};
-
-function buildCharts() {
-  const edKeys = Object.keys(C);
-  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
-  const colors = edKeys.map(k=>C[k].c);
-
-  charts.edital = new Chart($('#cEdital'),{
-    type:'bar',
-    data:{
-      labels: edKeys.map(k=>C[k].label.split(' ').slice(0,2).join(' ')),
-      datasets:[{data:counts,backgroundColor:colors.map(c=>c+'33'),borderColor:colors,borderWidth:2,borderRadius:6,borderSkipped:false}]
-    },
-    options:{...baseOpts,
-      plugins:{...baseOpts.plugins,legend:{display:false},
-        tooltip:{callbacks:{title:ctx=>C[edKeys[ctx[0].dataIndex]]?.label||'',label:ctx=>` ${ctx.parsed.y} projeto(s)`}}
-      },
-      scales:{
-        x:{ticks:{color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}},
-        y:{beginAtZero:true,ticks:{stepSize:1,color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.05)'}}
-      },
-      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
-      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
+function renderProjetos() {
+    const lista = filtrar();
+    $('#resultCount').textContent = lista.length;
+    const grid = $('#projectsGrid');
+    if (lista.length === 0) {
+        grid.innerHTML = `<div class="empty"><h3>Nenhum projeto encontrado</h3><p>Tente ajustar os filtros ou clique em "Limpar".</p></div>`;
+        return;
     }
-  });
-
-  charts.donut = new Chart($('#cDonut'),{
-    type:'doughnut',
-    data:{labels:edKeys.map(k=>C[k].label),datasets:[{data:counts,backgroundColor:colors.map(c=>c+'55'),borderColor:colors,borderWidth:2,hoverOffset:6}]},
-    options:{...baseOpts,cutout:'60%',
-      plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:ctx=>` ${C[edKeys[ctx.dataIndex]]?.label}: ${ctx.parsed}`}}},
-      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
-      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
-    }
-  });
+    grid.innerHTML = lista.map(p => {
+        const cor = EDITAL_COLORS[p.editalKey];
+        return `
+        <article class="project-card" data-id="${p.id}">
+            <div class="project-bar" style="background:${cor}"></div>
+            <span class="project-num">N° ${p.id}</span>
+            <div class="project-body">
+                <span class="project-tag" style="background:${cor}1A;color:${cor};">${p.editalCurto}</span>
+                <h3>${p.titulo}</h3>
+                <div class="project-meta">
+                    <div class="project-meta-row">
+                        <span class="project-meta-label">Proponente</span>
+                        <span class="project-meta-value">${p.proponente}</span>
+                    </div>
+                    <div class="project-meta-row">
+                        <span class="project-meta-label">Autor</span>
+                        <span class="project-meta-value">${p.autor}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-foot">
+                <span>${p.editalTema}</span>
+                <span class="project-foot-cta">Ver detalhes →</span>
+            </div>
+        </article>`;
+    }).join('');
+    $$('.project-card').forEach(c => c.addEventListener('click', () => abrirModal(c.dataset.id)));
 }
 
-function updateCharts() {
-  const activeKey = P.find(p=>p.edital===st.edital)?.k||null;
-  const edKeys = Object.keys(C);
-  const colors = edKeys.map(k=>C[k].c);
-
-  if(charts.edital){
-    charts.edital.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'44':c+'11');
-    charts.edital.data.datasets[0].borderColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c:c+'33');
-    charts.edital.update('none');
-  }
-  if(charts.donut){
-    charts.donut.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'66':c+'18');
-    charts.donut.update('none');
-  }
+function abrirModal(id) {
+    const p = projetos.find(x => x.id === id);
+    if (!p) return;
+    $('#modalEyebrow').textContent = `Projeto N° ${p.id} · ${p.editalCurto}`;
+    $('#modalTitle').textContent = p.titulo;
+    $('#modalBody').innerHTML = `
+        <div class="modal-section">
+            <h5>Edital</h5>
+            <p>${p.edital}</p>
+        </div>
+        <div class="modal-grid">
+            <div class="modal-stat"><div class="modal-stat-l">Proponente</div><div class="modal-stat-v">${p.proponente}</div></div>
+            <div class="modal-stat"><div class="modal-stat-l">Autor</div><div class="modal-stat-v">${p.autor}</div></div>
+            <div class="modal-stat"><div class="modal-stat-l">Tema</div><div class="modal-stat-v">${p.editalTema}</div></div>
+            <div class="modal-stat"><div class="modal-stat-l">Agência</div><div class="modal-stat-v">FAPEAM 2026</div></div>
+        </div>
+        <div class="modal-section">
+            <h5>Instituições articuladoras</h5>
+            <p>Incubadora Inpactas · SEMCTI Benjamin Constant · UFAM/INC — Instituto de Natureza e Cultura</p>
+        </div>`;
+    $('#modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
-// ════════════════════════════════════════════════
-// MODAL
-// ════════════════════════════════════════════════
-function openModal(id) {
-  const p = P.find(x=>x.id===id); if(!p) return;
-  const cor = C[p.k]?.c||'#2563EB';
-  $('#mAccent').style.background = `linear-gradient(90deg,${cor},${cor}88)`;
-  $('#mNum').textContent = `Projeto Nº ${p.id}  ·  ${p.curto}`;
-  $('#mTitle').textContent = p.titulo;
-  $('#mBody').innerHTML = `
-    <div class="mlbl">Edital</div><div class="mval">${p.edital}</div>
-    <div class="mgrid">
-      <div class="mstat"><div class="mlbl">Proponente</div><div class="mval">${p.proponente}</div></div>
-      <div class="mstat"><div class="mlbl">Autor / Redator</div><div class="mval">${p.autor}</div></div>
-      <div class="mstat"><div class="mlbl">Nº do Projeto</div><div class="mval">${p.id}</div></div>
-      <div class="mstat"><div class="mlbl">Agência Financiadora</div><div class="mval">FAPEAM — 2026</div></div>
-    </div>
-    <div class="minst"><strong>Instituições Envolvidas</strong><br>
-    Incubadora Inpactas &nbsp;·&nbsp; SEMCTI Benjamin Constant &nbsp;·&nbsp; UFAM/INC — Instituto de Natureza e Cultura</div>
-    <div class="mbtns">
-      <button class="mbtn" style="background:${cor}15;border-color:${cor}44;color:${cor};" onclick="filterEdital('${p.k}');closeModal();">Ver todos do ${p.curto}</button>
-      <button class="mbtn" style="background:#EFF6FF;border-color:#BFDBFE;color:#2563EB;" onclick="st.autor='${p.autor}';$('#fAutor').value='${p.autor}';apply();closeModal();">Projetos de ${p.autor.split(' ')[0]}</button>
-    </div>`;
-  $('#overlay').classList.add('on');
-  document.body.style.overflow='hidden';
+function fecharModal() {
+    $('#modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
 }
-function closeModal(){$('#overlay').classList.remove('on');document.body.style.overflow='';}
+
+function renderEquipe() {
+    const propCount = {};
+    const autCount = {};
+    projetos.forEach(p => {
+        propCount[p.proponente] = (propCount[p.proponente]||0)+1;
+        autCount[p.autor] = (autCount[p.autor]||0)+1;
+    });
+    const propSort = Object.entries(propCount).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+    const autSort = Object.entries(autCount).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+
+    $('#propCount').textContent = `— ${propSort.length} pesquisadores`;
+    $('#autCount').textContent = `— ${autSort.length} redatores`;
+
+    $('#proponentesList').innerHTML = propSort.map(([nome, n]) => `
+        <div class="team-item">
+            <span class="team-name">${nome}</span>
+            <span class="team-badge">${n} projeto${n>1?'s':''}</span>
+        </div>`).join('');
+    $('#autoresList').innerHTML = autSort.map(([nome, n]) => `
+        <div class="team-item">
+            <span class="team-name">${nome}</span>
+            <span class="team-badge">${n} projeto${n>1?'s':''}</span>
+        </div>`).join('');
+}
+
+function renderGraficos() {
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#404040';
+
+    // Donut por edital
+    const porEdital = {};
+    projetos.forEach(p => porEdital[p.editalCurto] = (porEdital[p.editalCurto]||0)+1);
+
+    new Chart($('#chartEdital'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(porEdital),
+            datasets: [{
+                data: Object.values(porEdital),
+                backgroundColor: Object.keys(porEdital).map(k => {
+                    const proj = projetos.find(p => p.editalCurto === k);
+                    return EDITAL_COLORS[proj?.editalKey] || '#999';
+                }),
+                borderWidth: 3,
+                borderColor: '#FDFCF9'
+            }]
+        },
+        options: {
+            cutout: '62%',
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 10 } },
+                tooltip: { callbacks: { label: (ctx) => ` ${ctx.parsed} projeto(s)` } }
+            }
+        }
+    });
+
+    // Barras autor
+    const porAutor = {};
+    projetos.forEach(p => porAutor[p.autor] = (porAutor[p.autor]||0)+1);
+    const sorted = Object.entries(porAutor).sort((a,b) => b[1]-a[1]);
+
+    new Chart($('#chartAutor'), {
+        type: 'bar',
+        data: {
+            labels: sorted.map(x => x[0].length > 22 ? x[0].substring(0,20)+'…' : x[0]),
+            datasets: [{
+                label: 'Projetos',
+                data: sorted.map(x => x[1]),
+                backgroundColor: '#2D5F3F',
+                borderRadius: 6,
+                barThickness: 14
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: (ctx) => sorted[ctx[0].dataIndex][0],
+                        label: (ctx) => ` ${ctx.parsed.x} projeto(s)`
+                    }
+                }
+            },
+            scales: {
+                x: { beginAtZero: true, ticks: { stepSize: 1, color: '#9A9A9A' }, grid: { color: '#F0EDE5' } },
+                y: { ticks: { font: { size: 10 }, color: '#404040' }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+function init() {
+    popularFiltros();
+    renderEditais();
+    renderEquipe();
+    renderGraficos();
+    renderProjetos();
+
+    $('#search').addEventListener('input', e => { filtros.search = e.target.value.toLowerCase(); renderProjetos(); });
+    $('#filterEdital').addEventListener('change', e => { filtros.edital = e.target.value; renderProjetos(); });
+    $('#filterProponente').addEventListener('change', e => { filtros.proponente = e.target.value; renderProjetos(); });
+    $('#filterAutor').addEventListener('change', e => { filtros.autor = e.target.value; renderProjetos(); });
+    $('#clearBtn').addEventListener('click', () => {
+        $('#search').value = ''; $('#filterEdital').value = '';
+        $('#filterProponente').value = ''; $('#filterAutor').value = '';
+        filtros = { search:'', edital:'', proponente:'', autor:'' };
+        renderProjetos();
+    });
+
+    $('#modalClose').addEventListener('click', fecharModal);
+    $('#modalOverlay').addEventListener('click', e => { if (e.target.id === 'modalOverlay') fecharModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+    $('#menuToggle').addEventListener('click', () => $('#navLinks').classList.toggle('mobile-on'));
+    $$('#navLinks a').forEach(a => a.addEventListener('click', () => $('#navLinks').classList.remove('mobile-on')));
+
+    $('#lastUpdate').textContent = 'Atualizado em ' + new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+
+    $('#heroTotal').textContent = projetos.length;
+    $('#heroEditais').textContent = new Set(projetos.map(p => p.edital)).size;
+    $('#heroProp').textContent = new Set(projetos.map(p => p.proponente)).size;
+    $('#heroAut').textContent = new Set(projetos.map(p => p.autor)).size;
+}
 
 init();
 </script>
+
 </body>
 </html>
