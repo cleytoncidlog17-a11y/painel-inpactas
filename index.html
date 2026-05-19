@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 :root {
     /* Palette - clean institutional, inspired by Lovable */
@@ -328,14 +330,15 @@ section.block.dark .section-lede { color: rgba(255,255,255,0.75); }
 }
 .filter-row {
     display: grid;
-    grid-template-columns: 2fr repeat(3, 1fr) auto;
+    grid-template-columns: 1.6fr 1fr 1.2fr 1fr auto;
     gap: 0.7rem;
     align-items: end;
 }
-@media (max-width: 800px) { .filter-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 900px) { .filter-row { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 500px) { .filter-row { grid-template-columns: 1fr; } }
 
-.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.field select { max-width: 100%; text-overflow: ellipsis; }
 .field label {
     font-size: 0.72rem; font-weight: 600;
     color: var(--muted); text-transform: uppercase;
@@ -737,22 +740,11 @@ footer {
         <h2 class="section-title">Explore o portfólio <em>de forma interativa.</em></h2>
         <p class="section-lede">Use os filtros para navegar por edital, proponente ou autor. Clique em qualquer projeto para ver os detalhes completos.</p>
 
-        <div class="analytics-grid">
-            <div class="chart-card">
-                <h4>Distribuição por edital</h4>
-                <div class="chart-wrap"><canvas id="chartEdital"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <h4>Produtividade por autor</h4>
-                <div class="chart-wrap"><canvas id="chartAutor"></canvas></div>
-            </div>
-        </div>
-
         <div class="filters">
             <div class="filter-row">
                 <div class="field">
                     <label for="search">Buscar</label>
-                    <input type="text" id="search" placeholder="Título, proponente, autor, palavra-chave...">
+                    <input type="text" id="search" placeholder="Título, proponente, autor...">
                 </div>
                 <div class="field">
                     <label for="filterEdital">Edital</label>
@@ -767,6 +759,17 @@ footer {
                     <select id="filterAutor"><option value="">Todos</option></select>
                 </div>
                 <button class="btn-clear" id="clearBtn">Limpar</button>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="chart-card">
+                <h4>Distribuição por edital</h4>
+                <div class="chart-wrap"><canvas id="chartEdital"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h4>Produtividade por autor</h4>
+                <div class="chart-wrap"><canvas id="chartAutor"></canvas></div>
             </div>
         </div>
 
@@ -805,11 +808,11 @@ footer {
         <h2 class="section-title">Tudo o que você precisa <em>em um só lugar.</em></h2>
         <p class="section-lede">Baixe o relatório executivo em PDF, compartilhe o link do painel com a equipe ou acesse outros materiais relacionados.</p>
         <div class="materials-grid">
-            <a class="material-card" href="Relatorio_Executivo_Inpactas_SEMCTI_FAPEAM_2026.pdf" target="_blank">
+            <a class="material-card" href="#" onclick="gerarRelatorioPDF(this); return false;">
                 <div class="material-type"><span class="material-type-icon">PDF</span> Relatório</div>
                 <h4>Relatório Executivo dos 22 Projetos</h4>
-                <p>Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital.</p>
-                <span class="material-link">Baixar PDF →</span>
+                <p>Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital. Gerado na hora.</p>
+                <span class="material-link" data-default="Baixar PDF →">Baixar PDF →</span>
             </a>
             <a class="material-card" href="https://cleytoncidlog17-a11y.github.io/painel-impactos/" target="_blank">
                 <div class="material-type"><span class="material-type-icon" style="background:var(--accent);">LINK</span> Painel online</div>
@@ -928,10 +931,13 @@ const $$ = (s) => document.querySelectorAll(s);
 let filtros = { search: '', edital: '', proponente: '', autor: '' };
 
 function popularFiltros() {
-    const editais = [...new Set(projetos.map(p => p.edital))].sort();
+    // Edital: usa editalKey como value e editalCurto como rótulo (mais compacto)
+    const editaisMap = {};
+    projetos.forEach(p => { editaisMap[p.editalKey] = p.editalCurto; });
+    const editaisKeys = Object.keys(editaisMap).sort();
     const proponentes = [...new Set(projetos.map(p => p.proponente))].sort();
     const autores = [...new Set(projetos.map(p => p.autor))].sort();
-    editais.forEach(e => $('#filterEdital').insertAdjacentHTML('beforeend', `<option value="${e}">${e}</option>`));
+    editaisKeys.forEach(k => $('#filterEdital').insertAdjacentHTML('beforeend', `<option value="${k}">${editaisMap[k]}</option>`));
     proponentes.forEach(p => $('#filterProponente').insertAdjacentHTML('beforeend', `<option value="${p}">${p}</option>`));
     autores.forEach(a => $('#filterAutor').insertAdjacentHTML('beforeend', `<option value="${a}">${a}</option>`));
 }
@@ -961,13 +967,10 @@ function renderEditais() {
 }
 
 function filtrarPorEdital(key) {
-    const editalCompleto = projetos.find(p => p.editalKey === key)?.edital;
-    if (editalCompleto) {
-        $('#filterEdital').value = editalCompleto;
-        filtros.edital = editalCompleto;
-        renderProjetos();
-        document.getElementById('projetos').scrollIntoView({behavior:'smooth'});
-    }
+    $('#filterEdital').value = key;
+    filtros.edital = key;
+    renderProjetos();
+    document.getElementById('projetos').scrollIntoView({behavior:'smooth'});
 }
 window.filtrarPorEdital = filtrarPorEdital;
 
@@ -976,7 +979,7 @@ function filtrar() {
         const s = filtros.search;
         const matchS = !s || p.titulo.toLowerCase().includes(s) || p.edital.toLowerCase().includes(s) ||
                        p.proponente.toLowerCase().includes(s) || p.autor.toLowerCase().includes(s);
-        const matchE = !filtros.edital || p.edital === filtros.edital;
+        const matchE = !filtros.edital || p.editalKey === filtros.edital;
         const matchP = !filtros.proponente || p.proponente === filtros.proponente;
         const matchA = !filtros.autor || p.autor === filtros.autor;
         return matchS && matchE && matchP && matchA;
@@ -1177,6 +1180,331 @@ function init() {
 }
 
 init();
+
+// ========================================
+// GERAÇÃO DO RELATÓRIO EXECUTIVO EM PDF
+// ========================================
+async function gerarRelatorioPDF(triggerEl) {
+    const linkEl = triggerEl ? triggerEl.querySelector('.material-link') : null;
+    if (linkEl) linkEl.textContent = 'Gerando PDF...';
+
+    try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const W = doc.internal.pageSize.getWidth();
+        const H = doc.internal.pageSize.getHeight();
+
+        const hex2rgb = (hex) => [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+
+        // ===== CAPA =====
+        doc.setFillColor(45, 95, 63);
+        doc.rect(0, 0, W, H, 'F');
+
+        // Detalhe geométrico
+        doc.setFillColor(212, 165, 45);
+        doc.rect(0, 0, 8, H, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.text('INPACTAS · SEMCTI · UFAM/INC', 20, 30);
+        doc.setTextColor(212, 230, 200);
+        doc.text('Benjamin Constant — Amazonas · Tríplice Fronteira', 20, 36);
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(34);
+        doc.text('Relatório', 20, 95);
+        doc.text('Executivo', 20, 110);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(18);
+        doc.setTextColor(232, 240, 234);
+        doc.text('Editais FAPEAM 2026', 20, 128);
+
+        doc.setDrawColor(212, 165, 45);
+        doc.setLineWidth(0.8);
+        doc.line(20, 142, 80, 142);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(12);
+        doc.setTextColor(255, 255, 255);
+        doc.text('22 projetos submetidos', 20, 155);
+        doc.text('6 editais FAPEAM 2026', 20, 162);
+        doc.text('Alto Solimões — Amazonas', 20, 169);
+
+        const dataStr = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        doc.setFontSize(9);
+        doc.setTextColor(212, 230, 200);
+        doc.text('Documento institucional gerado em ' + dataStr, 20, H - 25);
+        doc.text('Incubadora de Negócios de Impacto Socioambiental do Alto Solimões', 20, H - 18);
+
+        // Header utilitário para páginas internas
+        const drawHeader = () => {
+            doc.setFillColor(253, 252, 249);
+            doc.rect(0, 0, W, 20, 'F');
+            doc.setTextColor(45, 95, 63);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.text('INPACTAS & SEMCTI', 20, 12);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(107, 107, 107);
+            doc.text('Editais FAPEAM 2026 — Relatório Executivo', W - 20, 12, { align: 'right' });
+            doc.setDrawColor(232, 228, 218);
+            doc.setLineWidth(0.2);
+            doc.line(20, 17, W - 20, 17);
+        };
+        const drawFooter = () => {
+            const pageNum = doc.internal.getCurrentPageInfo().pageNumber;
+            doc.setFontSize(8);
+            doc.setTextColor(154, 154, 154);
+            doc.text('Inpactas & SEMCTI · Benjamin Constant — AM', 20, H - 10);
+            doc.text('Página ' + pageNum, W - 20, H - 10, { align: 'right' });
+        };
+
+        // ===== PÁGINA 2 — SUMÁRIO EXECUTIVO + KPIs + DISTRIBUIÇÃO =====
+        doc.addPage();
+        drawHeader();
+
+        doc.setTextColor(45, 95, 63);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.text('SUMÁRIO EXECUTIVO', 20, 32);
+        doc.setTextColor(26, 26, 26);
+        doc.setFontSize(22);
+        doc.text('Visão geral dos 22 projetos', 20, 42);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(64, 64, 64);
+        const sumario = doc.splitTextToSize(
+            'A Incubadora de Negócios de Impacto Socioambiental do Alto Solimões (Inpactas), em parceria com a Secretaria Municipal de Ciência, Tecnologia e Inovação (SEMCTI) de Benjamin Constant — AM e a UFAM/INC, submeteu 22 projetos aos editais FAPEAM 2026. As propostas contemplam seis chamadas distintas, abordando popularização da ciência, tecnologias sociais, saúde pública, produtividade pesqueira, ecoturismo científico e protagonismo feminino na pesquisa amazônica — todas voltadas ao desenvolvimento sustentável da região da Tríplice Fronteira (Brasil, Colômbia e Peru).',
+            W - 40
+        );
+        doc.text(sumario, 20, 52);
+
+        // KPIs
+        const yKpi = 52 + sumario.length * 5 + 8;
+        const kpis = [
+            { label: 'Projetos', valor: '22' },
+            { label: 'Editais', valor: '6' },
+            { label: 'Proponentes', valor: String(new Set(projetos.map(p => p.proponente)).size) },
+            { label: 'Autores', valor: String(new Set(projetos.map(p => p.autor)).size) }
+        ];
+        const gap = 5;
+        const kpiW = (W - 40 - gap * 3) / 4;
+        kpis.forEach((kpi, i) => {
+            const x = 20 + i * (kpiW + gap);
+            doc.setFillColor(232, 240, 234);
+            doc.roundedRect(x, yKpi, kpiW, 28, 3, 3, 'F');
+            doc.setTextColor(45, 95, 63);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(22);
+            doc.text(kpi.valor, x + kpiW / 2, yKpi + 14, { align: 'center' });
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(107, 107, 107);
+            doc.text(kpi.label, x + kpiW / 2, yKpi + 22, { align: 'center' });
+        });
+
+        // Distribuição por edital
+        const yDist = yKpi + 42;
+        doc.setTextColor(45, 95, 63);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.text('DISTRIBUIÇÃO POR EDITAL', 20, yDist);
+        doc.setTextColor(26, 26, 26);
+        doc.setFontSize(16);
+        doc.text('Quantitativo de projetos por chamada', 20, yDist + 9);
+
+        const editalCounts = {};
+        projetos.forEach(p => { editalCounts[p.editalKey] = (editalCounts[p.editalKey] || 0) + 1; });
+
+        let yBar = yDist + 18;
+        Object.keys(EDITAL_INFO).forEach(key => {
+            const count = editalCounts[key] || 0;
+            const pct = (count / projetos.length * 100).toFixed(1);
+            const [r, g, b] = hex2rgb(EDITAL_COLORS[key]);
+
+            doc.setTextColor(26, 26, 26);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.text(EDITAL_INFO[key].nome + ' · ' + key + '/2026', 20, yBar);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(107, 107, 107);
+            doc.setFontSize(9);
+            doc.text(count + ' projetos · ' + pct + '%', W - 20, yBar, { align: 'right' });
+
+            const barFull = W - 40;
+            doc.setFillColor(240, 237, 229);
+            doc.roundedRect(20, yBar + 3, barFull, 5, 1.5, 1.5, 'F');
+            doc.setFillColor(r, g, b);
+            const filled = barFull * (count / projetos.length);
+            doc.roundedRect(20, yBar + 3, filled < 3 ? 3 : filled, 5, 1.5, 1.5, 'F');
+
+            yBar += 14;
+        });
+
+        drawFooter();
+
+        // ===== TABELA CONSOLIDADA =====
+        doc.addPage();
+        drawHeader();
+        doc.setTextColor(45, 95, 63);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.text('TABELA CONSOLIDADA', 20, 32);
+        doc.setTextColor(26, 26, 26);
+        doc.setFontSize(20);
+        doc.text('22 projetos · 6 editais', 20, 42);
+
+        doc.autoTable({
+            startY: 50,
+            head: [['#', 'Edital', 'Título do Projeto', 'Proponente', 'Autor']],
+            body: projetos.map(p => [p.id, p.editalCurto, p.titulo, p.proponente, p.autor]),
+            styles: { font: 'helvetica', fontSize: 7, cellPadding: 2.2, lineColor: [232, 228, 218], lineWidth: 0.1, textColor: [40, 40, 40] },
+            headStyles: { fillColor: [45, 95, 63], textColor: 255, fontStyle: 'bold', fontSize: 8, halign: 'left' },
+            alternateRowStyles: { fillColor: [250, 248, 243] },
+            columnStyles: {
+                0: { cellWidth: 8, halign: 'center', fontStyle: 'bold' },
+                1: { cellWidth: 28 },
+                2: { cellWidth: 78 },
+                3: { cellWidth: 35 },
+                4: { cellWidth: 21 }
+            },
+            margin: { left: 20, right: 20, top: 24, bottom: 18 },
+            didDrawPage: function () {
+                drawHeader();
+                drawFooter();
+            }
+        });
+
+        // ===== DETALHAMENTO POR EDITAL =====
+        Object.keys(EDITAL_INFO).forEach(key => {
+            const info = EDITAL_INFO[key];
+            const [r, g, b] = hex2rgb(EDITAL_COLORS[key]);
+            const projsEdital = projetos.filter(p => p.editalKey === key);
+
+            doc.addPage();
+
+            // Faixa colorida no topo
+            doc.setFillColor(r, g, b);
+            doc.rect(0, 0, W, 55, 'F');
+            doc.setFillColor(212, 165, 45);
+            doc.rect(0, 0, 8, 55, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.text('EDITAL N.º ' + key + '/2026 · FAPEAM', 20, 20);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(24);
+            doc.text(info.nome, 20, 34);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            doc.text(projsEdital.length + ' projeto' + (projsEdital.length > 1 ? 's' : '') + ' submetido' + (projsEdital.length > 1 ? 's' : ''), 20, 45);
+
+            // Descrição
+            doc.setTextColor(64, 64, 64);
+            doc.setFont('helvetica', 'italic');
+            doc.setFontSize(10);
+            const descLines = doc.splitTextToSize(info.desc, W - 40);
+            doc.text(descLines, 20, 68);
+
+            // Cards de projetos
+            let y = 68 + descLines.length * 5 + 8;
+            doc.setFont('helvetica', 'normal');
+
+            projsEdital.forEach(p => {
+                const tituloLines = doc.splitTextToSize(p.titulo, W - 56);
+                const blocoAlt = 14 + tituloLines.length * 4.5 + 8;
+
+                if (y + blocoAlt > H - 20) {
+                    drawFooter();
+                    doc.addPage();
+                    drawHeader();
+                    y = 30;
+                }
+
+                // Card
+                doc.setFillColor(250, 248, 243);
+                doc.roundedRect(20, y, W - 40, blocoAlt, 2, 2, 'F');
+                // Lateral colorida
+                doc.setFillColor(r, g, b);
+                doc.rect(20, y, 1.5, blocoAlt, 'F');
+
+                doc.setTextColor(r, g, b);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8);
+                doc.text('PROJETO #' + p.id, 26, y + 7);
+
+                doc.setTextColor(26, 26, 26);
+                doc.setFontSize(10);
+                doc.text(tituloLines, 26, y + 13);
+
+                const yMeta = y + 13 + tituloLines.length * 4.5 + 3;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                doc.setTextColor(107, 107, 107);
+                doc.text('Proponente: ', 26, yMeta);
+                doc.setTextColor(26, 26, 26);
+                doc.text(p.proponente, 47, yMeta);
+                doc.setTextColor(107, 107, 107);
+                doc.text('Autor: ', 26, yMeta + 4);
+                doc.setTextColor(26, 26, 26);
+                doc.text(p.autor, 38, yMeta + 4);
+
+                y += blocoAlt + 5;
+            });
+
+            drawFooter();
+        });
+
+        // ===== PÁGINA FINAL — INSTITUCIONAL =====
+        doc.addPage();
+        drawHeader();
+        doc.setTextColor(45, 95, 63);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.text('INSTITUCIONAL', 20, 32);
+        doc.setTextColor(26, 26, 26);
+        doc.setFontSize(20);
+        doc.text('Sobre a iniciativa', 20, 42);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(64, 64, 64);
+        const inst = doc.splitTextToSize(
+            'A Incubadora de Negócios de Impacto Socioambiental do Alto Solimões (Inpactas) é uma iniciativa vinculada ao Instituto Natureza e Cultura da UFAM (UFAM/INC), com foco no fortalecimento de empreendimentos socioambientais e científicos da região da Tríplice Fronteira. Em parceria com a Secretaria Municipal de Ciência, Tecnologia e Inovação (SEMCTI) de Benjamin Constant — AM, articula pesquisadores, comunidades tradicionais, ribeirinhos, indígenas e instituições para responder com ciência, tecnologia e inovação aos desafios do Alto Solimões.',
+            W - 40
+        );
+        doc.text(inst, 20, 54);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(45, 95, 63);
+        doc.text('Contato e referências', 20, 54 + inst.length * 5 + 12);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(64, 64, 64);
+        const yC = 54 + inst.length * 5 + 20;
+        doc.text('Inpactas / UFAM-INC — Benjamin Constant, AM', 20, yC);
+        doc.text('SEMCTI — Secretaria Municipal de Ciência, Tecnologia e Inovação', 20, yC + 6);
+        doc.text('FAPEAM — Fundação de Amparo à Pesquisa do Estado do Amazonas', 20, yC + 12);
+        doc.text('Painel online: https://cleytoncidlog17-a11y.github.io/painel-impactos/', 20, yC + 18);
+
+        drawFooter();
+
+        // Salvar
+        doc.save('Relatorio_Executivo_Inpactas_SEMCTI_FAPEAM_2026.pdf');
+        if (linkEl) linkEl.textContent = 'PDF gerado! Baixar novamente →';
+        setTimeout(() => { if (linkEl) linkEl.textContent = linkEl.dataset.default || 'Baixar PDF →'; }, 4000);
+    } catch (err) {
+        console.error(err);
+        if (linkEl) linkEl.textContent = 'Erro — tente novamente';
+        alert('Não foi possível gerar o PDF. Tente recarregar a página.\n\n' + err.message);
+    }
+}
 </script>
 
 </body>
