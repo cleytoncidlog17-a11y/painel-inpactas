@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel FAPEAM 2026 | Inpactas & SEMCTI</title>
+<title>Painel FAPEAM 2026 | InPACTAS & SEMCTI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -646,16 +646,145 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .mclose:hover { background:var(--rosa-l); border-color:var(--rosa); color:var(--rosa); }
 .mb { padding:1.4rem 1.6rem; }
 .mlbl { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--blue); margin-bottom:0.25rem; }
-.mval { font-size:0.87rem; color:var(--txt1); margin-bottom:1rem; line-height:1.5; }
+.mval { font-size:0.87rem; color:var(--txt1); margin-bottom:1rem; line-height:1.5; text-align:justify; hyphens:auto; }
 .mgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1rem; }
 @media(max-width:500px){.mgrid{grid-template-columns:1fr;}}
 .mstat { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.75rem 0.9rem; }
 .mstat .mlbl { margin-bottom:0.18rem; }
 .mstat .mval { margin-bottom:0; font-weight:600; font-size:0.83rem; }
-.minst { background:var(--blue-l); border:1px solid var(--blue-m); border-radius:8px; padding:0.75rem 0.9rem; font-size:0.79rem; color:var(--txt2); line-height:1.6; }
+.minst { background:var(--blue-l); border:1px solid var(--blue-m); border-radius:8px; padding:0.75rem 0.9rem; font-size:0.79rem; color:var(--txt2); line-height:1.6; text-align:justify; hyphens:auto; }
 .minst strong { color:var(--blue); }
 .mbtns { margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
 .mbtn { padding:0.4rem 0.8rem; border-radius:7px; font-size:0.73rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--ease); border:1px solid; }
+
+/* ═══════════════════════════════════════════
+   HERO NAV + HERO SECTION
+═══════════════════════════════════════════ */
+.hero-wrap {
+  background: #F5F3EE;
+  border-bottom: 1px solid #E4E0D8;
+}
+
+/* Nav */
+.hero-nav {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 2.4rem;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  gap: 1rem;
+}
+.hn-brand { display:flex; flex-direction:column; justify-content:center; flex-shrink:0; }
+.hn-name  { font-size:0.9rem; font-weight:700; color:#1A2E22; letter-spacing:-0.01em; }
+.hn-sub   { font-size:0.65rem; color:#8A9E90; margin-top:0.05rem; }
+.hn-links { display:flex; align-items:center; gap:0.15rem; margin-left:auto; }
+.hn-link  {
+  padding:0.32rem 0.75rem; border-radius:6px;
+  font-size:0.78rem; font-weight:500; color:#4A6455;
+  cursor:pointer; transition:background 0.15s, color 0.15s;
+  white-space:nowrap;
+}
+.hn-link:hover { background:rgba(0,0,0,0.05); color:#1A2E22; }
+.hn-cta {
+  margin-left:0.8rem;
+  background:#1A2E22; color:white;
+  border:none; border-radius:100px;
+  padding:0.45rem 1.1rem;
+  font-size:0.78rem; font-weight:600;
+  font-family:'Inter',sans-serif;
+  cursor:pointer; white-space:nowrap;
+  transition:background 0.18s, transform 0.18s;
+}
+.hn-cta:hover { background:#2D5440; transform:translateY(-1px); }
+
+/* Hero */
+.hero-section {
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:3rem;
+  padding:3.5rem 2.4rem 3rem;
+  max-width:1200px;
+  margin:0 auto;
+  box-sizing:border-box;
+  width:100%;
+}
+@media(max-width:860px){
+  .hero-section{ grid-template-columns:1fr; }
+  .hero-stats-card{ max-width:400px; }
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background:#E8F2EC; color:#2D7A4F;
+  font-size:0.72rem; font-weight:600;
+  padding:0.3rem 0.75rem; border-radius:100px;
+  border:1px solid #C4DFD0;
+  margin-bottom:1.2rem;
+}
+.hero-badge::before {
+  content:''; width:6px; height:6px; border-radius:50%;
+  background:#2D7A4F; flex-shrink:0;
+}
+.hero-heading {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:clamp(2.4rem,4.5vw,3.8rem);
+  font-weight:800;
+  line-height:1.12;
+  color:#1A2316;
+  letter-spacing:-0.02em;
+  margin-bottom:1.2rem;
+}
+.hero-heading em {
+  font-style:italic;
+  color:#2D7A4F;
+}
+.hero-desc {
+  font-size:0.9rem;
+  color:#4A5E52;
+  line-height:1.75;
+  max-width:520px;
+  text-align:justify;
+  hyphens:auto;
+}
+
+/* Stats card */
+.hero-stats-card {
+  background:#FFFFFF;
+  border:1px solid #E0DDD6;
+  border-radius:16px;
+  padding:1.6rem;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);
+  align-self:center;
+}
+.hsc-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:0.1rem;
+  margin-bottom:1.2rem;
+}
+.hsc-item {
+  padding:0.9rem 0.6rem;
+  border-radius:8px;
+}
+.hsc-val {
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:2.2rem; font-weight:700;
+  color:#1A3D2B;
+  line-height:1;
+  margin-bottom:0.25rem;
+}
+.hsc-lbl {
+  font-size:0.63rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.8px;
+  color:#8A9E90;
+}
+.hsc-tag {
+  display:flex; align-items:center; gap:0.45rem;
+  font-size:0.73rem; color:#4A6455; font-weight:500;
+  padding-top:1rem;
+  border-top:1px solid #EEE9E0;
+}
+.hsc-tag::before {
+  content:''; width:7px; height:7px; border-radius:50%;
+  background:#E05585; flex-shrink:0;
+}
 
 /* footer */
 footer { background:var(--surf); border-top:1px solid var(--border); padding:0.7rem 1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem; }
@@ -665,6 +794,52 @@ footer { background:var(--surf); border-top:1px solid var(--border); padding:0.7
 </style>
 </head>
 <body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-wrap">
+
+  <nav class="hero-nav">
+    <div class="hn-brand">
+      <div class="hn-name">InPACTAS &amp; SEMCTI</div>
+      <div class="hn-sub">Benjamin Constant · Alto Solimões</div>
+    </div>
+    <div class="hn-links">
+      <div class="hn-link">Sobre</div>
+      <div class="hn-link">Editais</div>
+      <div class="hn-link">Projetos</div>
+      <div class="hn-link">Equipe</div>
+      <div class="hn-link">Materiais</div>
+    </div>
+    <button class="hn-cta" onclick="document.getElementById('painel').scrollIntoView({behavior:'smooth'})">Explorar painel</button>
+  </nav>
+
+  <div class="hero-section">
+    <div class="hero-left">
+      <div class="hero-badge">Editais FAPEAM 2026 · Benjamin Constant</div>
+      <h1 class="hero-heading">
+        Ciência e inovação<br>
+        <em>articuladas</em> no Alto<br>
+        Solimões.
+      </h1>
+      <p class="hero-desc">22 projetos de Ciência, Tecnologia e Inovação submetidos pela Incubadora InPACTAS, pela SEMCTI e pelo INC/UFAM aos editais FAPEAM 2026 — com foco em bioeconomia, saúde pública, popularização da ciência, ecoturismo, inclusão digital e protagonismo feminino.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats-card">
+        <div class="hsc-grid">
+          <div class="hsc-item"><div class="hsc-val">22</div><div class="hsc-lbl">Projetos</div></div>
+          <div class="hsc-item"><div class="hsc-val">6</div><div class="hsc-lbl">Editais</div></div>
+          <div class="hsc-item"><div class="hsc-val">12</div><div class="hsc-lbl">Proponentes</div></div>
+          <div class="hsc-item"><div class="hsc-val">9</div><div class="hsc-lbl">Autores</div></div>
+        </div>
+        <div class="hsc-tag">Alto Solimões — Tríplice Fronteira BR/CO/PE</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ PAINEL ═══ -->
+<div id="painel">
 
 <!-- ═══ TOPBAR ═══ -->
 <header class="topbar">
