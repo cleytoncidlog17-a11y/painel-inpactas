@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -101,14 +103,14 @@
   .chart-wrap { position: relative; height: 180px; }
   .projects-meta { font-size: 0.82rem; color: var(--ink-light); margin-bottom: 1.25rem; font-weight: 500; }
   .projects-meta strong { color: var(--ink); }
-  .projects-grid { display: flex; flex-direction: column; gap: .75rem; }
-  .project-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 52px 1fr auto; gap: 1.2rem; align-items: center; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .project-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; gap: .6rem; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
   .project-card:hover { box-shadow: 0 4px 20px rgba(26,61,43,.1); border-color: var(--green-mid); }
-  .project-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--cream-border); text-align: center; line-height: 1; }
-  .project-edital-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 2rem; margin-bottom: .4rem; }
-  .project-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: .35rem; }
-  .project-meta { font-size: 0.78rem; color: var(--ink-light); display: flex; gap: 1rem; flex-wrap: wrap; }
-  .project-arrow { font-size: 0.8rem; color: var(--green-mid); font-weight: 600; white-space: nowrap; opacity: 0; transition: opacity .2s; }
+  .project-num { font-family: 'Playfair Display', Georgia, serif; font-size: 0.85rem; font-weight: 700; color: var(--cream-border); line-height: 1; }
+  .project-edital-tag { display: inline-block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 2rem; align-self: flex-start; }
+  .project-title { font-size: 0.87rem; font-weight: 600; color: var(--ink); line-height: 1.45; flex: 1; }
+  .project-meta { font-size: 0.76rem; color: var(--ink-light); display: flex; flex-direction: column; gap: .2rem; margin-top: auto; padding-top: .5rem; border-top: 1px solid var(--cream-border); }
+  .project-arrow { font-size: 0.75rem; color: var(--green-mid); font-weight: 600; opacity: 0; transition: opacity .2s; align-self: flex-end; margin-top: .3rem; }
   .project-card:hover .project-arrow { opacity: 1; }
   .tag-013 { background: #FFF0F5; color: #C2185B; }
   .tag-009 { background: #E8F5E9; color: #2E7D32; }
@@ -168,6 +170,9 @@
   .modal-field-val { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
 
   /* RESPONSIVE */
+  @media (max-width: 1050px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 900px) {
     .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
     .stats-card { max-width: 400px; }
@@ -186,8 +191,7 @@
     .materiais-grid { grid-template-columns: 1fr; }
     .filters-bar { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; }
-    .project-card { grid-template-columns: 36px 1fr; }
-    .project-arrow { display: none; }
+    .projects-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -390,7 +394,7 @@
         <div class="material-label">PDF Relatório</div>
         <div class="material-title">Relatório Executivo dos 22 Projetos</div>
         <p class="material-desc">Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital. Gerado na hora.</p>
-        <button class="material-link" onclick="window.print()">Baixar PDF →</button>
+        <button class="material-link" onclick="gerarPDF()">Baixar PDF →</button>
       </div>
       <div class="material-card">
         <div class="material-icon">🔗</div>
@@ -501,11 +505,12 @@ function renderProjects(list){
   document.getElementById('projects-count').innerHTML=`Exibindo <strong>${list.length}</strong> de 22 projeto(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small>`;
   document.getElementById('projects-list').innerHTML=list.map(p=>`
     <div class="project-card" onclick="openModal(${p.n-1})">
-      <div class="project-num">N°${String(p.n).padStart(2,'0')}</div>
-      <div class="project-body">
-        <span class="project-edital-tag ${tagClass(p.edital)}">${p.nome} ${p.edital}/2026</span>
-        <div class="project-title">${p.titulo}</div>
-        <div class="project-meta"><span>👤 ${p.proponente}</span><span>✍️ ${p.autor}</span></div>
+      <div class="project-num">N° ${String(p.n).padStart(2,'0')}</div>
+      <span class="project-edital-tag ${tagClass(p.edital)}">${p.nome} ${p.edital}/2026</span>
+      <div class="project-title">${p.titulo}</div>
+      <div class="project-meta">
+        <span>👤 ${p.proponente}</span>
+        <span>✍️ ${p.autor}</span>
       </div>
       <div class="project-arrow">Ver detalhes →</div>
     </div>`).join('');
@@ -539,6 +544,152 @@ function buildCharts(){
   new Chart(document.getElementById('chart-autores').getContext('2d'),{type:'bar',data:{labels:AUTORES.map(a=>a.nome.split(' ').slice(0,2).join(' ')),datasets:[{data:AUTORES.map(a=>a.qtd),backgroundColor:op,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{stepSize:1},grid:{color:'rgba(0,0,0,.05)'}},y:{ticks:{font:{size:10}}}}}});
 }
 function copyLink(){const u='https://cleytoncidlog17-a11y.github.io/painel-inpactas/';navigator.clipboard.writeText(u).then(()=>alert('Link copiado!')).catch(()=>prompt('Copie o link:',u));}
+
+function gerarPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF('p','mm','a4');
+  const W=210,H=297;
+  const G1=[26,61,43],G2=[45,122,79],SAND=[249,247,243],INK=[26,35,22],INKL=[74,94,82];
+
+  /* ── CAPA ── */
+  doc.setFillColor(...G1);doc.rect(0,0,W,H,'F');
+  doc.setFillColor(...G2);doc.rect(0,0,W,3,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(26);doc.setTextColor(255,255,255);
+  doc.text('InPACTAS & SEMCTI',W/2,52,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(180,210,190);
+  doc.text('Benjamin Constant · Alto Solimões · Tríplice Fronteira BR/CO/PE',W/2,61,{align:'center'});
+  doc.setDrawColor(...G2);doc.setLineWidth(0.5);doc.line(30,68,W-30,68);
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(180,210,190);
+  doc.text('EDITAIS FAPEAM 2026',W/2,79,{align:'center'});
+  doc.setFontSize(22);doc.setTextColor(255,255,255);
+  doc.text('Relatório Executivo',W/2,93,{align:'center'});
+  doc.setFontSize(14);doc.text('Portfólio de 22 Projetos de CT&I',W/2,103,{align:'center'});
+  doc.setDrawColor(200,230,210);doc.setLineWidth(0.3);doc.line(40,110,W-40,110);
+
+  /* KPIs */
+  const kpis=[['22','Projetos'],['6','Editais'],['12','Proponentes'],['9','Autores']];
+  const cw=35,ch=22,cy=118,cx0=(W-(kpis.length*cw+(kpis.length-1)*6))/2;
+  kpis.forEach((k,i)=>{
+    const x=cx0+i*(cw+6);
+    doc.setFillColor(40,80,55);doc.setDrawColor(80,150,100);doc.roundedRect(x,cy,cw,ch,3,3,'FD');
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(255,255,255);
+    doc.text(k[0],x+cw/2,cy+11,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(180,210,190);
+    doc.text(k[1].toUpperCase(),x+cw/2,cy+18,{align:'center'});
+  });
+
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,210,190);
+  doc.text('22 projetos de CT&I submetidos pela InPACTAS, SEMCTI e INC/UFAM aos editais FAPEAM 2026',W/2,153,{align:'center'});
+  doc.text('com foco em bioeconomia, saúde pública, popularização da ciência e protagonismo feminino.',W/2,160,{align:'center'});
+
+  doc.setFillColor(20,50,32);doc.rect(0,H-38,W,38,'F');
+  doc.setFillColor(...G2);doc.rect(0,H-38,W,0.4,'F');
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(140,190,160);
+  doc.text('Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC',W/2,H-27,{align:'center'});
+  doc.text('Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM',W/2,H-20,{align:'center'});
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(180,210,190);
+  doc.text('Gerado em 20 de maio de 2026',W/2,H-10,{align:'center'});
+
+  /* ── PÁG 2 — SUMÁRIO EXECUTIVO ── */
+  doc.addPage();_hdr(doc,G1,G2,W,'Sumário Executivo');
+  let y=36;
+  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...INKL);
+  doc.text('A Incubadora InPACTAS, a SEMCTI e o INC/UFAM consolidaram em Benjamin Constant a maior submissão coletiva',15,y);y+=5;
+  doc.text('de projetos da região aos editais FAPEAM 2026. Este relatório reúne a visão completa das 22 propostas.',15,y);y+=10;
+
+  doc.autoTable({startY:y,
+    head:[['Indicador','Valor']],
+    body:[['Total de projetos submetidos','22'],['Editais contemplados','6'],['Pesquisadores proponentes','12'],['Autores / redatores','9'],['Instituições parceiras','InPACTAS, SEMCTI, UFAM/INC'],['Alcance territorial','Benjamin Constant — Tríplice Fronteira BR/CO/PE']],
+    styles:{font:'helvetica',fontSize:9,cellPadding:4},
+    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold'},
+    alternateRowStyles:{fillColor:SAND},
+    columnStyles:{0:{fontStyle:'bold',textColor:INK,cellWidth:110},1:{textColor:INK}},
+    margin:{left:15,right:15}});
+  y=doc.lastAutoTable.finalY+10;
+
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
+  doc.text('Distribuição por Edital',15,y);y+=4;
+  doc.autoTable({startY:y,
+    head:[['Edital','Nome','Eixo Temático','Projetos']],
+    body:[['013/2026','Amazônidas','Meninas e Mulheres na Ciência','2'],
+          ['009/2026','Socio Tech','Tecnologias Sociais de Baixo Custo','4'],
+          ['008/2026','PROVIDA-AM','Saúde Pública e Diagnóstico','2'],
+          ['002/2026','POP CT&I','Popularização da Ciência','12'],
+          ['004/2026','PROSPAM','Produtividade Pesqueira Sustentável','1'],
+          ['007/2026','PAINTER Ecoturismo','Ecoturismo Científico Digital','1']],
+    styles:{font:'helvetica',fontSize:8.5,cellPadding:3.5},
+    headStyles:{fillColor:G2,textColor:[255,255,255],fontStyle:'bold'},
+    alternateRowStyles:{fillColor:SAND},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:22,textColor:G1},1:{cellWidth:38},2:{cellWidth:90},3:{cellWidth:20,halign:'center',fontStyle:'bold',textColor:G1}},
+    margin:{left:15,right:15}});
+  _ftr(doc,G1,W,H,'2');
+
+  /* ── PÁG 3+ — PROJETOS ── */
+  doc.addPage();_hdr(doc,G1,G2,W,'Lista Completa de Projetos');
+  doc.autoTable({startY:36,
+    head:[['N°','Edital','Título do Projeto','Proponente','Autor']],
+    body:PROJECTS.map(p=>[String(p.n).padStart(2,'0'),p.nome+'\n'+p.edital+'/2026',p.titulo,p.proponente,p.autor]),
+    styles:{font:'helvetica',fontSize:7.5,cellPadding:3,overflow:'linebreak',valign:'top'},
+    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold',fontSize:8},
+    alternateRowStyles:{fillColor:SAND},
+    columnStyles:{0:{cellWidth:10,halign:'center',fontStyle:'bold',textColor:G1},1:{cellWidth:26,fontSize:7,textColor:G2,fontStyle:'bold'},2:{cellWidth:88,textColor:INK},3:{cellWidth:38,fontSize:7,textColor:INKL},4:{cellWidth:28,fontSize:7,textColor:INKL}},
+    margin:{left:10,right:10},showHead:'everyPage',
+    didDrawPage:()=>{ _hdr(doc,G1,G2,W,'Lista Completa de Projetos'); }});
+
+  const pg3=doc.getNumberOfPages();
+  for(let i=2;i<=pg3;i++){doc.setPage(i);_ftr(doc,G1,W,H,String(i));}
+
+  /* ── EQUIPE ── */
+  doc.addPage();_hdr(doc,G1,G2,W,'Equipe — Pesquisadores e Autores');
+  let ey=36;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
+  doc.text('Proponentes',15,ey);
+  doc.setFont('helvetica','italic');doc.setFontSize(8.5);doc.setTextColor(...INKL);
+  doc.text('— 12 pesquisadores',58,ey);ey+=4;
+  doc.autoTable({startY:ey,
+    head:[['Pesquisador Proponente','Projetos']],
+    body:PROPONENTES.map(p=>[p.nome,p.qtd+' '+(p.qtd===1?'projeto':'projetos')]),
+    styles:{font:'helvetica',fontSize:9,cellPadding:3.5},
+    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold'},
+    alternateRowStyles:{fillColor:SAND},
+    columnStyles:{0:{cellWidth:155},1:{cellWidth:25,halign:'center',fontStyle:'bold',textColor:G2}},
+    margin:{left:15,right:15}});
+  ey=doc.lastAutoTable.finalY+12;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
+  doc.text('Autores / Redatores',15,ey);
+  doc.setFont('helvetica','italic');doc.setFontSize(8.5);doc.setTextColor(...INKL);
+  doc.text('— 9 redatores',66,ey);ey+=4;
+  doc.autoTable({startY:ey,
+    head:[['Autor / Redator','Projetos']],
+    body:AUTORES.map(a=>[a.nome,a.qtd+' '+(a.qtd===1?'projeto':'projetos')]),
+    styles:{font:'helvetica',fontSize:9,cellPadding:3.5},
+    headStyles:{fillColor:G2,textColor:[255,255,255],fontStyle:'bold'},
+    alternateRowStyles:{fillColor:SAND},
+    columnStyles:{0:{cellWidth:155},1:{cellWidth:25,halign:'center',fontStyle:'bold',textColor:G1}},
+    margin:{left:15,right:15}});
+  ey=doc.lastAutoTable.finalY+16;
+  doc.setFillColor(...G1);doc.rect(15,ey,W-30,0.4,'F');
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...INKL);
+  doc.text('© 2026 · InPACTAS & SEMCTI Benjamin Constant. Todos os direitos reservados.',W/2,ey+7,{align:'center'});
+  const totalPg=doc.getNumberOfPages();
+  _ftr(doc,G1,W,H,String(totalPg));
+  doc.save('Relatorio-Executivo-InPACTAS-FAPEAM2026.pdf');
+}
+
+function _hdr(doc,G1,G2,W,title){
+  doc.setFillColor(...G1);doc.rect(0,0,W,22,'F');
+  doc.setFillColor(...G2);doc.rect(0,22,W,0.5,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(180,210,190);
+  doc.text('InPACTAS & SEMCTI — Editais FAPEAM 2026',10,13);
+  doc.setFontSize(11);doc.setTextColor(255,255,255);
+  doc.text(title,W-10,13,{align:'right'});
+}
+function _ftr(doc,G1,W,H,pg){
+  doc.setFillColor(...G1);doc.rect(0,H-12,W,12,'F');
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(140,190,160);
+  doc.text('Relatório Executivo · InPACTAS & SEMCTI Benjamin Constant',10,H-4.5);
+  doc.setFont('helvetica','bold');doc.text('Pág. '+pg,W-10,H-4.5,{align:'right'});
+}
 function toggleMenu(){const l=document.querySelector('.nav-links');const v=l.style.display==='flex';l.style.display=v?'none':'flex';if(!v){l.style.flexDirection='column';l.style.position='absolute';l.style.top='60px';l.style.left='0';l.style.right='0';l.style.background='#fff';l.style.padding='1rem 2rem';l.style.borderBottom='1px solid var(--cream-border)';l.style.zIndex='99';}}
 populateSelects();renderProjects(PROJECTS);renderEquipe();buildCharts();
 </script>
