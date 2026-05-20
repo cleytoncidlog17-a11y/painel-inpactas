@@ -3,1332 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel FAPEAM 2026 | InPACTAS & SEMCTI</title>
+<title>Editais FAPEAM 2026 — InPACTAS &amp; SEMCTI Benjamin Constant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg:       #EEF2F7;
-  --surf:     #FFFFFF;
-  --surf2:    #F8FAFC;
-  --border:   #E2E8F0;
-  --border2:  #CBD5E1;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-dark:  #1A3D2B;
+    --green-mid:   #2D7A4F;
+    --green-light: #4CAF80;
+    --green-pale:  #E8F5EE;
+    --cream:       #F5F3EE;
+    --cream-border:#E4E0D8;
+    --ink:         #1A2316;
+    --ink-mid:     #2E3D34;
+    --ink-light:   #4A5E52;
+    --sand:        #F9F7F3;
+    --white:       #FFFFFF;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--ink); background: var(--white); line-height: 1.6; }
 
-  --blue:     #2563EB;
-  --blue-l:   #EFF6FF;
-  --blue-m:   #BFDBFE;
-  --green:    #059669;
-  --green-l:  #ECFDF5;
-  --orange:   #D97706;
-  --orange-l: #FFFBEB;
-  --rosa:     #DB2777;
-  --rosa-l:   #FDF2F8;
-  --teal:     #0891B2;
-  --teal-l:   #ECFEFF;
-  --roxo:     #7C3AED;
-  --roxo-l:   #F5F3FF;
+  /* NAV */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--cream-border); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { display: flex; flex-direction: column; gap: 1px; }
+  .nav-name  { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--green-dark); letter-spacing: -0.02em; }
+  .nav-sub   { font-size: 0.7rem; color: var(--ink-light); letter-spacing: 0.04em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--ink-mid); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--green-mid); }
+  .nav-menu-btn { display: none; background: none; border: none; cursor: pointer; font-size: 1.3rem; color: var(--ink); }
 
-  --txt1:  #1E293B;
-  --txt2:  #475569;
-  --txt3:  #94A3B8;
-  --txt4:  #CBD5E1;
+  /* HERO */
+  .hero { background: var(--cream); border-bottom: 1px solid var(--cream-border); padding: 5rem 2rem 4rem; }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 4rem; align-items: center; }
+  .hero-badge { display: inline-block; background: var(--green-pale); color: var(--green-mid); border: 1px solid rgba(45,122,79,.2); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: .35rem .8rem; border-radius: 2rem; margin-bottom: 1.5rem; }
+  .hero-heading { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.4rem, 4.5vw, 3.8rem); font-weight: 800; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+  .hero-heading em { font-style: italic; color: var(--green-mid); }
+  .hero-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.8; max-width: 520px; text-align: justify; hyphens: auto; margin-bottom: 2rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: .4rem; background: var(--green-dark); color: var(--white); font-size: 0.88rem; font-weight: 600; padding: .7rem 1.4rem; border-radius: 4px; text-decoration: none; transition: background .2s; cursor: pointer; border: none; }
+  .btn-primary:hover { background: var(--green-mid); }
+  .btn-secondary { display: inline-flex; align-items: center; gap: .4rem; background: transparent; color: var(--green-dark); font-size: 0.88rem; font-weight: 600; padding: .7rem 1.4rem; border-radius: 4px; text-decoration: none; border: 1.5px solid var(--green-dark); transition: all .2s; cursor: pointer; }
+  .btn-secondary:hover { background: var(--green-pale); }
 
-  --sidebar-w: 52px;
-  --top-h:     52px;
-  --r:         10px;
-  --rLg:       14px;
-  --shadow:    0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
-  --ease:      0.18s ease;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt1);min-height:100vh;font-size:13px;display:flex;flex-direction:column;}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
+  /* Stats Card */
+  .stats-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 24px rgba(26,61,43,.08); }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; margin-bottom: 1.5rem; }
+  .stat-item { text-align: center; }
+  .stat-val { font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--green-dark); line-height: 1; display: block; }
+  .stat-lbl { font-size: 0.75rem; font-weight: 600; color: var(--ink-light); letter-spacing: 0.08em; text-transform: uppercase; margin-top: .3rem; display: block; }
+  .stats-divider { border: none; border-top: 1px solid var(--cream-border); margin-bottom: 1rem; }
+  .stats-tag { font-size: 0.78rem; color: var(--ink-light); display: flex; align-items: center; gap: .4rem; }
+  .stats-tag::before { content: '📍'; font-size: .9rem; }
 
-/* ═══════════════════════════════════════════
-   TOPBAR
-═══════════════════════════════════════════ */
-.topbar {
-  height: var(--top-h);
-  background: var(--surf);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  padding: 0 1rem 0 0;
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  box-shadow: var(--shadow);
-  gap: 0;
-}
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); margin-bottom: .8rem; }
+  .section-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--ink); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .section-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.8; max-width: 680px; text-align: justify; hyphens: auto; }
+  .section-header { margin-bottom: 3rem; }
 
-/* Logo zone */
-.topbar-logo {
-  width: var(--sidebar-w);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-right: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.logo-mark {
-  width: 30px; height: 30px;
-  background: linear-gradient(135deg, #059669, #2563EB);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-}
+  /* SOBRE */
+  #sobre { background: var(--white); }
+  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .sobre-text p { font-size: 0.95rem; color: var(--ink-light); line-height: 1.85; text-align: justify; hyphens: auto; }
+  .sobre-highlight { background: var(--green-pale); border-left: 3px solid var(--green-mid); border-radius: 0 8px 8px 0; padding: 1.5rem 2rem; }
+  .sobre-highlight p { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-style: italic; color: var(--green-dark); line-height: 1.65; text-align: justify; hyphens: auto; }
 
-/* Brand */
-.topbar-brand {
-  padding: 0 1rem;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  flex-shrink: 0;
-}
-.brand-name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--txt1);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-.brand-sub {
-  font-size: 0.62rem;
-  color: var(--txt3);
-  white-space: nowrap;
-}
+  /* EDITAIS */
+  #editais { background: var(--sand); border-top: 1px solid var(--cream-border); border-bottom: 1px solid var(--cream-border); }
+  .editais-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .edital-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.75rem; transition: box-shadow .2s, transform .2s; }
+  .edital-card:hover { box-shadow: 0 8px 32px rgba(26,61,43,.1); transform: translateY(-2px); }
+  .edital-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--green-mid); text-transform: uppercase; margin-bottom: .5rem; }
+  .edital-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: .6rem; line-height: 1.2; }
+  .edital-desc { font-size: 0.83rem; color: var(--ink-light); line-height: 1.7; text-align: justify; hyphens: auto; margin-bottom: 1.2rem; }
+  .edital-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--cream-border); }
+  .edital-tag { font-size: 0.72rem; font-weight: 600; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.06em; }
+  .edital-count { background: var(--green-pale); color: var(--green-dark); font-size: 0.8rem; font-weight: 700; padding: .2rem .65rem; border-radius: 2rem; }
 
-/* Nav pills */
-.topbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0 0.8rem;
-  height: 100%;
-  border-right: 1px solid var(--border);
-}
-.tnav {
-  padding: 0.35rem 0.7rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--txt2);
-  cursor: pointer;
-  transition: all var(--ease);
-  white-space: nowrap;
-  border: 1px solid transparent;
-}
-.tnav:hover { background: var(--bg); color: var(--txt1); }
-.tnav.active {
-  background: var(--blue-l);
-  color: var(--blue);
-  border-color: var(--blue-m);
-  font-weight: 600;
-}
+  /* PROJETOS */
+  #projetos { background: var(--white); }
+  .filters-bar { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 1rem; align-items: end; margin-bottom: 2rem; }
+  .filter-group { display: flex; flex-direction: column; gap: .4rem; }
+  .filter-label { font-size: 0.72rem; font-weight: 700; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.07em; }
+  .filter-input, .filter-select { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--ink); background: var(--white); border: 1px solid var(--cream-border); border-radius: 6px; padding: .55rem .8rem; outline: none; transition: border-color .2s; width: 100%; }
+  .filter-input:focus, .filter-select:focus { border-color: var(--green-mid); }
+  .btn-clear { background: none; border: 1.5px solid var(--cream-border); border-radius: 6px; padding: .55rem 1rem; font-size: 0.82rem; font-weight: 600; color: var(--ink-light); cursor: pointer; white-space: nowrap; transition: all .2s; align-self: flex-end; }
+  .btn-clear:hover { border-color: var(--green-mid); color: var(--green-mid); }
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+  .chart-card { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.5rem; }
+  .chart-title { font-size: 0.8rem; font-weight: 700; color: var(--ink-mid); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
+  .chart-wrap { position: relative; height: 180px; }
+  .projects-meta { font-size: 0.82rem; color: var(--ink-light); margin-bottom: 1.25rem; font-weight: 500; }
+  .projects-meta strong { color: var(--ink); }
+  .projects-grid { display: flex; flex-direction: column; gap: .75rem; }
+  .project-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 52px 1fr auto; gap: 1.2rem; align-items: center; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+  .project-card:hover { box-shadow: 0 4px 20px rgba(26,61,43,.1); border-color: var(--green-mid); }
+  .project-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--cream-border); text-align: center; line-height: 1; }
+  .project-edital-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 2rem; margin-bottom: .4rem; }
+  .project-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: .35rem; }
+  .project-meta { font-size: 0.78rem; color: var(--ink-light); display: flex; gap: 1rem; flex-wrap: wrap; }
+  .project-arrow { font-size: 0.8rem; color: var(--green-mid); font-weight: 600; white-space: nowrap; opacity: 0; transition: opacity .2s; }
+  .project-card:hover .project-arrow { opacity: 1; }
+  .tag-013 { background: #FFF0F5; color: #C2185B; }
+  .tag-009 { background: #E8F5E9; color: #2E7D32; }
+  .tag-008 { background: #E3F2FD; color: #1565C0; }
+  .tag-002 { background: #FFF8E1; color: #E65100; }
+  .tag-004 { background: #F3E5F5; color: #6A1B9A; }
+  .tag-007 { background: #E0F7FA; color: #00695C; }
 
-/* Filtros inline no top */
-.topbar-filters {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.8rem;
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border-right: 1px solid var(--border);
-  overflow-x: auto;
-}
-.tf-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--txt3);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.search-w {
-  position: relative;
-  flex: 1;
-  min-width: 140px;
-  max-width: 220px;
-  flex-shrink: 0;
-}
-.search-ic {
-  position: absolute;
-  left: 0.6rem; top: 50%;
-  transform: translateY(-50%);
-  color: var(--txt3);
-  font-size: 0.72rem;
-  pointer-events: none;
-}
-.tf-input {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.38rem 0.6rem 0.38rem 1.85rem;
-  font-size: 0.78rem;
-  font-family: 'Inter', sans-serif;
-  color: var(--txt1);
-  background: var(--bg);
-  transition: border-color var(--ease), box-shadow var(--ease);
-}
-.tf-input::placeholder { color: var(--txt3); }
-.tf-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); background: var(--surf); }
-.tf-sel {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.38rem 1.6rem 0.38rem 0.6rem;
-  font-size: 0.76rem;
-  font-family: 'Inter', sans-serif;
-  color: var(--txt2);
-  background: var(--bg);
-  appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.55rem center;
-  cursor: pointer;
-  transition: border-color var(--ease);
-  min-width: 110px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-.tf-sel:focus { outline: none; border-color: var(--blue); }
-.clear-btn {
-  background: transparent;
-  border: 1px solid var(--border2);
-  color: var(--txt2);
-  padding: 0.38rem 0.7rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  transition: all var(--ease);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.clear-btn:hover { border-color: var(--rosa); color: var(--rosa); background: var(--rosa-l); }
+  /* EQUIPE */
+  #equipe { background: var(--sand); border-top: 1px solid var(--cream-border); border-bottom: 1px solid var(--cream-border); }
+  .equipe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .equipe-col-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: .35rem; }
+  .equipe-col-sub { font-size: 0.8rem; color: var(--ink-light); margin-bottom: 1.5rem; font-style: italic; }
+  .pessoa-item { display: flex; align-items: center; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid var(--cream-border); }
+  .pessoa-item:last-child { border-bottom: none; }
+  .pessoa-name { font-size: 0.88rem; font-weight: 500; color: var(--ink-mid); }
+  .pessoa-count { font-size: 0.78rem; font-weight: 700; color: var(--green-mid); background: var(--green-pale); padding: .15rem .55rem; border-radius: 2rem; white-space: nowrap; }
 
-/* Chips */
-.top-chips {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-}
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: var(--blue-l);
-  border: 1px solid var(--blue-m);
-  color: var(--blue);
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.18rem 0.45rem;
-  border-radius: 100px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.chip:hover { background: var(--blue-m); }
+  /* MATERIAIS */
+  #materiais { background: var(--white); }
+  .materiais-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .material-card { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .material-icon { width: 44px; height: 44px; background: var(--green-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .material-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); }
+  .material-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .material-desc { font-size: 0.82rem; color: var(--ink-light); line-height: 1.7; flex: 1; text-align: justify; hyphens: auto; }
+  .material-link { display: inline-flex; align-items: center; gap: .35rem; font-size: 0.83rem; font-weight: 600; color: var(--green-mid); text-decoration: none; border-bottom: 1.5px solid transparent; transition: border-color .2s; cursor: pointer; background: none; border-left: none; border-right: none; border-top: none; padding: 0; font-family: 'Inter', sans-serif; }
+  .material-link:hover { border-bottom-color: var(--green-mid); }
 
-/* Info direita */
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0 0.8rem;
-  flex-shrink: 0;
-}
-.res-badge {
-  font-size: 0.72rem;
-  color: var(--txt2);
-  white-space: nowrap;
-}
-.res-badge strong { color: var(--blue); font-size: 0.82rem; font-weight: 700; }
-.date-badge {
-  font-size: 0.7rem;
-  color: var(--txt3);
-  white-space: nowrap;
-}
-.year-badge {
-  background: var(--blue);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.2rem 0.55rem;
-  border-radius: 100px;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 4rem 2rem 2rem; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 2rem; }
+  .footer-brand-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+  .footer-brand-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,.55); }
+  .footer-col-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 1rem; }
+  .footer-links { display: flex; flex-direction: column; gap: .5rem; }
+  .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-partners { display: flex; flex-direction: column; gap: .5rem; }
+  .footer-partner { font-size: 0.82rem; color: rgba(255,255,255,.55); }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,.35); }
 
-/* ═══════════════════════════════════════════
-   LAYOUT
-═══════════════════════════════════════════ */
-.layout {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,35,22,.5); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 14px; max-width: 620px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(26,35,22,.3); }
+  .modal-header { padding: 1.75rem 2rem 1rem; border-bottom: 1px solid var(--cream-border); display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; position: sticky; top: 0; background: var(--white); border-radius: 14px 14px 0 0; }
+  .modal-close { background: none; border: none; font-size: 1.4rem; color: var(--ink-light); cursor: pointer; line-height: 1; flex-shrink: 0; transition: color .2s; }
+  .modal-close:hover { color: var(--ink); }
+  .modal-body { padding: 1.5rem 2rem 2rem; }
+  .modal-num { font-size: 0.75rem; font-weight: 700; color: var(--ink-light); margin-bottom: .5rem; letter-spacing: .05em; }
+  .modal-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.4; }
+  .modal-field { margin-bottom: 1rem; }
+  .modal-field-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: .3rem; }
+  .modal-field-val { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
 
-/* ═══════════════════════════════════════════
-   SIDEBAR (ícones)
-═══════════════════════════════════════════ */
-.sidebar {
-  width: var(--sidebar-w);
-  background: var(--surf);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.8rem 0;
-  gap: 0.3rem;
-  flex-shrink: 0;
-}
-@media(max-width:700px){.sidebar{display:none;}}
-
-.sico {
-  width: 36px; height: 36px;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all var(--ease);
-  color: var(--txt3);
-  position: relative;
-}
-.sico:hover { background: var(--bg); color: var(--txt1); }
-.sico.active { background: var(--blue-l); color: var(--blue); }
-.sico[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--txt1);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.25rem 0.55rem;
-  border-radius: 5px;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 999;
-}
-
-.sidebar-sep { width: 28px; height: 1px; background: var(--border); margin: 0.2rem 0; }
-.sidebar-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
-
-/* ═══════════════════════════════════════════
-   MAIN CONTENT
-═══════════════════════════════════════════ */
-.main {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-/* ── KPI ROW ── */
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.8rem;
-}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:500px){.kpi-row{grid-template-columns:1fr 1fr;}}
-
-.kpi {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 0.9rem 1rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  transition: box-shadow var(--ease), border-color var(--ease), transform var(--ease);
-  position: relative;
-  overflow: hidden;
-}
-.kpi:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
-.kpi.active { border-color: currentColor; }
-.kpi-1 { --kc: var(--blue);   --kl: var(--blue-l); }
-.kpi-2 { --kc: var(--teal);   --kl: var(--teal-l); }
-.kpi-3 { --kc: var(--green);  --kl: var(--green-l); }
-.kpi-4 { --kc: var(--orange); --kl: var(--orange-l); }
-.kpi.active { background: var(--kl); }
-
-.kpi-icon {
-  width: 38px; height: 38px;
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  background: var(--kl);
-}
-.kpi-1 .kpi-icon { background: var(--blue-l); }
-.kpi-2 .kpi-icon { background: var(--teal-l); }
-.kpi-3 .kpi-icon { background: var(--green-l); }
-.kpi-4 .kpi-icon { background: var(--orange-l); }
-
-.kpi-info { flex: 1; min-width: 0; }
-.kpi-val {
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--kc);
-  margin-bottom: 0.15rem;
-}
-.kpi-lbl { font-size: 0.68rem; color: var(--txt2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
-.kpi-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.1rem; }
-
-.kpi-chart { width: 55px; height: 35px; flex-shrink: 0; }
-
-/* ── CHARTS + TABLE ROW ── */
-.mid-row {
-  display: grid;
-  grid-template-columns: 1.4fr 0.85fr 0.85fr;
-  gap: 0.8rem;
-}
-@media(max-width:960px){.mid-row{grid-template-columns:1fr 1fr;}}
-@media(max-width:620px){.mid-row{grid-template-columns:1fr;}}
-
-.panel {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: border-color var(--ease);
-}
-.panel:hover { border-color: var(--border2); }
-
-.ph {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--surf2);
-  gap: 0.5rem;
-}
-.ph-title {
-  font-size: 0.73rem;
-  font-weight: 700;
-  color: var(--txt1);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.ph-sub { font-size: 0.62rem; color: var(--txt3); margin-top: 0.05rem; }
-.ph-badge {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--txt2);
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 0.12rem 0.42rem;
-  border-radius: 100px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.pb { padding: 0.8rem 1rem; }
-.cw { position: relative; }
-.cw-lg { height: 190px; }
-.cw-md { height: 170px; }
-
-/* ── EDITAL LIST (sidebar do painel) ── */
-.edital-list { display: flex; flex-direction: column; gap: 0.35rem; }
-.ei {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 0.6rem;
-  border-radius: 7px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all var(--ease);
-}
-.ei:hover { background: var(--bg); border-color: var(--border); }
-.ei.active { border-color: currentColor; }
-.ei-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.ei-name { flex: 1; font-size: 0.76rem; font-weight: 500; color: var(--txt2); line-height: 1.3; }
-.ei.active .ei-name { font-weight: 700; }
-.ei-bar-wrap { width: 60px; height: 5px; background: var(--bg); border-radius: 10px; overflow: hidden; flex-shrink: 0; }
-.ei-bar { height: 100%; border-radius: 10px; }
-.ei-cnt { font-size: 0.68rem; font-weight: 700; color: var(--txt3); min-width: 14px; text-align: right; flex-shrink: 0; }
-
-/* ── PROJECTS TABLE / GRID ── */
-.proj-section { display: flex; flex-direction: column; gap: 0.6rem; }
-.proj-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.proj-title {
-  font-size: 0.73rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--txt1);
-}
-.view-toggle {
-  display: flex;
-  gap: 0.25rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 0.2rem;
-}
-.vbtn {
-  padding: 0.28rem 0.55rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.75rem;
-  color: var(--txt3);
-  transition: all var(--ease);
-  border: none;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-}
-.vbtn.active { background: var(--surf); color: var(--blue); font-weight: 600; box-shadow: var(--shadow); }
-
-/* Cards grid */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 0.65rem;
-}
-
-.pc {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.pc:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border2); }
-.pc-top { height: 3px; width: 100%; }
-[data-k="013"] .pc-top { background: linear-gradient(90deg,#DB2777,#9333EA); }
-[data-k="009"] .pc-top { background: linear-gradient(90deg,#059669,#0891B2); }
-[data-k="008"] .pc-top { background: linear-gradient(90deg,#2563EB,#0891B2); }
-[data-k="002"] .pc-top { background: linear-gradient(90deg,#D97706,#DC2626); }
-[data-k="004"] .pc-top { background: linear-gradient(90deg,#7C3AED,#2563EB); }
-[data-k="007"] .pc-top { background: linear-gradient(90deg,#059669,#65A30D); }
-
-.pc-num {
-  position: absolute;
-  top: 0.55rem; right: 0.55rem;
-  background: var(--bg);
-  color: var(--txt3);
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 0.1rem 0.38rem;
-  border-radius: 100px;
-  border: 1px solid var(--border);
-}
-.pc-body { padding: 0.7rem 0.75rem 0.5rem; flex: 1; }
-.ptag {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  padding: 0.15rem 0.45rem;
-  border-radius: 100px;
-  margin-bottom: 0.45rem;
-  margin-right: 1.8rem;
-}
-.t013{background:#FDF2F8;color:#DB2777;border:1px solid #FBCFE8;}
-.t009{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
-.t008{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;}
-.t002{background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;}
-.t004{background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;}
-.t007{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;}
-
-.ptitle {
-  font-size: 0.79rem;
-  font-weight: 600;
-  color: var(--txt1);
-  line-height: 1.38;
-  margin-bottom: 0.45rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.prow { display: flex; gap: 0.3rem; font-size: 0.7rem; margin-bottom: 0.25rem; color: var(--txt2); align-items: flex-start; }
-.prowlbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--txt3); min-width: 60px; flex-shrink: 0; padding-top: 1px; }
-
-.pc-foot {
-  padding: 0.45rem 0.75rem;
-  border-top: 1px solid var(--border);
-  background: var(--surf2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.pfi { font-size: 0.6rem; color: var(--txt3); }
-.pcta { font-size: 0.68rem; font-weight: 600; color: var(--blue); opacity: 0.7; display: flex; align-items: center; gap: 0.2rem; transition: all var(--ease); }
-.pc:hover .pcta { opacity: 1; gap: 0.35rem; }
-
-/* Table view */
-.proj-table { width: 100%; border-collapse: collapse; background: var(--surf); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
-.proj-table th {
-  background: var(--surf2);
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--txt3);
-  padding: 0.55rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-.proj-table td {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.76rem;
-  color: var(--txt1);
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-}
-.proj-table tr:last-child td { border-bottom: none; }
-.proj-table tbody tr { cursor: pointer; transition: background var(--ease); }
-.proj-table tbody tr:hover { background: var(--surf2); }
-.td-title { max-width: 300px; font-weight: 500; color: var(--txt1); line-height: 1.35; }
-.td-title span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.td-tag { white-space: nowrap; }
-.td-num { font-weight: 700; color: var(--txt3); font-size: 0.68rem; text-align: center; }
-
-/* Empty */
-.empty { grid-column:1/-1; text-align:center; padding:2.5rem; background:var(--surf); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow); }
-.empty-ico { font-size:2rem; margin-bottom:0.5rem; opacity:0.3; }
-.empty h3 { font-size:0.9rem; color:var(--txt2); margin-bottom:0.25rem; }
-.empty p { font-size:0.78rem; color:var(--txt3); }
-
-/* ═══════════════════════════════════════════
-   MODAL
-═══════════════════════════════════════════ */
-.overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.55); z-index:500; align-items:flex-start; justify-content:center; padding:2rem 1rem; overflow-y:auto; backdrop-filter:blur(4px); }
-.overlay.on { display:flex; }
-.modal { background:var(--surf); max-width:720px; width:100%; border-radius:var(--rLg); overflow:hidden; border:1px solid var(--border); box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:pop .26s cubic-bezier(.34,1.56,.64,1); }
-@keyframes pop { from{opacity:0;transform:translateY(18px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);} }
-.mh { background:var(--surf2); padding:1.4rem 1.6rem; border-bottom:1px solid var(--border); position:relative; }
-.maccent { position:absolute; top:0; left:0; right:0; height:3px; }
-.mnum { font-size:0.65rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.7px; font-weight:600; margin-bottom:0.35rem; display:flex; align-items:center; gap:0.5rem; }
-.mnum::before { content:''; width:14px; height:2px; border-radius:2px; background:var(--blue); }
-.mtitle { font-size:clamp(0.9rem,2vw,1.15rem); font-weight:700; line-height:1.3; color:var(--txt1); padding-right:2.5rem; }
-.mclose { position:absolute; top:1.1rem; right:1.1rem; background:var(--bg); border:1px solid var(--border); color:var(--txt2); width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all var(--ease); }
-.mclose:hover { background:var(--rosa-l); border-color:var(--rosa); color:var(--rosa); }
-.mb { padding:1.4rem 1.6rem; }
-.mlbl { font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--blue); margin-bottom:0.25rem; }
-.mval { font-size:0.87rem; color:var(--txt1); margin-bottom:1rem; line-height:1.5; text-align:justify; hyphens:auto; }
-.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:1rem; }
-@media(max-width:500px){.mgrid{grid-template-columns:1fr;}}
-.mstat { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.75rem 0.9rem; }
-.mstat .mlbl { margin-bottom:0.18rem; }
-.mstat .mval { margin-bottom:0; font-weight:600; font-size:0.83rem; }
-.minst { background:var(--blue-l); border:1px solid var(--blue-m); border-radius:8px; padding:0.75rem 0.9rem; font-size:0.79rem; color:var(--txt2); line-height:1.6; text-align:justify; hyphens:auto; }
-.minst strong { color:var(--blue); }
-.mbtns { margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
-.mbtn { padding:0.4rem 0.8rem; border-radius:7px; font-size:0.73rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--ease); border:1px solid; }
-
-/* ═══════════════════════════════════════════
-   HERO NAV + HERO SECTION
-═══════════════════════════════════════════ */
-.hero-wrap {
-  background: #F5F3EE;
-  border-bottom: 1px solid #E4E0D8;
-}
-
-/* Nav */
-.hero-nav {
-  display: flex;
-  align-items: center;
-  padding: 0.9rem 2.4rem;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
-  gap: 1rem;
-}
-.hn-brand { display:flex; flex-direction:column; justify-content:center; flex-shrink:0; }
-.hn-name  { font-size:0.9rem; font-weight:700; color:#1A2E22; letter-spacing:-0.01em; }
-.hn-sub   { font-size:0.65rem; color:#8A9E90; margin-top:0.05rem; }
-.hn-links { display:flex; align-items:center; gap:0.15rem; margin-left:auto; }
-.hn-link  {
-  padding:0.32rem 0.75rem; border-radius:6px;
-  font-size:0.78rem; font-weight:500; color:#4A6455;
-  cursor:pointer; transition:background 0.15s, color 0.15s;
-  white-space:nowrap;
-}
-.hn-link:hover { background:rgba(0,0,0,0.05); color:#1A2E22; }
-.hn-cta {
-  margin-left:0.8rem;
-  background:#1A2E22; color:white;
-  border:none; border-radius:100px;
-  padding:0.45rem 1.1rem;
-  font-size:0.78rem; font-weight:600;
-  font-family:'Inter',sans-serif;
-  cursor:pointer; white-space:nowrap;
-  transition:background 0.18s, transform 0.18s;
-}
-.hn-cta:hover { background:#2D5440; transform:translateY(-1px); }
-
-/* Hero */
-.hero-section {
-  display:grid;
-  grid-template-columns:1fr 420px;
-  gap:3rem;
-  padding:3.5rem 2.4rem 3rem;
-  max-width:1200px;
-  margin:0 auto;
-  box-sizing:border-box;
-  width:100%;
-}
-@media(max-width:860px){
-  .hero-section{ grid-template-columns:1fr; }
-  .hero-stats-card{ max-width:400px; }
-}
-.hero-badge {
-  display:inline-flex; align-items:center; gap:0.4rem;
-  background:#E8F2EC; color:#2D7A4F;
-  font-size:0.72rem; font-weight:600;
-  padding:0.3rem 0.75rem; border-radius:100px;
-  border:1px solid #C4DFD0;
-  margin-bottom:1.2rem;
-}
-.hero-badge::before {
-  content:''; width:6px; height:6px; border-radius:50%;
-  background:#2D7A4F; flex-shrink:0;
-}
-.hero-heading {
-  font-family:'Playfair Display', Georgia, serif;
-  font-size:clamp(2.4rem,4.5vw,3.8rem);
-  font-weight:800;
-  line-height:1.12;
-  color:#1A2316;
-  letter-spacing:-0.02em;
-  margin-bottom:1.2rem;
-}
-.hero-heading em {
-  font-style:italic;
-  color:#2D7A4F;
-}
-.hero-desc {
-  font-size:0.9rem;
-  color:#4A5E52;
-  line-height:1.75;
-  max-width:520px;
-  text-align:justify;
-  hyphens:auto;
-}
-
-/* Stats card */
-.hero-stats-card {
-  background:#FFFFFF;
-  border:1px solid #E0DDD6;
-  border-radius:16px;
-  padding:1.6rem;
-  box-shadow:0 2px 12px rgba(0,0,0,0.06);
-  align-self:center;
-}
-.hsc-grid {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:0.1rem;
-  margin-bottom:1.2rem;
-}
-.hsc-item {
-  padding:0.9rem 0.6rem;
-  border-radius:8px;
-}
-.hsc-val {
-  font-family:'Playfair Display', Georgia, serif;
-  font-size:2.2rem; font-weight:700;
-  color:#1A3D2B;
-  line-height:1;
-  margin-bottom:0.25rem;
-}
-.hsc-lbl {
-  font-size:0.63rem; font-weight:700;
-  text-transform:uppercase; letter-spacing:0.8px;
-  color:#8A9E90;
-}
-.hsc-tag {
-  display:flex; align-items:center; gap:0.45rem;
-  font-size:0.73rem; color:#4A6455; font-weight:500;
-  padding-top:1rem;
-  border-top:1px solid #EEE9E0;
-}
-.hsc-tag::before {
-  content:''; width:7px; height:7px; border-radius:50%;
-  background:#E05585; flex-shrink:0;
-}
-
-/* footer */
-footer { background:var(--surf); border-top:1px solid var(--border); padding:0.7rem 1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem; }
-.fbrand { font-size:0.73rem; font-weight:700; color:var(--txt1); }
-.fbrand span { color:var(--blue); }
-.fmeta { font-size:0.65rem; color:var(--txt3); }
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .stats-card { max-width: 400px; }
+    .sobre-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .editais-grid { grid-template-columns: 1fr 1fr; }
+    .filters-bar { grid-template-columns: 1fr 1fr; }
+    .charts-row { grid-template-columns: 1fr; }
+    .equipe-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .materiais-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .nav-menu-btn { display: block; }
+  }
+  @media (max-width: 600px) {
+    .editais-grid { grid-template-columns: 1fr; }
+    .materiais-grid { grid-template-columns: 1fr; }
+    .filters-bar { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .project-card { grid-template-columns: 36px 1fr; }
+    .project-arrow { display: none; }
+  }
 </style>
 </head>
-<body>
+<body id="top">
 
-<!-- ═══ HERO ═══ -->
-<div class="hero-wrap">
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-name">InPACTAS &amp; SEMCTI</span>
+    <span class="nav-sub">Benjamin Constant · Alto Solimões</span>
+  </div>
+  <div class="nav-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#editais">Editais</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#equipe">Equipe</a>
+    <a href="#materiais">Materiais</a>
+  </div>
+  <button class="nav-menu-btn" onclick="toggleMenu()">&#9776;</button>
+</nav>
 
-  <nav class="hero-nav">
-    <div class="hn-brand">
-      <div class="hn-name">InPACTAS &amp; SEMCTI</div>
-      <div class="hn-sub">Benjamin Constant · Alto Solimões</div>
-    </div>
-    <div class="hn-links">
-      <div class="hn-link">Sobre</div>
-      <div class="hn-link">Editais</div>
-      <div class="hn-link">Projetos</div>
-      <div class="hn-link">Equipe</div>
-      <div class="hn-link">Materiais</div>
-    </div>
-    <button class="hn-cta" onclick="document.getElementById('painel').scrollIntoView({behavior:'smooth'})">Explorar painel</button>
-  </nav>
-
-  <div class="hero-section">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-badge">Editais FAPEAM 2026 · Benjamin Constant</div>
-      <h1 class="hero-heading">
-        Ciência e inovação<br>
-        <em>articuladas</em> no Alto<br>
-        Solimões.
-      </h1>
+      <h1 class="hero-heading">Ciência e inovação<br><em>articuladas</em> no Alto<br>Solimões.</h1>
       <p class="hero-desc">22 projetos de Ciência, Tecnologia e Inovação submetidos pela Incubadora InPACTAS, pela SEMCTI e pelo INC/UFAM aos editais FAPEAM 2026 — com foco em bioeconomia, saúde pública, popularização da ciência, ecoturismo, inclusão digital e protagonismo feminino.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#projetos">Explorar os projetos →</a>
+        <a class="btn-secondary" href="#editais">Conhecer os editais</a>
+      </div>
     </div>
     <div class="hero-right">
-      <div class="hero-stats-card">
-        <div class="hsc-grid">
-          <div class="hsc-item"><div class="hsc-val">22</div><div class="hsc-lbl">Projetos</div></div>
-          <div class="hsc-item"><div class="hsc-val">6</div><div class="hsc-lbl">Editais</div></div>
-          <div class="hsc-item"><div class="hsc-val">12</div><div class="hsc-lbl">Proponentes</div></div>
-          <div class="hsc-item"><div class="hsc-val">9</div><div class="hsc-lbl">Autores</div></div>
+      <div class="stats-card">
+        <div class="stats-grid">
+          <div class="stat-item"><span class="stat-val">22</span><span class="stat-lbl">Projetos</span></div>
+          <div class="stat-item"><span class="stat-val">6</span><span class="stat-lbl">Editais</span></div>
+          <div class="stat-item"><span class="stat-val">12</span><span class="stat-lbl">Proponentes</span></div>
+          <div class="stat-item"><span class="stat-val">9</span><span class="stat-lbl">Autores</span></div>
         </div>
-        <div class="hsc-tag">Alto Solimões — Tríplice Fronteira BR/CO/PE</div>
+        <hr class="stats-divider">
+        <p class="stats-tag">Alto Solimões — Tríplice Fronteira BR/CO/PE</p>
       </div>
     </div>
   </div>
+</section>
 
-</div>
-
-<!-- ═══ PAINEL ═══ -->
-<div id="painel">
-
-<!-- ═══ TOPBAR ═══ -->
-<header class="topbar">
-  <div class="topbar-logo">
-    <div class="logo-mark">🌿</div>
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-label">Sobre o Painel</div>
+      <h2 class="section-title">Um portfólio articulado de pesquisa com a Amazônia.</h2>
+    </div>
+    <div class="sobre-grid">
+      <div class="sobre-text">
+        <p>A Incubadora InPACTAS (Incubadora de Negócios de Impacto Socioambiental do Alto Solimões), a Secretaria Municipal de Ciência, Tecnologia e Inovação (SEMCTI) e o Instituto de Natureza e Cultura da UFAM (INC) consolidaram, em Benjamin Constant, a maior submissão coletiva de projetos da região aos editais FAPEAM 2026. Este painel reúne, em um único lugar, a visão completa dessas 22 propostas — para apoiar a equipe, parceiros e o público interessado no acompanhamento dessa carteira.</p>
+      </div>
+      <div class="sobre-highlight">
+        <p>"Uma rede que une InPACTAS, SEMCTI, UFAM/INC e profissionais parceiros da Tríplice Fronteira Brasil-Colômbia-Peru — em prol da ciência e inovação amazônica."</p>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="topbar-brand">
-    <div class="brand-name">INPACTAS & SEMCTI</div>
-    <div class="brand-sub">Benjamin Constant — AM</div>
+<!-- EDITAIS -->
+<section id="editais">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-label">Editais FAPEAM 2026</div>
+      <h2 class="section-title">Seis editais, uma estratégia integrada.</h2>
+      <p class="section-desc">Cada edital aborda um eixo temático específico de Ciência, Tecnologia e Inovação. Juntos, articulam saúde, bioeconomia, popularização da ciência, equidade, ecoturismo e tecnologias sociais para o desenvolvimento sustentável do Alto Solimões.</p>
+    </div>
+    <div class="editais-grid">
+      <div class="edital-card">
+        <div class="edital-num">013</div>
+        <div class="edital-name">Amazônidas</div>
+        <p class="edital-desc">Meninas e Mulheres na Ciência. Fomenta o protagonismo feminino na pesquisa científica amazônica.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 013/2026</span><span class="edital-count">2 projeto(s)</span></div>
+      </div>
+      <div class="edital-card">
+        <div class="edital-num">009</div>
+        <div class="edital-name">Socio Tech</div>
+        <p class="edital-desc">Tecnologias sociais de baixo custo para fortalecer comunidades tradicionais da Amazônia.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 009/2026</span><span class="edital-count">4 projeto(s)</span></div>
+      </div>
+      <div class="edital-card">
+        <div class="edital-num">008</div>
+        <div class="edital-name">PROVIDA-AM</div>
+        <p class="edital-desc">Saúde pública e desenvolvimento de protocolos diagnósticos para o interior do Amazonas.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 008/2026</span><span class="edital-count">2 projeto(s)</span></div>
+      </div>
+      <div class="edital-card">
+        <div class="edital-num">002</div>
+        <div class="edital-name">POP CT&amp;I</div>
+        <p class="edital-desc">Popularização da Ciência, Tecnologia e Inovação junto à comunidade amazônica.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 002/2026</span><span class="edital-count">12 projeto(s)</span></div>
+      </div>
+      <div class="edital-card">
+        <div class="edital-num">004</div>
+        <div class="edital-name">PROSPAM</div>
+        <p class="edital-desc">Produtividade pesqueira sustentável com tecnologias de monitoramento digital.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 004/2026</span><span class="edital-count">1 projeto(s)</span></div>
+      </div>
+      <div class="edital-card">
+        <div class="edital-num">007</div>
+        <div class="edital-name">PAINTER Ecoturismo</div>
+        <p class="edital-desc">Plataformas digitais e tecnologias imersivas para ecoturismo científico amazônico.</p>
+        <div class="edital-footer"><span class="edital-tag">Edital 007/2026</span><span class="edital-count">1 projeto(s)</span></div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <nav class="topbar-nav">
-    <div class="tnav active">Painel</div>
-    <div class="tnav">Projetos</div>
-    <div class="tnav">Editais</div>
-    <div class="tnav">Relatórios</div>
-  </nav>
-
-  <div class="topbar-filters">
-    <span class="tf-label">Filtrar</span>
-    <div class="search-w">
-      <span class="search-ic">🔍</span>
-      <input type="text" class="tf-input" id="search" placeholder="Buscar projeto, autor…">
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-label">Os 22 Projetos</div>
+      <h2 class="section-title">Explore o portfólio de forma interativa.</h2>
+      <p class="section-desc">Use os filtros para navegar por edital, proponente ou autor. Clique em qualquer projeto para ver os detalhes completos.</p>
     </div>
-    <select class="tf-sel" id="fEdital"><option value="">Todos os editais</option></select>
-    <select class="tf-sel" id="fProp"><option value="">Todos os proponentes</option></select>
-    <select class="tf-sel" id="fAutor"><option value="">Todos os autores</option></select>
-    <div class="top-chips" id="topChips"></div>
-    <button class="clear-btn" id="clearBtn">✕ Limpar</button>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label class="filter-label">Buscar</label>
+        <input class="filter-input" id="f-search" type="text" placeholder="Título, proponente, autor..." oninput="applyFilters()">
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Edital</label>
+        <select class="filter-select" id="f-edital" onchange="applyFilters()">
+          <option value="">Todos</option>
+          <option value="013">013 — Amazônidas</option>
+          <option value="009">009 — Socio Tech</option>
+          <option value="008">008 — PROVIDA-AM</option>
+          <option value="002">002 — POP CT&amp;I</option>
+          <option value="004">004 — PROSPAM</option>
+          <option value="007">007 — PAINTER Ecoturismo</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Proponente</label>
+        <select class="filter-select" id="f-proponente" onchange="applyFilters()"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Autor</label>
+        <select class="filter-select" id="f-autor" onchange="applyFilters()"><option value="">Todos</option></select>
+      </div>
+      <button class="btn-clear" onclick="clearFilters()">Limpar</button>
+    </div>
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Distribuição por edital</div>
+        <div class="chart-wrap"><canvas id="chart-editais"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Produtividade por autor</div>
+        <div class="chart-wrap"><canvas id="chart-autores"></canvas></div>
+      </div>
+    </div>
+    <p class="projects-meta" id="projects-count">Exibindo <strong>22</strong> de 22 projeto(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small></p>
+    <div class="projects-grid" id="projects-list"></div>
   </div>
+</section>
 
-  <div class="topbar-right">
-    <span class="res-badge">Exibindo <strong id="resCount">22</strong></span>
-    <span class="date-badge" id="tDate"></span>
-    <span class="year-badge">FAPEAM 2026</span>
+<!-- EQUIPE -->
+<section id="equipe">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-label">Quem Está Por Trás</div>
+      <h2 class="section-title">Pesquisadores e autores da nossa equipe.</h2>
+      <p class="section-desc">A articulação envolve doze proponentes pesquisadores e nove autores responsáveis pela redação das propostas — uma rede que une InPACTAS, SEMCTI, UFAM/INC e profissionais parceiros da região.</p>
+    </div>
+    <div class="equipe-grid">
+      <div>
+        <div class="equipe-col-title">Proponentes</div>
+        <div class="equipe-col-sub">— 12 pesquisadores</div>
+        <div id="list-proponentes"></div>
+      </div>
+      <div>
+        <div class="equipe-col-title">Autores</div>
+        <div class="equipe-col-sub">— 9 redatores</div>
+        <div id="list-autores"></div>
+      </div>
+    </div>
   </div>
-</header>
+</section>
 
-<!-- ═══ LAYOUT ═══ -->
-<div class="layout">
-
-  <!-- SIDEBAR ÍCONES -->
-  <aside class="sidebar">
-    <div class="sico active" title="Painel">📊</div>
-    <div class="sico" title="Projetos">📁</div>
-    <div class="sico" title="Editais">📋</div>
-    <div class="sico" title="Proponentes">🔬</div>
-    <div class="sidebar-sep"></div>
-    <div class="sico" title="Relatórios">📈</div>
-    <div class="sico" title="Configurações">⚙️</div>
-    <div class="sidebar-foot">
-      <div class="sico" title="Ajuda">❓</div>
+<!-- MATERIAIS -->
+<section id="materiais">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-label">Materiais</div>
+      <h2 class="section-title">Tudo o que você precisa em um só lugar.</h2>
+      <p class="section-desc">Baixe o relatório executivo em PDF, compartilhe o link do painel com a equipe ou acesse outros materiais relacionados.</p>
     </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- KPI CARDS -->
-    <div class="kpi-row">
-      <div class="kpi kpi-1" id="kpi-all" onclick="clearFilters()" title="Ver todos">
-        <div class="kpi-icon">🌿</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiTotal">22</div>
-          <div class="kpi-lbl">Total Projetos</div>
-          <div class="kpi-sub">Submetidos 2026</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart1"></canvas>
+    <div class="materiais-grid">
+      <div class="material-card">
+        <div class="material-icon">📄</div>
+        <div class="material-label">PDF Relatório</div>
+        <div class="material-title">Relatório Executivo dos 22 Projetos</div>
+        <p class="material-desc">Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital. Gerado na hora.</p>
+        <button class="material-link" onclick="window.print()">Baixar PDF →</button>
       </div>
-      <div class="kpi kpi-2">
-        <div class="kpi-icon">📋</div>
-        <div class="kpi-info">
-          <div class="kpi-val">6</div>
-          <div class="kpi-lbl">Editais</div>
-          <div class="kpi-sub">Programas FAPEAM</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart2"></canvas>
+      <div class="material-card">
+        <div class="material-icon">🔗</div>
+        <div class="material-label">Link Painel Online</div>
+        <div class="material-title">Versão pública do painel</div>
+        <p class="material-desc">Link permanente para compartilhar com a equipe, parceiros e o público interessado. Acessível de qualquer dispositivo.</p>
+        <button class="material-link" onclick="copyLink()">Copiar link →</button>
       </div>
-      <div class="kpi kpi-3">
-        <div class="kpi-icon">🔬</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiProp">12</div>
-          <div class="kpi-lbl">Proponentes</div>
-          <div class="kpi-sub">Pesquisadores líderes</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart3"></canvas>
-      </div>
-      <div class="kpi kpi-4">
-        <div class="kpi-icon">✍️</div>
-        <div class="kpi-info">
-          <div class="kpi-val" id="kpiAut">9</div>
-          <div class="kpi-lbl">Autores</div>
-          <div class="kpi-sub">Redatores envolvidos</div>
-        </div>
-        <canvas class="kpi-chart" id="kpiChart4"></canvas>
+      <div class="material-card">
+        <div class="material-icon">🗂️</div>
+        <div class="material-label">Dados</div>
+        <div class="material-title">Lista interativa filtrável</div>
+        <p class="material-desc">Use os filtros por edital, proponente e autor diretamente no painel desta página para navegar pelos projetos.</p>
+        <a class="material-link" href="#projetos">Ir para projetos →</a>
       </div>
     </div>
-
-    <!-- CHARTS + EDITAL LIST -->
-    <div class="mid-row">
-
-      <!-- Barras por edital -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Projetos por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
-          <span class="ph-badge">6 editais</span>
-        </div>
-        <div class="pb"><div class="cw cw-lg"><canvas id="cEdital"></canvas></div></div>
-      </div>
-
-      <!-- Donut -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Por Programa</div><div class="ph-sub">Proporção</div></div>
-        </div>
-        <div class="pb"><div class="cw cw-lg"><canvas id="cDonut"></canvas></div></div>
-      </div>
-
-      <!-- Lista por edital -->
-      <div class="panel">
-        <div class="ph">
-          <div><div class="ph-title">Por Edital</div><div class="ph-sub">Clique para filtrar</div></div>
-        </div>
-        <div class="pb">
-          <div class="edital-list" id="editalList"></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- PROJETOS -->
-    <div class="proj-section">
-      <div class="proj-header">
-        <div class="proj-title">Projetos</div>
-        <div class="view-toggle">
-          <button class="vbtn active" id="vGrid" onclick="setView('grid')">▦ Cards</button>
-          <button class="vbtn" id="vTable" onclick="setView('table')">≡ Tabela</button>
-        </div>
-      </div>
-      <div id="projContainer"></div>
-    </div>
-
-
-  </main>
-</div>
-
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="mh">
-      <div class="maccent" id="mAccent"></div>
-      <button class="mclose" id="mClose">×</button>
-      <div class="mnum" id="mNum"></div>
-      <h2 class="mtitle" id="mTitle"></h2>
-    </div>
-    <div class="mb" id="mBody"></div>
   </div>
-</div>
+</section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="fbrand">INPACTAS <span>&</span> SEMCTI — Benjamin Constant/AM</div>
-  <div class="fmeta">Atualizado em <span id="fDate"></span> · Editais FAPEAM 2026</div>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">InPACTAS &amp; SEMCTI</div>
+        <p class="footer-brand-desc">Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC<br>Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM<br><br>Brasil · Tríplice Fronteira</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Navegar</div>
+        <div class="footer-links">
+          <a href="#sobre">Sobre o painel</a>
+          <a href="#editais">Editais FAPEAM 2026</a>
+          <a href="#projetos">Lista de projetos</a>
+          <a href="#equipe">Equipe</a>
+          <a href="#materiais">Materiais</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Parcerias</div>
+        <div class="footer-partners">
+          <span class="footer-partner">FAPEAM</span>
+          <span class="footer-partner">UFAM — INC</span>
+          <span class="footer-partner">Prefeitura de Benjamin Constant</span>
+          <span class="footer-partner">SEMCTI</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 · InPACTAS &amp; SEMCTI Benjamin Constant. Todos os direitos reservados. Atualizado em 20 de maio de 2026</span>
+    </div>
+  </div>
 </footer>
 
-<script>
-// ════════════════════════════════════════════════
-// DADOS
-// ════════════════════════════════════════════════
-const P = [
-  {id:"01",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira",proponente:"Maria Angélica de Almeida Corrêa",autor:"Alícia Nascimento"},
-  {id:"02",k:"013",curto:"Amazônidas 013",edital:"Edital N.º 013/2026 — Amazônidas: Meninas e Mulheres na Ciência 2026",titulo:"BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia",proponente:"Leonor Farias Abreu",autor:"Andreza Hilário"},
-  {id:"03",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Juventude Amazônica e Cidadania Digital: Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"04",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Óleos da Floresta: Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Andreza Hilário"},
-  {id:"05",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"06",k:"009",curto:"Socio Tech 009",edital:"Edital N.º 009/2026 — SOCIO TECH FAPEAM",titulo:"SocioCastanha: Tecnologia Social para Gestão Comunitária e Rastreabilidade da Castanha-do-Brasil em Amaturá, Amazonas",proponente:"Leonor Farias Abreu",autor:"Jailson Franco Aguiar"},
-  {id:"07",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas em Benjamin Constant, Amazonas",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"08",k:"008",curto:"Provida-AM 008",edital:"Edital N.º 008/2026 — PROVIDA-AM FAPEAM",titulo:"RAPID-AM: Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"09",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant",proponente:"Pedro Henrique Mariosa",autor:"Pedro Henrique Mariosa"},
-  {id:"10",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal",proponente:"Danilo Egle Santos Barbosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"11",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões",proponente:"Cleyton Cid da Silva Ferreira",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"12",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant",proponente:"Marinete Lourenço Mota",autor:"Murana Arenilhas Oliveira"},
-  {id:"13",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira",proponente:"Ciderjânio Farling Salvador da Costa",autor:"Alícia Nascimento"},
-  {id:"14",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões",proponente:"Leonor Farias Abreu",autor:"Murana Arenilhas Oliveira"},
-  {id:"15",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant",proponente:"Alícia Michely Silva do Nascimento",autor:"Andreza Hilário"},
-  {id:"16",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários",proponente:"Jose Edinaldo Zane",autor:"Wiily Alejandro"},
-  {id:"17",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica",proponente:"Juvan Reis Nogueira",autor:"Mateus Reinaldo Garcia"},
-  {id:"18",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"1ª Feira de CT&I da Tríplice Fronteira: Evento com alcance Brasil-Colômbia-Peru",proponente:"Raimundo Valdan Pereira Lopes",autor:"Alícia Nascimento"},
-  {id:"19",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Runa Salatta"},
-  {id:"20",k:"002",curto:"Pop CT&I 002",edital:"Edital N.º 002/2026 — POP CT&I FAPEAM",titulo:"Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões",proponente:"Bruna Salatta (Nome Social: Runa Salatta)",autor:"Runa Salatta"},
-  {id:"21",k:"004",curto:"Prospam 004",edital:"Edital N.º 004/2026 — PROSPAM FAPEAM",titulo:"Sistema inteligente de manejo sustentável do Tambaqui (Colossoma macropomum sp.) no Alto Solimões com monitoramento digital e tecnologias de baixo custo",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"},
-  {id:"22",k:"007",curto:"Painter Eco 007",edital:"Edital N.º 007/2026 — PAINTER ECOTURISMO FAPEAM",titulo:"Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável do Alto Solimões",proponente:"Pedro Henrique Mariosa",autor:"Cleyton Cid da Silva Ferreira"}
-];
-
-const C = {
-  "013":{c:"#DB2777",label:"Amazônidas 013/2026"},
-  "009":{c:"#059669",label:"Socio Tech 009/2026"},
-  "008":{c:"#2563EB",label:"Provida-AM 008/2026"},
-  "002":{c:"#D97706",label:"Pop CT&I 002/2026"},
-  "004":{c:"#7C3AED",label:"Prospam 004/2026"},
-  "007":{c:"#15803D",label:"Painter Eco 007/2026"}
-};
-
-// ════════════════════════════════════════════════
-// ESTADO
-// ════════════════════════════════════════════════
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
-let st = {search:'', edital:'', proponente:'', autor:''};
-let view = 'grid';
-let charts = {};
-
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
-function init() {
-  const now = new Date();
-  $('#tDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-  $('#fDate').textContent = now.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-
-  populaSelects();
-  buildKpiCharts();
-  buildCharts();
-  buildEditalList();
-  render();
-
-  $('#search').addEventListener('input', e => { st.search = e.target.value.toLowerCase().trim(); apply(); });
-  $('#fEdital').addEventListener('change', e => { st.edital = e.target.value; apply(); });
-  $('#fProp').addEventListener('change', e => { st.proponente = e.target.value; apply(); });
-  $('#fAutor').addEventListener('change', e => { st.autor = e.target.value; apply(); });
-  $('#clearBtn').addEventListener('click', clearFilters);
-  $('#mClose').addEventListener('click', closeModal);
-  $('#overlay').addEventListener('click', e => { if(e.target.id==='overlay') closeModal(); });
-  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-}
-
-// ════════════════════════════════════════════════
-// SELECTS
-// ════════════════════════════════════════════════
-function populaSelects() {
-  [...new Set(P.map(p=>p.edital))].sort().forEach(e =>
-    $('#fEdital').insertAdjacentHTML('beforeend',`<option value="${e}">${e}</option>`));
-  [...new Set(P.map(p=>p.proponente))].sort().forEach(p =>
-    $('#fProp').insertAdjacentHTML('beforeend',`<option value="${p}">${p}</option>`));
-  [...new Set(P.map(p=>p.autor))].sort().forEach(a =>
-    $('#fAutor').insertAdjacentHTML('beforeend',`<option value="${a}">${a}</option>`));
-}
-
-// ════════════════════════════════════════════════
-// FILTRO
-// ════════════════════════════════════════════════
-function filtrar() {
-  return P.filter(p => {
-    const q = st.search;
-    return (!q || [p.titulo,p.edital,p.proponente,p.autor].some(v=>v.toLowerCase().includes(q)))
-      && (!st.edital || p.edital===st.edital)
-      && (!st.proponente || p.proponente===st.proponente)
-      && (!st.autor || p.autor===st.autor);
-  });
-}
-
-function clearFilters() {
-  st = {search:'',edital:'',proponente:'',autor:''};
-  ['search','fEdital','fProp','fAutor'].forEach(id => { const el=$('#'+id); if(el) el.value=''; });
-  apply();
-}
-
-function apply() { render(); updateCharts(); updateEditalList(); updateChips(); }
-
-// ════════════════════════════════════════════════
-// CHIPS
-// ════════════════════════════════════════════════
-function updateChips() {
-  const chips = [];
-  if(st.edital) chips.push({l: st.edital.split('—')[0].trim(), clr: ()=>{st.edital='';$('#fEdital').value='';apply();}});
-  if(st.proponente) chips.push({l: st.proponente.split(' ')[0], clr: ()=>{st.proponente='';$('#fProp').value='';apply();}});
-  if(st.autor) chips.push({l: st.autor.split(' ')[0], clr: ()=>{st.autor='';$('#fAutor').value='';apply();}});
-  if(st.search) chips.push({l: `"${st.search}"`, clr: ()=>{st.search='';$('#search').value='';apply();}});
-  const el = $('#topChips');
-  el.innerHTML = chips.map((c,i)=>`<span class="chip" data-i="${i}">${c.l} ✕</span>`).join('');
-  $$('#topChips .chip').forEach((s,i)=>s.addEventListener('click',chips[i].clr));
-}
-
-// ════════════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════════════
-function render() {
-  const lista = filtrar();
-  $('#resCount').textContent = lista.length;
-
-  if(view==='grid') renderGrid(lista);
-  else renderTable(lista);
-}
-
-function setView(v) {
-  view = v;
-  $('#vGrid').classList.toggle('active', v==='grid');
-  $('#vTable').classList.toggle('active', v==='table');
-  render();
-}
-
-function renderGrid(lista) {
-  if(!lista.length) { $('#projContainer').innerHTML=`<div class="cards-grid"><div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div></div>`; return; }
-  $('#projContainer').innerHTML = `<div class="cards-grid">${lista.map(p=>`
-    <article class="pc" data-k="${p.k}" data-id="${p.id}">
-      <div class="pc-top"></div>
-      <span class="pc-num">#${p.id}</span>
-      <div class="pc-body">
-        <span class="ptag t${p.k}">${p.curto}</span>
-        <h3 class="ptitle">${p.titulo}</h3>
-        <div class="prow"><span class="prowlbl">Proponente</span><span>${p.proponente}</span></div>
-        <div class="prow"><span class="prowlbl">Autor</span><span>${p.autor}</span></div>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-num" id="m-num"></div>
+        <div class="modal-title" id="m-title"></div>
       </div>
-      <div class="pc-foot"><span class="pfi">FAPEAM 2026</span><span class="pcta">Detalhes →</span></div>
-    </article>`).join('')}</div>`;
-  $$('.pc').forEach(c=>c.addEventListener('click',()=>openModal(c.dataset.id)));
-}
-
-function renderTable(lista) {
-  if(!lista.length) { $('#projContainer').innerHTML=`<div class="empty"><div class="empty-ico">🌿</div><h3>Nenhum projeto</h3><p>Ajuste os filtros.</p></div>`; return; }
-  $('#projContainer').innerHTML = `<table class="proj-table">
-    <thead><tr>
-      <th>#</th><th>Edital</th><th>Título</th><th>Proponente</th><th>Autor</th>
-    </tr></thead>
-    <tbody>${lista.map(p=>`<tr data-id="${p.id}">
-      <td class="td-num">${p.id}</td>
-      <td class="td-tag"><span class="ptag t${p.k}">${p.curto}</span></td>
-      <td class="td-title"><span>${p.titulo}</span></td>
-      <td>${p.proponente.split(' ').slice(0,2).join(' ')}</td>
-      <td>${p.autor.split(' ')[0]}</td>
-    </tr>`).join('')}</tbody>
-  </table>`;
-  $$('.proj-table tbody tr').forEach(r=>r.addEventListener('click',()=>openModal(r.dataset.id)));
-}
-
-// ════════════════════════════════════════════════
-// LISTA DE EDITAIS INTERATIVA
-// ════════════════════════════════════════════════
-function buildEditalList() {
-  const total = P.length;
-  const el = $('#editalList');
-  el.innerHTML = Object.entries(C).map(([key,cfg])=>{
-    const n = P.filter(p=>p.k===key).length;
-    const pct = Math.round(n/total*100);
-    return `<div class="ei" data-k="${key}" onclick="filterEdital('${key}')">
-      <div class="ei-dot" style="background:${cfg.c}"></div>
-      <div class="ei-name">${cfg.label}</div>
-      <div class="ei-bar-wrap"><div class="ei-bar" style="width:${pct}%;background:${cfg.c}"></div></div>
-      <div class="ei-cnt">${n}</div>
-    </div>`;
-  }).join('');
-}
-
-function updateEditalList() {
-  $$('.ei').forEach(el => {
-    const key = el.dataset.k;
-    const edFull = P.find(p=>p.k===key)?.edital||'';
-    const isActive = st.edital === edFull;
-    el.classList.toggle('active', isActive);
-    el.style.color = isActive ? C[key].c : '';
-    el.style.background = isActive ? C[key].c+'12' : '';
-    el.style.borderColor = isActive ? C[key].c+'55' : '';
-  });
-}
-
-function filterEdital(key) {
-  const edFull = P.find(p=>p.k===key)?.edital||'';
-  st.edital = st.edital===edFull ? '' : edFull;
-  $('#fEdital').value = st.edital;
-  apply();
-}
-
-// ════════════════════════════════════════════════
-// KPI MINI CHARTS
-// ════════════════════════════════════════════════
-function buildKpiCharts() {
-  const edKeys = Object.keys(C);
-  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
-  const colors = edKeys.map(k=>C[k].c);
-
-  // Mini bar
-  new Chart($('#kpiChart1'),{type:'bar',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'88'),borderColor:colors,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:800}}});
-
-  // Mini donut
-  new Chart($('#kpiChart2'),{type:'doughnut',data:{labels:edKeys,datasets:[{data:counts,backgroundColor:colors.map(c=>c+'99'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:900}}});
-
-  // Proponentes mini bar
-  const porProp={};
-  P.forEach(p=>porProp[p.proponente]=(porProp[p.proponente]||0)+1);
-  const topProp=Object.entries(porProp).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  new Chart($('#kpiChart3'),{type:'bar',data:{labels:topProp.map(([k])=>k.split(' ')[0]),datasets:[{data:topProp.map(([,v])=>v),backgroundColor:'#05966999',borderColor:'#059669',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1000}}});
-
-  // Autores mini bar
-  const porAut={};
-  P.forEach(p=>porAut[p.autor]=(porAut[p.autor]||0)+1);
-  const topAut=Object.entries(porAut).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  new Chart($('#kpiChart4'),{type:'bar',data:{labels:topAut.map(([k])=>k.split(' ')[0]),datasets:[{data:topAut.map(([,v])=>v),backgroundColor:'#D9770699',borderColor:'#D97706',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:1100}}});
-}
-
-// ════════════════════════════════════════════════
-// GRÁFICOS PRINCIPAIS (clicáveis)
-// ════════════════════════════════════════════════
-const baseOpts = {
-  responsive:true, maintainAspectRatio:false,
-  animation:{duration:500,easing:'easeOutQuart'},
-  plugins:{legend:{labels:{font:{family:"'Inter',sans-serif",size:10},color:'#94A3B8',boxWidth:8,padding:8}}}
-};
-
-function buildCharts() {
-  const edKeys = Object.keys(C);
-  const counts = edKeys.map(k=>P.filter(p=>p.k===k).length);
-  const colors = edKeys.map(k=>C[k].c);
-
-  charts.edital = new Chart($('#cEdital'),{
-    type:'bar',
-    data:{
-      labels: edKeys.map(k=>C[k].label.split(' ').slice(0,2).join(' ')),
-      datasets:[{data:counts,backgroundColor:colors.map(c=>c+'33'),borderColor:colors,borderWidth:2,borderRadius:6,borderSkipped:false}]
-    },
-    options:{...baseOpts,
-      plugins:{...baseOpts.plugins,legend:{display:false},
-        tooltip:{callbacks:{title:ctx=>C[edKeys[ctx[0].dataIndex]]?.label||'',label:ctx=>` ${ctx.parsed.y} projeto(s)`}}
-      },
-      scales:{
-        x:{ticks:{color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}},
-        y:{beginAtZero:true,ticks:{stepSize:1,color:'#94A3B8',font:{size:9}},grid:{color:'rgba(0,0,0,0.05)'}}
-      },
-      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
-      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
-    }
-  });
-
-  charts.donut = new Chart($('#cDonut'),{
-    type:'doughnut',
-    data:{labels:edKeys.map(k=>C[k].label),datasets:[{data:counts,backgroundColor:colors.map(c=>c+'55'),borderColor:colors,borderWidth:2,hoverOffset:6}]},
-    options:{...baseOpts,cutout:'60%',
-      plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:ctx=>` ${C[edKeys[ctx.dataIndex]]?.label}: ${ctx.parsed}`}}},
-      onClick(e,els){if(!els.length)return; filterEdital(edKeys[els[0].index]);},
-      onHover(e,els){e.native.target.style.cursor=els.length?'pointer':'default';}
-    }
-  });
-}
-
-function updateCharts() {
-  const activeKey = P.find(p=>p.edital===st.edital)?.k||null;
-  const edKeys = Object.keys(C);
-  const colors = edKeys.map(k=>C[k].c);
-
-  if(charts.edital){
-    charts.edital.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'44':c+'11');
-    charts.edital.data.datasets[0].borderColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c:c+'33');
-    charts.edital.update('none');
-  }
-  if(charts.donut){
-    charts.donut.data.datasets[0].backgroundColor = colors.map((c,i)=>!activeKey||edKeys[i]===activeKey?c+'66':c+'18');
-    charts.donut.update('none');
-  }
-}
-
-// ════════════════════════════════════════════════
-// MODAL
-// ════════════════════════════════════════════════
-function openModal(id) {
-  const p = P.find(x=>x.id===id); if(!p) return;
-  const cor = C[p.k]?.c||'#2563EB';
-  $('#mAccent').style.background = `linear-gradient(90deg,${cor},${cor}88)`;
-  $('#mNum').textContent = `Projeto Nº ${p.id}  ·  ${p.curto}`;
-  $('#mTitle').textContent = p.titulo;
-  $('#mBody').innerHTML = `
-    <div class="mlbl">Edital</div><div class="mval">${p.edital}</div>
-    <div class="mgrid">
-      <div class="mstat"><div class="mlbl">Proponente</div><div class="mval">${p.proponente}</div></div>
-      <div class="mstat"><div class="mlbl">Autor / Redator</div><div class="mval">${p.autor}</div></div>
-      <div class="mstat"><div class="mlbl">Nº do Projeto</div><div class="mval">${p.id}</div></div>
-      <div class="mstat"><div class="mlbl">Agência Financiadora</div><div class="mval">FAPEAM — 2026</div></div>
+      <button class="modal-close" onclick="fecharModal()">&#x2715;</button>
     </div>
-    <div class="minst"><strong>Instituições Envolvidas</strong><br>
-    Incubadora Inpactas &nbsp;·&nbsp; SEMCTI Benjamin Constant &nbsp;·&nbsp; UFAM/INC — Instituto de Natureza e Cultura</div>
-    <div class="mbtns">
-      <button class="mbtn" style="background:${cor}15;border-color:${cor}44;color:${cor};" onclick="filterEdital('${p.k}');closeModal();">Ver todos do ${p.curto}</button>
-      <button class="mbtn" style="background:#EFF6FF;border-color:#BFDBFE;color:#2563EB;" onclick="st.autor='${p.autor}';$('#fAutor').value='${p.autor}';apply();closeModal();">Projetos de ${p.autor.split(' ')[0]}</button>
-    </div>`;
-  $('#overlay').classList.add('on');
+    <div class="modal-body">
+      <div class="modal-field"><div class="modal-field-label">Edital</div><div class="modal-field-val" id="m-edital"></div></div>
+      <div class="modal-field"><div class="modal-field-label">Proponente</div><div class="modal-field-val" id="m-proponente"></div></div>
+      <div class="modal-field"><div class="modal-field-label">Autor</div><div class="modal-field-val" id="m-autor"></div></div>
+      <div class="modal-field"><div class="modal-field-label">Tema</div><div class="modal-field-val" id="m-tema"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {n:1, edital:'013',nome:'Amazônidas',titulo:'Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira',proponente:'Maria Angélica de Almeida Corrêa',autor:'Alícia Nascimento',tema:'Meninas e Mulheres na Ciência'},
+  {n:2, edital:'013',nome:'Amazônidas',titulo:'BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia',proponente:'Leonor Farias Abreu',autor:'Andreza Hilário',tema:'Meninas e Mulheres na Ciência'},
+  {n:3, edital:'009',nome:'Socio Tech',titulo:'Juventude Amazônica e Cidadania Digital: Desenvolvimento e Aplicação de Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM',proponente:'Raimundo Valdan Pereira Lopes',autor:'Alícia Nascimento',tema:'Tecnologia Social'},
+  {n:4, edital:'009',nome:'Socio Tech',titulo:'Óleos da Floresta: Desenvolvimento e Aplicação de Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Andreza Hilário',tema:'Tecnologia Social'},
+  {n:5, edital:'009',nome:'Socio Tech',titulo:'Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário como Instrumento de Acesso a Direitos e Políticas Públicas para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM',proponente:'Danilo Egle Santos Barbosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Tecnologia Social'},
+  {n:6, edital:'009',nome:'Socio Tech',titulo:'SocioCastanha: Tecnologia Social de Baixo Custo para Gestão Comunitária, Rastreabilidade e Fortalecimento da Cadeia da Castanha-do-Brasil em Amaturá, Amazonas',proponente:'Leonor Farias Abreu',autor:'Jailson Franco Aguiar',tema:'Tecnologia Social'},
+  {n:7, edital:'008',nome:'PROVIDA-AM',titulo:'VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas no Município de Benjamin Constant, Amazonas',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Saúde Pública'},
+  {n:8, edital:'008',nome:'PROVIDA-AM',titulo:'RAPID-AM: Desenvolvimento e Validação de Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas',proponente:'Ciderjânio Farling Salvador da Costa',autor:'Cleyton Cid da Silva Ferreira',tema:'Saúde Pública'},
+  {n:9, edital:'002',nome:'POP CT&I',titulo:'B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant',proponente:'Pedro Henrique Mariosa',autor:'Pedro Henrique Mariosa',tema:'Popularização da Ciência'},
+  {n:10,edital:'002',nome:'POP CT&I',titulo:'Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal',proponente:'Danilo Egle Santos Barbosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Popularização da Ciência'},
+  {n:11,edital:'002',nome:'POP CT&I',titulo:'Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões',proponente:'Cleyton Cid da Silva Ferreira',autor:'Cleyton Cid da Silva Ferreira',tema:'Popularização da Ciência'},
+  {n:12,edital:'002',nome:'POP CT&I',titulo:'Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant',proponente:'Marinete Lourenço Mota',autor:'Murana Arenilhas Oliveira',tema:'Popularização da Ciência'},
+  {n:13,edital:'002',nome:'POP CT&I',titulo:'Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira',proponente:'Ciderjânio Farling Salvador da Costa',autor:'Alícia Nascimento',tema:'Popularização da Ciência'},
+  {n:14,edital:'002',nome:'POP CT&I',titulo:'Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões',proponente:'Leonor Farias Abreu',autor:'Murana Arenilhas Oliveira',tema:'Popularização da Ciência'},
+  {n:15,edital:'002',nome:'POP CT&I',titulo:'CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant',proponente:'Alícia Michely Silva do Nascimento',autor:'Andreza Hilário',tema:'Popularização da Ciência'},
+  {n:16,edital:'002',nome:'POP CT&I',titulo:'Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários',proponente:'Jose Edinaldo Zane',autor:'Wiily Alejandro',tema:'Popularização da Ciência'},
+  {n:17,edital:'002',nome:'POP CT&I',titulo:'Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica',proponente:'Juvan Reis Nogueira',autor:'Mateus Reinaldo Garcia',tema:'Popularização da Ciência'},
+  {n:18,edital:'002',nome:'POP CT&I',titulo:'1ª Feira de CT&I da Tríplice Fronteira: Evento de CT&I com alcance Brasil-Colômbia-Peru',proponente:'Raimundo Valdan Pereira Lopes',autor:'Alícia Nascimento',tema:'Popularização da Ciência'},
+  {n:19,edital:'002',nome:'POP CT&I',titulo:'Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Runa Salatta',tema:'Popularização da Ciência'},
+  {n:20,edital:'002',nome:'POP CT&I',titulo:'Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões',proponente:'Bruna Salatta (Nome Social: Runa Salatta)',autor:'Runa Salatta',tema:'Popularização da Ciência'},
+  {n:21,edital:'004',nome:'PROSPAM',titulo:'Sistema inteligente de manejo sustentável e aumento da produtividade do Tambaqui (Colossoma macropomum sp.) em açude no Alto Solimões com base em monitoramento digital e tecnologias de baixo custo',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Produtividade Pesqueira'},
+  {n:22,edital:'007',nome:'PAINTER Ecoturismo',titulo:'Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável de Comunidades Ribeirinhas e Indígenas do Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Ecoturismo Científico'}
+];
+const PROPONENTES=[{nome:'Pedro Henrique Mariosa',qtd:6},{nome:'Leonor Farias Abreu',qtd:3},{nome:'Ciderjânio Farling Salvador da Costa',qtd:2},{nome:'Danilo Egle Santos Barbosa',qtd:2},{nome:'Raimundo Valdan Pereira Lopes',qtd:2},{nome:'Alícia Michely Silva do Nascimento',qtd:1},{nome:'Bruna Salatta (Nome Social: Runa Salatta)',qtd:1},{nome:'Cleyton Cid da Silva Ferreira',qtd:1},{nome:'Jose Edinaldo Zane',qtd:1},{nome:'Juvan Reis Nogueira',qtd:1},{nome:'Maria Angélica de Almeida Corrêa',qtd:1},{nome:'Marinete Lourenço Mota',qtd:1}];
+const AUTORES=[{nome:'Cleyton Cid da Silva Ferreira',qtd:7},{nome:'Alícia Nascimento',qtd:4},{nome:'Andreza Hilário',qtd:3},{nome:'Murana Arenilhas Oliveira',qtd:2},{nome:'Runa Salatta',qtd:2},{nome:'Jailson Franco Aguiar',qtd:1},{nome:'Mateus Reinaldo Garcia',qtd:1},{nome:'Pedro Henrique Mariosa',qtd:1},{nome:'Wiily Alejandro',qtd:1}];
+
+function populateSelects(){
+  const sp=document.getElementById('f-proponente'),sa=document.getElementById('f-autor');
+  PROPONENTES.forEach(p=>{const o=document.createElement('option');o.value=p.nome;o.textContent=p.nome;sp.appendChild(o);});
+  AUTORES.forEach(a=>{const o=document.createElement('option');o.value=a.nome;o.textContent=a.nome;sa.appendChild(o);});
+}
+function tagClass(e){return{'013':'tag-013','009':'tag-009','008':'tag-008','002':'tag-002','004':'tag-004','007':'tag-007'}[e]||'';}
+function renderProjects(list){
+  document.getElementById('projects-count').innerHTML=`Exibindo <strong>${list.length}</strong> de 22 projeto(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small>`;
+  document.getElementById('projects-list').innerHTML=list.map(p=>`
+    <div class="project-card" onclick="openModal(${p.n-1})">
+      <div class="project-num">N°${String(p.n).padStart(2,'0')}</div>
+      <div class="project-body">
+        <span class="project-edital-tag ${tagClass(p.edital)}">${p.nome} ${p.edital}/2026</span>
+        <div class="project-title">${p.titulo}</div>
+        <div class="project-meta"><span>👤 ${p.proponente}</span><span>✍️ ${p.autor}</span></div>
+      </div>
+      <div class="project-arrow">Ver detalhes →</div>
+    </div>`).join('');
+}
+function applyFilters(){
+  const q=document.getElementById('f-search').value.toLowerCase(),ed=document.getElementById('f-edital').value,pr=document.getElementById('f-proponente').value,au=document.getElementById('f-autor').value;
+  renderProjects(PROJECTS.filter(p=>(!q||p.titulo.toLowerCase().includes(q)||p.proponente.toLowerCase().includes(q)||p.autor.toLowerCase().includes(q))&&(!ed||p.edital===ed)&&(!pr||p.proponente===pr)&&(!au||p.autor===au)));
+}
+function clearFilters(){document.getElementById('f-search').value='';document.getElementById('f-edital').value='';document.getElementById('f-proponente').value='';document.getElementById('f-autor').value='';renderProjects(PROJECTS);}
+function openModal(idx){
+  const p=PROJECTS[idx];
+  document.getElementById('m-num').textContent='N° '+String(p.n).padStart(2,'0');
+  document.getElementById('m-title').textContent=p.titulo;
+  document.getElementById('m-edital').textContent=p.nome+' — Edital '+p.edital+'/2026';
+  document.getElementById('m-proponente').textContent=p.proponente;
+  document.getElementById('m-autor').textContent=p.autor;
+  document.getElementById('m-tema').textContent=p.tema;
+  document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function closeModal(){$('#overlay').classList.remove('on');document.body.style.overflow='';}
-
-
-init();
+function fecharModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+function closeModal(e){if(e.target===document.getElementById('modal'))fecharModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
+function renderEquipe(){
+  document.getElementById('list-proponentes').innerHTML=PROPONENTES.map(p=>`<div class="pessoa-item"><span class="pessoa-name">${p.nome}</span><span class="pessoa-count">${p.qtd} ${p.qtd===1?'projeto':'projetos'}</span></div>`).join('');
+  document.getElementById('list-autores').innerHTML=AUTORES.map(a=>`<div class="pessoa-item"><span class="pessoa-name">${a.nome}</span><span class="pessoa-count">${a.qtd} ${a.qtd===1?'projeto':'projetos'}</span></div>`).join('');
+}
+function buildCharts(){
+  const gp=['#1A3D2B','#2D7A4F','#4CAF80','#81C99A','#B2DBBF','#D6EDE0'],op=['#E65100','#EF6C00','#F57C00','#FB8C00','#FFA726','#FFCC80','#FFE0B2','#FFF8E1','#FFFDE7'];
+  new Chart(document.getElementById('chart-editais').getContext('2d'),{type:'doughnut',data:{labels:['POP CT&I 002 (12)','Socio Tech 009 (4)','Amazônidas 013 (2)','PROVIDA-AM 008 (2)','PROSPAM 004 (1)','PAINTER 007 (1)'],datasets:[{data:[12,4,2,2,1,1],backgroundColor:gp,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12,padding:8}}}}});
+  new Chart(document.getElementById('chart-autores').getContext('2d'),{type:'bar',data:{labels:AUTORES.map(a=>a.nome.split(' ').slice(0,2).join(' ')),datasets:[{data:AUTORES.map(a=>a.qtd),backgroundColor:op,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{stepSize:1},grid:{color:'rgba(0,0,0,.05)'}},y:{ticks:{font:{size:10}}}}}});
+}
+function copyLink(){const u='https://cleytoncidlog17-a11y.github.io/painel-inpactas/';navigator.clipboard.writeText(u).then(()=>alert('Link copiado!')).catch(()=>prompt('Copie o link:',u));}
+function toggleMenu(){const l=document.querySelector('.nav-links');const v=l.style.display==='flex';l.style.display=v?'none':'flex';if(!v){l.style.flexDirection='column';l.style.position='absolute';l.style.top='60px';l.style.left='0';l.style.right='0';l.style.background='#fff';l.style.padding='1rem 2rem';l.style.borderBottom='1px solid var(--cream-border)';l.style.zIndex='99';}}
+populateSelects();renderProjects(PROJECTS);renderEquipe();buildCharts();
 </script>
 </body>
 </html>
