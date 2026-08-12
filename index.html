@@ -3,695 +3,655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editais FAPEAM 2026 — InPACTAS &amp; SEMCTI Benjamin Constant</title>
+<title>Gestão de Propostas — InPACTAS & SEMCTI Benjamin Constant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --green-dark:  #1A3D2B;
-    --green-mid:   #2D7A4F;
-    --green-light: #4CAF80;
-    --green-pale:  #E8F5EE;
-    --cream:       #F5F3EE;
-    --cream-border:#E4E0D8;
-    --ink:         #1A2316;
-    --ink-mid:     #2E3D34;
-    --ink-light:   #4A5E52;
-    --sand:        #F9F7F3;
-    --white:       #FFFFFF;
-  }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--ink); background: var(--white); line-height: 1.6; }
-
-  /* NAV */
-  .nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--cream-border); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-brand { display: flex; flex-direction: column; gap: 1px; }
-  .nav-name  { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--green-dark); letter-spacing: -0.02em; }
-  .nav-sub   { font-size: 0.7rem; color: var(--ink-light); letter-spacing: 0.04em; text-transform: uppercase; }
-  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--ink-mid); text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: var(--green-mid); }
-  .nav-menu-btn { display: none; background: none; border: none; cursor: pointer; font-size: 1.3rem; color: var(--ink); }
-
-  /* HERO */
-  .hero { background: var(--cream); border-bottom: 1px solid var(--cream-border); padding: 5rem 2rem 4rem; }
-  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 4rem; align-items: center; }
-  .hero-badge { display: inline-block; background: var(--green-pale); color: var(--green-mid); border: 1px solid rgba(45,122,79,.2); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: .35rem .8rem; border-radius: 2rem; margin-bottom: 1.5rem; }
-  .hero-heading { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.4rem, 4.5vw, 3.8rem); font-weight: 800; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
-  .hero-heading em { font-style: italic; color: var(--green-mid); }
-  .hero-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.8; max-width: 520px; text-align: justify; hyphens: auto; margin-bottom: 2rem; }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary { display: inline-flex; align-items: center; gap: .4rem; background: var(--green-dark); color: var(--white); font-size: 0.88rem; font-weight: 600; padding: .7rem 1.4rem; border-radius: 4px; text-decoration: none; transition: background .2s; cursor: pointer; border: none; }
-  .btn-primary:hover { background: var(--green-mid); }
-  .btn-secondary { display: inline-flex; align-items: center; gap: .4rem; background: transparent; color: var(--green-dark); font-size: 0.88rem; font-weight: 600; padding: .7rem 1.4rem; border-radius: 4px; text-decoration: none; border: 1.5px solid var(--green-dark); transition: all .2s; cursor: pointer; }
-  .btn-secondary:hover { background: var(--green-pale); }
-
-  /* Stats Card */
-  .stats-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 24px rgba(26,61,43,.08); }
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; margin-bottom: 1.5rem; }
-  .stat-item { text-align: center; }
-  .stat-val { font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--green-dark); line-height: 1; display: block; }
-  .stat-lbl { font-size: 0.75rem; font-weight: 600; color: var(--ink-light); letter-spacing: 0.08em; text-transform: uppercase; margin-top: .3rem; display: block; }
-  .stats-divider { border: none; border-top: 1px solid var(--cream-border); margin-bottom: 1rem; }
-  .stats-tag { font-size: 0.78rem; color: var(--ink-light); display: flex; align-items: center; gap: .4rem; }
-  .stats-tag::before { content: '📍'; font-size: .9rem; }
-
-  /* SECTIONS */
-  section { padding: 5rem 2rem; }
-  .section-inner { max-width: 1100px; margin: 0 auto; }
-  .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); margin-bottom: .8rem; }
-  .section-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--ink); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1rem; }
-  .section-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.8; max-width: 680px; text-align: justify; hyphens: auto; }
-  .section-header { margin-bottom: 3rem; }
-
-  /* SOBRE */
-  #sobre { background: var(--white); }
-  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-  .sobre-text p { font-size: 0.95rem; color: var(--ink-light); line-height: 1.85; text-align: justify; hyphens: auto; }
-  .sobre-highlight { background: var(--green-pale); border-left: 3px solid var(--green-mid); border-radius: 0 8px 8px 0; padding: 1.5rem 2rem; }
-  .sobre-highlight p { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-style: italic; color: var(--green-dark); line-height: 1.65; text-align: justify; hyphens: auto; }
-
-  /* EDITAIS */
-  #editais { background: var(--sand); border-top: 1px solid var(--cream-border); border-bottom: 1px solid var(--cream-border); }
-  .editais-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .edital-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.75rem; transition: box-shadow .2s, transform .2s; }
-  .edital-card:hover { box-shadow: 0 8px 32px rgba(26,61,43,.1); transform: translateY(-2px); }
-  .edital-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--green-mid); text-transform: uppercase; margin-bottom: .5rem; }
-  .edital-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: .6rem; line-height: 1.2; }
-  .edital-desc { font-size: 0.83rem; color: var(--ink-light); line-height: 1.7; text-align: justify; hyphens: auto; margin-bottom: 1.2rem; }
-  .edital-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--cream-border); }
-  .edital-tag { font-size: 0.72rem; font-weight: 600; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.06em; }
-  .edital-count { background: var(--green-pale); color: var(--green-dark); font-size: 0.8rem; font-weight: 700; padding: .2rem .65rem; border-radius: 2rem; }
-
-  /* PROJETOS */
-  #projetos { background: var(--white); }
-  .filters-bar { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 1rem; align-items: end; margin-bottom: 2rem; }
-  .filter-group { display: flex; flex-direction: column; gap: .4rem; }
-  .filter-label { font-size: 0.72rem; font-weight: 700; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.07em; }
-  .filter-input, .filter-select { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--ink); background: var(--white); border: 1px solid var(--cream-border); border-radius: 6px; padding: .55rem .8rem; outline: none; transition: border-color .2s; width: 100%; }
-  .filter-input:focus, .filter-select:focus { border-color: var(--green-mid); }
-  .btn-clear { background: none; border: 1.5px solid var(--cream-border); border-radius: 6px; padding: .55rem 1rem; font-size: 0.82rem; font-weight: 600; color: var(--ink-light); cursor: pointer; white-space: nowrap; transition: all .2s; align-self: flex-end; }
-  .btn-clear:hover { border-color: var(--green-mid); color: var(--green-mid); }
-  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
-  .chart-card { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.5rem; }
-  .chart-title { font-size: 0.8rem; font-weight: 700; color: var(--ink-mid); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
-  .chart-wrap { position: relative; height: 180px; }
-  .projects-meta { font-size: 0.82rem; color: var(--ink-light); margin-bottom: 1.25rem; font-weight: 500; }
-  .projects-meta strong { color: var(--ink); }
-  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .project-card { background: var(--white); border: 1px solid var(--cream-border); border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; gap: .6rem; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
-  .project-card:hover { box-shadow: 0 4px 20px rgba(26,61,43,.1); border-color: var(--green-mid); }
-  .project-num { font-family: 'Playfair Display', Georgia, serif; font-size: 0.85rem; font-weight: 700; color: var(--cream-border); line-height: 1; }
-  .project-edital-tag { display: inline-block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 2rem; align-self: flex-start; }
-  .project-title { font-size: 0.87rem; font-weight: 600; color: var(--ink); line-height: 1.45; flex: 1; }
-  .project-meta { font-size: 0.76rem; color: var(--ink-light); display: flex; flex-direction: column; gap: .2rem; margin-top: auto; padding-top: .5rem; border-top: 1px solid var(--cream-border); }
-  .project-arrow { font-size: 0.75rem; color: var(--green-mid); font-weight: 600; opacity: 0; transition: opacity .2s; align-self: flex-end; margin-top: .3rem; }
-  .project-card:hover .project-arrow { opacity: 1; }
-  .tag-013 { background: #FFF0F5; color: #C2185B; }
-  .tag-009 { background: #E8F5E9; color: #2E7D32; }
-  .tag-008 { background: #E3F2FD; color: #1565C0; }
-  .tag-002 { background: #FFF8E1; color: #E65100; }
-  .tag-004 { background: #F3E5F5; color: #6A1B9A; }
-  .tag-007 { background: #E0F7FA; color: #00695C; }
-
-  /* EQUIPE */
-  #equipe { background: var(--sand); border-top: 1px solid var(--cream-border); border-bottom: 1px solid var(--cream-border); }
-  .equipe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-  .equipe-col-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: .35rem; }
-  .equipe-col-sub { font-size: 0.8rem; color: var(--ink-light); margin-bottom: 1.5rem; font-style: italic; }
-  .pessoa-item { display: flex; align-items: center; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid var(--cream-border); }
-  .pessoa-item:last-child { border-bottom: none; }
-  .pessoa-name { font-size: 0.88rem; font-weight: 500; color: var(--ink-mid); }
-  .pessoa-count { font-size: 0.78rem; font-weight: 700; color: var(--green-mid); background: var(--green-pale); padding: .15rem .55rem; border-radius: 2rem; white-space: nowrap; }
-
-  /* MATERIAIS */
-  #materiais { background: var(--white); }
-  .materiais-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .material-card { background: var(--sand); border: 1px solid var(--cream-border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .material-icon { width: 44px; height: 44px; background: var(--green-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-  .material-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-mid); }
-  .material-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
-  .material-desc { font-size: 0.82rem; color: var(--ink-light); line-height: 1.7; flex: 1; text-align: justify; hyphens: auto; }
-  .material-link { display: inline-flex; align-items: center; gap: .35rem; font-size: 0.83rem; font-weight: 600; color: var(--green-mid); text-decoration: none; border-bottom: 1.5px solid transparent; transition: border-color .2s; cursor: pointer; background: none; border-left: none; border-right: none; border-top: none; padding: 0; font-family: 'Inter', sans-serif; }
-  .material-link:hover { border-bottom-color: var(--green-mid); }
-
-  /* FOOTER */
-  footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 4rem 2rem 2rem; }
-  .footer-inner { max-width: 1100px; margin: 0 auto; }
-  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 2rem; }
-  .footer-brand-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
-  .footer-brand-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,.55); }
-  .footer-col-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 1rem; }
-  .footer-links { display: flex; flex-direction: column; gap: .5rem; }
-  .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
-  .footer-links a:hover { color: var(--white); }
-  .footer-partners { display: flex; flex-direction: column; gap: .5rem; }
-  .footer-partner { font-size: 0.82rem; color: rgba(255,255,255,.55); }
-  .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,.35); }
-
-  /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,35,22,.5); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: 14px; max-width: 620px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(26,35,22,.3); }
-  .modal-header { padding: 1.75rem 2rem 1rem; border-bottom: 1px solid var(--cream-border); display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; position: sticky; top: 0; background: var(--white); border-radius: 14px 14px 0 0; }
-  .modal-close { background: none; border: none; font-size: 1.4rem; color: var(--ink-light); cursor: pointer; line-height: 1; flex-shrink: 0; transition: color .2s; }
-  .modal-close:hover { color: var(--ink); }
-  .modal-body { padding: 1.5rem 2rem 2rem; }
-  .modal-num { font-size: 0.75rem; font-weight: 700; color: var(--ink-light); margin-bottom: .5rem; letter-spacing: .05em; }
-  .modal-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.4; }
-  .modal-field { margin-bottom: 1rem; }
-  .modal-field-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: .3rem; }
-  .modal-field-val { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.6; }
-
-  /* RESPONSIVE */
-  @media (max-width: 1050px) {
-    .projects-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 900px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .stats-card { max-width: 400px; }
-    .sobre-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .editais-grid { grid-template-columns: 1fr 1fr; }
-    .filters-bar { grid-template-columns: 1fr 1fr; }
-    .charts-row { grid-template-columns: 1fr; }
-    .equipe-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .materiais-grid { grid-template-columns: 1fr 1fr; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
-    .nav-menu-btn { display: block; }
-  }
-  @media (max-width: 600px) {
-    .editais-grid { grid-template-columns: 1fr; }
-    .materiais-grid { grid-template-columns: 1fr; }
-    .filters-bar { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; }
-    .projects-grid { grid-template-columns: 1fr; }
-  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#fff}
+  input,select,textarea,button{font-family:'Inter',sans-serif}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#c9c3b5;border-radius:4px}
 </style>
 </head>
-<body id="top">
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const {useState,useEffect,useRef}=React;
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-brand">
-    <span class="nav-name">InPACTAS &amp; SEMCTI</span>
-    <span class="nav-sub">Benjamin Constant · Alto Solimões</span>
-  </div>
-  <div class="nav-links">
-    <a href="#sobre">Sobre</a>
-    <a href="#editais">Editais</a>
-    <a href="#projetos">Projetos</a>
-    <a href="#equipe">Equipe</a>
-    <a href="#materiais">Materiais</a>
-  </div>
-  <button class="nav-menu-btn" onclick="toggleMenu()">&#9776;</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-badge">Editais FAPEAM 2026 · Benjamin Constant</div>
-      <h1 class="hero-heading">Ciência e inovação<br><em>articuladas</em> no Alto<br>Solimões.</h1>
-      <p class="hero-desc">22 projetos de Ciência, Tecnologia e Inovação submetidos pela Incubadora InPACTAS, pela SEMCTI e pelo INC/UFAM aos editais FAPEAM 2026 — com foco em bioeconomia, saúde pública, popularização da ciência, ecoturismo, inclusão digital e protagonismo feminino.</p>
-      <div class="hero-ctas">
-        <a class="btn-primary" href="#projetos">Explorar os projetos →</a>
-        <a class="btn-secondary" href="#editais">Conhecer os editais</a>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="stats-card">
-        <div class="stats-grid">
-          <div class="stat-item"><span class="stat-val">22</span><span class="stat-lbl">Projetos</span></div>
-          <div class="stat-item"><span class="stat-val">6</span><span class="stat-lbl">Editais</span></div>
-          <div class="stat-item"><span class="stat-val">12</span><span class="stat-lbl">Proponentes</span></div>
-          <div class="stat-item"><span class="stat-val">9</span><span class="stat-lbl">Autores</span></div>
-        </div>
-        <hr class="stats-divider">
-        <p class="stats-tag">Alto Solimões — Tríplice Fronteira BR/CO/PE</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOBRE -->
-<section id="sobre">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-label">Sobre o Painel</div>
-      <h2 class="section-title">Um portfólio articulado de pesquisa com a Amazônia.</h2>
-    </div>
-    <div class="sobre-grid">
-      <div class="sobre-text">
-        <p>A Incubadora InPACTAS (Incubadora de Negócios de Impacto Socioambiental do Alto Solimões), a Secretaria Municipal de Ciência, Tecnologia e Inovação (SEMCTI) e o Instituto de Natureza e Cultura da UFAM (INC) consolidaram, em Benjamin Constant, a maior submissão coletiva de projetos da região aos editais FAPEAM 2026. Este painel reúne, em um único lugar, a visão completa dessas 22 propostas — para apoiar a equipe, parceiros e o público interessado no acompanhamento dessa carteira.</p>
-      </div>
-      <div class="sobre-highlight">
-        <p>"Uma rede que une InPACTAS, SEMCTI, UFAM/INC e profissionais parceiros da Tríplice Fronteira Brasil-Colômbia-Peru — em prol da ciência e inovação amazônica."</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EDITAIS -->
-<section id="editais">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-label">Editais FAPEAM 2026</div>
-      <h2 class="section-title">Seis editais, uma estratégia integrada.</h2>
-      <p class="section-desc">Cada edital aborda um eixo temático específico de Ciência, Tecnologia e Inovação. Juntos, articulam saúde, bioeconomia, popularização da ciência, equidade, ecoturismo e tecnologias sociais para o desenvolvimento sustentável do Alto Solimões.</p>
-    </div>
-    <div class="editais-grid">
-      <div class="edital-card">
-        <div class="edital-num">013</div>
-        <div class="edital-name">Amazônidas</div>
-        <p class="edital-desc">Meninas e Mulheres na Ciência. Fomenta o protagonismo feminino na pesquisa científica amazônica.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 013/2026</span><span class="edital-count">2 projeto(s)</span></div>
-      </div>
-      <div class="edital-card">
-        <div class="edital-num">009</div>
-        <div class="edital-name">Socio Tech</div>
-        <p class="edital-desc">Tecnologias sociais de baixo custo para fortalecer comunidades tradicionais da Amazônia.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 009/2026</span><span class="edital-count">4 projeto(s)</span></div>
-      </div>
-      <div class="edital-card">
-        <div class="edital-num">008</div>
-        <div class="edital-name">PROVIDA-AM</div>
-        <p class="edital-desc">Saúde pública e desenvolvimento de protocolos diagnósticos para o interior do Amazonas.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 008/2026</span><span class="edital-count">2 projeto(s)</span></div>
-      </div>
-      <div class="edital-card">
-        <div class="edital-num">002</div>
-        <div class="edital-name">POP CT&amp;I</div>
-        <p class="edital-desc">Popularização da Ciência, Tecnologia e Inovação junto à comunidade amazônica.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 002/2026</span><span class="edital-count">12 projeto(s)</span></div>
-      </div>
-      <div class="edital-card">
-        <div class="edital-num">004</div>
-        <div class="edital-name">PROSPAM</div>
-        <p class="edital-desc">Produtividade pesqueira sustentável com tecnologias de monitoramento digital.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 004/2026</span><span class="edital-count">1 projeto(s)</span></div>
-      </div>
-      <div class="edital-card">
-        <div class="edital-num">007</div>
-        <div class="edital-name">PAINTER Ecoturismo</div>
-        <p class="edital-desc">Plataformas digitais e tecnologias imersivas para ecoturismo científico amazônico.</p>
-        <div class="edital-footer"><span class="edital-tag">Edital 007/2026</span><span class="edital-count">1 projeto(s)</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJETOS -->
-<section id="projetos">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-label">Os 22 Projetos</div>
-      <h2 class="section-title">Explore o portfólio de forma interativa.</h2>
-      <p class="section-desc">Use os filtros para navegar por edital, proponente ou autor. Clique em qualquer projeto para ver os detalhes completos.</p>
-    </div>
-    <div class="filters-bar">
-      <div class="filter-group">
-        <label class="filter-label">Buscar</label>
-        <input class="filter-input" id="f-search" type="text" placeholder="Título, proponente, autor..." oninput="applyFilters()">
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Edital</label>
-        <select class="filter-select" id="f-edital" onchange="applyFilters()">
-          <option value="">Todos</option>
-          <option value="013">013 — Amazônidas</option>
-          <option value="009">009 — Socio Tech</option>
-          <option value="008">008 — PROVIDA-AM</option>
-          <option value="002">002 — POP CT&amp;I</option>
-          <option value="004">004 — PROSPAM</option>
-          <option value="007">007 — PAINTER Ecoturismo</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Proponente</label>
-        <select class="filter-select" id="f-proponente" onchange="applyFilters()"><option value="">Todos</option></select>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Autor</label>
-        <select class="filter-select" id="f-autor" onchange="applyFilters()"><option value="">Todos</option></select>
-      </div>
-      <button class="btn-clear" onclick="clearFilters()">Limpar</button>
-    </div>
-    <div class="charts-row">
-      <div class="chart-card">
-        <div class="chart-title">Distribuição por edital</div>
-        <div class="chart-wrap"><canvas id="chart-editais"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Produtividade por autor</div>
-        <div class="chart-wrap"><canvas id="chart-autores"></canvas></div>
-      </div>
-    </div>
-    <p class="projects-meta" id="projects-count">Exibindo <strong>22</strong> de 22 projeto(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small></p>
-    <div class="projects-grid" id="projects-list"></div>
-  </div>
-</section>
-
-<!-- EQUIPE -->
-<section id="equipe">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-label">Quem Está Por Trás</div>
-      <h2 class="section-title">Pesquisadores e autores da nossa equipe.</h2>
-      <p class="section-desc">A articulação envolve doze proponentes pesquisadores e nove autores responsáveis pela redação das propostas — uma rede que une InPACTAS, SEMCTI, UFAM/INC e profissionais parceiros da região.</p>
-    </div>
-    <div class="equipe-grid">
-      <div>
-        <div class="equipe-col-title">Proponentes</div>
-        <div class="equipe-col-sub">— 12 pesquisadores</div>
-        <div id="list-proponentes"></div>
-      </div>
-      <div>
-        <div class="equipe-col-title">Autores</div>
-        <div class="equipe-col-sub">— 9 redatores</div>
-        <div id="list-autores"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MATERIAIS -->
-<section id="materiais">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-label">Materiais</div>
-      <h2 class="section-title">Tudo o que você precisa em um só lugar.</h2>
-      <p class="section-desc">Baixe o relatório executivo em PDF, compartilhe o link do painel com a equipe ou acesse outros materiais relacionados.</p>
-    </div>
-    <div class="materiais-grid">
-      <div class="material-card">
-        <div class="material-icon">📄</div>
-        <div class="material-label">PDF Relatório</div>
-        <div class="material-title">Relatório Executivo dos 22 Projetos</div>
-        <p class="material-desc">Documento institucional completo — capa, sumário executivo, KPIs, gráficos, tabela consolidada e detalhamento por edital. Gerado na hora.</p>
-        <button class="material-link" onclick="gerarPDF()">Baixar PDF →</button>
-      </div>
-      <div class="material-card">
-        <div class="material-icon">🔗</div>
-        <div class="material-label">Link Painel Online</div>
-        <div class="material-title">Versão pública do painel</div>
-        <p class="material-desc">Link permanente para compartilhar com a equipe, parceiros e o público interessado. Acessível de qualquer dispositivo.</p>
-        <button class="material-link" onclick="copyLink()">Copiar link →</button>
-      </div>
-      <div class="material-card">
-        <div class="material-icon">🗂️</div>
-        <div class="material-label">Dados</div>
-        <div class="material-title">Lista interativa filtrável</div>
-        <p class="material-desc">Use os filtros por edital, proponente e autor diretamente no painel desta página para navegar pelos projetos.</p>
-        <a class="material-link" href="#projetos">Ir para projetos →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand-name">InPACTAS &amp; SEMCTI</div>
-        <p class="footer-brand-desc">Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC<br>Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM<br><br>Brasil · Tríplice Fronteira</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Navegar</div>
-        <div class="footer-links">
-          <a href="#sobre">Sobre o painel</a>
-          <a href="#editais">Editais FAPEAM 2026</a>
-          <a href="#projetos">Lista de projetos</a>
-          <a href="#equipe">Equipe</a>
-          <a href="#materiais">Materiais</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Parcerias</div>
-        <div class="footer-partners">
-          <span class="footer-partner">FAPEAM</span>
-          <span class="footer-partner">UFAM — INC</span>
-          <span class="footer-partner">Prefeitura de Benjamin Constant</span>
-          <span class="footer-partner">SEMCTI</span>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 · InPACTAS &amp; SEMCTI Benjamin Constant. Todos os direitos reservados. Atualizado em 20 de maio de 2026</span>
-    </div>
-  </div>
-</footer>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-num" id="m-num"></div>
-        <div class="modal-title" id="m-title"></div>
-      </div>
-      <button class="modal-close" onclick="fecharModal()">&#x2715;</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-field"><div class="modal-field-label">Edital</div><div class="modal-field-val" id="m-edital"></div></div>
-      <div class="modal-field"><div class="modal-field-label">Proponente</div><div class="modal-field-val" id="m-proponente"></div></div>
-      <div class="modal-field"><div class="modal-field-label">Autor</div><div class="modal-field-val" id="m-autor"></div></div>
-      <div class="modal-field"><div class="modal-field-label">Tema</div><div class="modal-field-val" id="m-tema"></div></div>
-    </div>
-  </div>
-</div>
-
-<script>
-const PROJECTS = [
-  {n:1, edital:'013',nome:'Amazônidas',titulo:'Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira',proponente:'Maria Angélica de Almeida Corrêa',autor:'Alícia Nascimento',tema:'Meninas e Mulheres na Ciência'},
-  {n:2, edital:'013',nome:'Amazônidas',titulo:'BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia',proponente:'Leonor Farias Abreu',autor:'Andreza Hilário',tema:'Meninas e Mulheres na Ciência'},
-  {n:3, edital:'009',nome:'Socio Tech',titulo:'Juventude Amazônica e Cidadania Digital: Desenvolvimento e Aplicação de Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM',proponente:'Raimundo Valdan Pereira Lopes',autor:'Alícia Nascimento',tema:'Tecnologia Social'},
-  {n:4, edital:'009',nome:'Socio Tech',titulo:'Óleos da Floresta: Desenvolvimento e Aplicação de Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Andreza Hilário',tema:'Tecnologia Social'},
-  {n:5, edital:'009',nome:'Socio Tech',titulo:'Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário como Instrumento de Acesso a Direitos e Políticas Públicas para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM',proponente:'Danilo Egle Santos Barbosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Tecnologia Social'},
-  {n:6, edital:'009',nome:'Socio Tech',titulo:'SocioCastanha: Tecnologia Social de Baixo Custo para Gestão Comunitária, Rastreabilidade e Fortalecimento da Cadeia da Castanha-do-Brasil em Amaturá, Amazonas',proponente:'Leonor Farias Abreu',autor:'Jailson Franco Aguiar',tema:'Tecnologia Social'},
-  {n:7, edital:'008',nome:'PROVIDA-AM',titulo:'VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas no Município de Benjamin Constant, Amazonas',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Saúde Pública'},
-  {n:8, edital:'008',nome:'PROVIDA-AM',titulo:'RAPID-AM: Desenvolvimento e Validação de Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas',proponente:'Ciderjânio Farling Salvador da Costa',autor:'Cleyton Cid da Silva Ferreira',tema:'Saúde Pública'},
-  {n:9, edital:'002',nome:'POP CT&I',titulo:'B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant',proponente:'Pedro Henrique Mariosa',autor:'Pedro Henrique Mariosa',tema:'Popularização da Ciência'},
-  {n:10,edital:'002',nome:'POP CT&I',titulo:'Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal',proponente:'Danilo Egle Santos Barbosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Popularização da Ciência'},
-  {n:11,edital:'002',nome:'POP CT&I',titulo:'Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões',proponente:'Cleyton Cid da Silva Ferreira',autor:'Cleyton Cid da Silva Ferreira',tema:'Popularização da Ciência'},
-  {n:12,edital:'002',nome:'POP CT&I',titulo:'Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant',proponente:'Marinete Lourenço Mota',autor:'Murana Arenilhas Oliveira',tema:'Popularização da Ciência'},
-  {n:13,edital:'002',nome:'POP CT&I',titulo:'Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira',proponente:'Ciderjânio Farling Salvador da Costa',autor:'Alícia Nascimento',tema:'Popularização da Ciência'},
-  {n:14,edital:'002',nome:'POP CT&I',titulo:'Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões',proponente:'Leonor Farias Abreu',autor:'Murana Arenilhas Oliveira',tema:'Popularização da Ciência'},
-  {n:15,edital:'002',nome:'POP CT&I',titulo:'CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant',proponente:'Alícia Michely Silva do Nascimento',autor:'Andreza Hilário',tema:'Popularização da Ciência'},
-  {n:16,edital:'002',nome:'POP CT&I',titulo:'Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários',proponente:'Jose Edinaldo Zane',autor:'Wiily Alejandro',tema:'Popularização da Ciência'},
-  {n:17,edital:'002',nome:'POP CT&I',titulo:'Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica',proponente:'Juvan Reis Nogueira',autor:'Mateus Reinaldo Garcia',tema:'Popularização da Ciência'},
-  {n:18,edital:'002',nome:'POP CT&I',titulo:'1ª Feira de CT&I da Tríplice Fronteira: Evento de CT&I com alcance Brasil-Colômbia-Peru',proponente:'Raimundo Valdan Pereira Lopes',autor:'Alícia Nascimento',tema:'Popularização da Ciência'},
-  {n:19,edital:'002',nome:'POP CT&I',titulo:'Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Runa Salatta',tema:'Popularização da Ciência'},
-  {n:20,edital:'002',nome:'POP CT&I',titulo:'Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões',proponente:'Bruna Salatta (Nome Social: Runa Salatta)',autor:'Runa Salatta',tema:'Popularização da Ciência'},
-  {n:21,edital:'004',nome:'PROSPAM',titulo:'Sistema inteligente de manejo sustentável e aumento da produtividade do Tambaqui (Colossoma macropomum sp.) em açude no Alto Solimões com base em monitoramento digital e tecnologias de baixo custo',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Produtividade Pesqueira'},
-  {n:22,edital:'007',nome:'PAINTER Ecoturismo',titulo:'Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável de Comunidades Ribeirinhas e Indígenas do Alto Solimões',proponente:'Pedro Henrique Mariosa',autor:'Cleyton Cid da Silva Ferreira',tema:'Ecoturismo Científico'}
+const GD="#1A3D2B",GM="#2D7A4F",GP="#E8F5EE",CREAM="#F5F3EE",CB="#E4E0D8",INK="#1A2316",INKM="#2E3D34",INKL="#4A5E52",SAND="#F9F7F3",WHITE="#FFFFFF";
+const ADMIN_PIN="inpactas2026";
+const FINANCIADORES=["FAPEAM","CNPq","CAPES","MCTI","Prefeitura","Outro"];
+const ENTIDADES=["InPACTAS","SEMCTI","INC/UFAM","Prefeitura Benjamin Constant","Outra"];
+const STATUS_LIST=["Rascunho","Submetido","Em Análise","Aprovado","Reprovado","Em Execução"];
+const STATUS_COR={
+  "Rascunho":["#E4E0D8","#4A5E52"],
+  "Submetido":["#DBEAFE","#1E40AF"],
+  "Em Análise":["#FEF3C7","#92400E"],
+  "Aprovado":["#D1FAE5","#065F46"],
+  "Reprovado":["#FEE2E2","#991B1B"],
+  "Em Execução":["#A7F3D0","#064E3B"]
+};
+const EDITAIS_BASE=[
+  {id:"FAPEAM-013",codigo:"013",financiador:"FAPEAM",nome:"Amazônidas",desc:"Meninas e Mulheres na Ciência.",cor:"#FFF0F5",corT:"#C2185B"},
+  {id:"FAPEAM-009",codigo:"009",financiador:"FAPEAM",nome:"Socio Tech",desc:"Tecnologias sociais de baixo custo.",cor:"#E8F5E9",corT:"#2E7D32"},
+  {id:"FAPEAM-008",codigo:"008",financiador:"FAPEAM",nome:"PROVIDA-AM",desc:"Saúde pública e diagnóstico.",cor:"#E3F2FD",corT:"#1565C0"},
+  {id:"FAPEAM-002",codigo:"002",financiador:"FAPEAM",nome:"POP CT&I",desc:"Popularização da Ciência.",cor:"#FFF8E1",corT:"#E65100"},
+  {id:"FAPEAM-004",codigo:"004",financiador:"FAPEAM",nome:"PROSPAM",desc:"Produtividade pesqueira sustentável.",cor:"#F3E5F5",corT:"#6A1B9A"},
+  {id:"FAPEAM-007",codigo:"007",financiador:"FAPEAM",nome:"PAINTER Ecoturismo",desc:"Ecoturismo científico amazônico.",cor:"#E0F7FA",corT:"#00695C"},
 ];
-const PROPONENTES=[{nome:'Pedro Henrique Mariosa',qtd:6},{nome:'Leonor Farias Abreu',qtd:3},{nome:'Ciderjânio Farling Salvador da Costa',qtd:2},{nome:'Danilo Egle Santos Barbosa',qtd:2},{nome:'Raimundo Valdan Pereira Lopes',qtd:2},{nome:'Alícia Michely Silva do Nascimento',qtd:1},{nome:'Bruna Salatta (Nome Social: Runa Salatta)',qtd:1},{nome:'Cleyton Cid da Silva Ferreira',qtd:1},{nome:'Jose Edinaldo Zane',qtd:1},{nome:'Juvan Reis Nogueira',qtd:1},{nome:'Maria Angélica de Almeida Corrêa',qtd:1},{nome:'Marinete Lourenço Mota',qtd:1}];
-const AUTORES=[{nome:'Cleyton Cid da Silva Ferreira',qtd:7},{nome:'Alícia Nascimento',qtd:4},{nome:'Andreza Hilário',qtd:3},{nome:'Murana Arenilhas Oliveira',qtd:2},{nome:'Runa Salatta',qtd:2},{nome:'Jailson Franco Aguiar',qtd:1},{nome:'Mateus Reinaldo Garcia',qtd:1},{nome:'Pedro Henrique Mariosa',qtd:1},{nome:'Wiily Alejandro',qtd:1}];
+const PROJETOS=[
+  {id:1,titulo:"Jovens Mulheres Cientistas do Alto Solimões: Formação Investigativa e Narrativas Territoriais de Meninas em Contexto Amazônico de Fronteira",descricao:"Meninas e Mulheres na Ciência.",editalId:"FAPEAM-013",status:"Submetido",entidade:"INC/UFAM",equipe:"Maria Angélica de Almeida Corrêa (proponente) · Alícia Nascimento (autora)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:2,titulo:"BIOINOVA AMAZÔNICA: Desenvolvimento de Soluções Tecnológicas Sustentáveis com Protagonismo Feminino para Valorização de Recursos Naturais da Amazônia",descricao:"Soluções tecnológicas sustentáveis com protagonismo feminino.",editalId:"FAPEAM-013",status:"Submetido",entidade:"INC/UFAM",equipe:"Leonor Farias Abreu (proponente) · Andreza Hilário (autora)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:3,titulo:"Juventude Amazônica e Cidadania Digital: Desenvolvimento e Aplicação de Metodologia de Inclusão Digital para o Protagonismo Juvenil em Benjamin Constant — AM",descricao:"Inclusão digital para protagonismo juvenil.",editalId:"FAPEAM-009",status:"Submetido",entidade:"SEMCTI",equipe:"Raimundo Valdan Pereira Lopes (proponente) · Alícia Nascimento (autora)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:4,titulo:"Óleos da Floresta: Tecnologia Social de Baixo Custo para Extração Sustentável de Óleos Vegetais Amazônicos na Agricultura Familiar do Alto Solimões",descricao:"Tecnologia social para extração de óleos vegetais.",editalId:"FAPEAM-009",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente) · Andreza Hilário (autora)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:5,titulo:"Cartografia Social e Tecnologia Participativa: Mapeamento Comunitário como Instrumento de Acesso a Direitos e Políticas Públicas para Comunidades Ribeirinhas e Indígenas de Benjamin Constant — AM",descricao:"Mapeamento comunitário para acesso a direitos.",editalId:"FAPEAM-009",status:"Submetido",entidade:"SEMCTI",equipe:"Danilo Egle Santos Barbosa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:6,titulo:"SocioCastanha: Tecnologia Social de Baixo Custo para Gestão Comunitária, Rastreabilidade e Fortalecimento da Cadeia da Castanha-do-Brasil em Amaturá, Amazonas",descricao:"Gestão e rastreabilidade da castanha-do-Brasil.",editalId:"FAPEAM-009",status:"Submetido",entidade:"INC/UFAM",equipe:"Leonor Farias Abreu (proponente) · Jailson Franco Aguiar (autor)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:7,titulo:"VIVA SAÚDE BC: Sistema Integrado de Monitoramento de Doenças Crônicas no Município de Benjamin Constant, Amazonas",descricao:"Monitoramento de doenças crônicas.",editalId:"FAPEAM-008",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:8,titulo:"RAPID-AM: Desenvolvimento e Validação de Protocolo de Diagnóstico Rápido para Malária e Dengue em Comunidades Ribeirinhas e Indígenas de Benjamin Constant, Amazonas",descricao:"Protocolo de diagnóstico rápido para malária e dengue.",editalId:"FAPEAM-008",status:"Submetido",entidade:"INC/UFAM",equipe:"Ciderjânio Farling Salvador da Costa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-20",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:9,titulo:"B.Ciência — Jornal de Impacto: Ano 2 — Jornal digital e impresso de CT&I de Benjamin Constant",descricao:"Jornal de popularização da ciência.",editalId:"FAPEAM-002",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente e autor)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:10,titulo:"Popularização dos Painéis CT&I: PROVALOR 10 — 8 anos de dados da Amazônia Legal",descricao:"Popularização de dados históricos de CT&I.",editalId:"FAPEAM-002",status:"Submetido",entidade:"SEMCTI",equipe:"Danilo Egle Santos Barbosa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:11,titulo:"Cientista Ribeirinho: A Ciência das Canoas e Embarcações Tradicionais do Alto Solimões",descricao:"Popularização da ciência com construção de canoas.",editalId:"FAPEAM-002",status:"Submetido",entidade:"InPACTAS",equipe:"Cleyton Cid da Silva Ferreira (proponente e autor)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:25000,obs:""},
+  {id:12,titulo:"Curumim na Ciência: Mostra de Popularização da Ciência e Saberes da Amazônia — Benjamin Constant",descricao:"Mostra de popularização da ciência.",editalId:"FAPEAM-002",status:"Submetido",entidade:"SEMCTI",equipe:"Marinete Lourenço Mota (proponente) · Murana Arenilhas Oliveira (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:13,titulo:"Microcosmos de Inovação na Fronteira: CT&I entre Brasil, Colômbia e Peru — Tríplice Fronteira",descricao:"CT&I na Tríplice Fronteira.",editalId:"FAPEAM-002",status:"Submetido",entidade:"SEMCTI",equipe:"Ciderjânio Farling Salvador da Costa (proponente) · Alícia Nascimento (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:14,titulo:"Circuito Ciência na Escola: Feira de CT&I com escolas urbanas, rurais e indígenas do Alto Solimões",descricao:"Feira de CT&I com escolas do Alto Solimões.",editalId:"FAPEAM-002",status:"Submetido",entidade:"INC/UFAM",equipe:"Leonor Farias Abreu (proponente) · Murana Arenilhas Oliveira (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:15,titulo:"CT&I Itinerante: Oficinas nas Escolas Municipais de Benjamin Constant",descricao:"Oficinas itinerantes de CT&I.",editalId:"FAPEAM-002",status:"Submetido",entidade:"SEMCTI",equipe:"Alícia Michely Silva do Nascimento (proponente) · Andreza Hilário (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:16,titulo:"Mostra de CT&I (Produções Locais): Socialização de produções científicas locais e impactos comunitários",descricao:"Socialização de produções científicas locais.",editalId:"FAPEAM-002",status:"Submetido",entidade:"INC/UFAM",equipe:"Jose Edinaldo Zane (proponente) · Wiily Alejandro (autor)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:17,titulo:"Podcast da Inovação: CT&I na medida certa — série sobre ciência amazônica",descricao:"Série de podcast sobre ciência amazônica.",editalId:"FAPEAM-002",status:"Submetido",entidade:"InPACTAS",equipe:"Juvan Reis Nogueira (proponente) · Mateus Reinaldo Garcia (autor)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:18,titulo:"1ª Feira de CT&I da Tríplice Fronteira: Evento de CT&I com alcance Brasil-Colômbia-Peru",descricao:"Feira de CT&I internacional.",editalId:"FAPEAM-002",status:"Submetido",entidade:"SEMCTI",equipe:"Raimundo Valdan Pereira Lopes (proponente) · Alícia Nascimento (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:19,titulo:"Narrativas do Território: Exposição Interativa de Ciência, Cultura e Bioeconomia no Alto Solimões",descricao:"Exposição interativa de ciência e bioeconomia.",editalId:"FAPEAM-002",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente) · Runa Salatta (autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:20,titulo:"Narrativas do Território: Produção Audiovisual com Celular para Popularização da Ciência no Alto Solimões",descricao:"Produção audiovisual para popularização da ciência.",editalId:"FAPEAM-002",status:"Submetido",entidade:"InPACTAS",equipe:"Bruna Salatta / Runa Salatta (proponente e autora)",dataSubmissao:"2026-05-15",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:21,titulo:"Sistema inteligente de manejo sustentável do Tambaqui (Colossoma macropomum sp.) em açude no Alto Solimões com monitoramento digital e tecnologias de baixo custo",descricao:"Manejo sustentável do Tambaqui com monitoramento digital.",editalId:"FAPEAM-004",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-05",dataResultado:"",dataExecucao:"",valor:0,obs:""},
+  {id:22,titulo:"Science-Trip Amazônia: Plataforma Digital de Ecoturismo Científico com Tecnologias Imersivas e Ciência Cidadã para o Desenvolvimento Sustentável de Comunidades Ribeirinhas e Indígenas do Alto Solimões",descricao:"Plataforma de ecoturismo científico com tecnologias imersivas.",editalId:"FAPEAM-007",status:"Submetido",entidade:"InPACTAS",equipe:"Pedro Henrique Mariosa (proponente) · Cleyton Cid da Silva Ferreira (autor)",dataSubmissao:"2026-05-10",dataResultado:"",dataExecucao:"",valor:150000,obs:"Startup Science-Trip — Tríplice Fronteira."},
+];
 
-function populateSelects(){
-  const sp=document.getElementById('f-proponente'),sa=document.getElementById('f-autor');
-  PROPONENTES.forEach(p=>{const o=document.createElement('option');o.value=p.nome;o.textContent=p.nome;sp.appendChild(o);});
-  AUTORES.forEach(a=>{const o=document.createElement('option');o.value=a.nome;o.textContent=a.nome;sa.appendChild(o);});
+const fmtBRL=v=>v?("R$ "+Number(v).toLocaleString("pt-BR")):"—";
+const fmtData=d=>d?new Date(d+"T00:00:00").toLocaleDateString("pt-BR"):"—";
+const EMPTY={titulo:"",descricao:"",editalId:"FAPEAM-002",status:"Rascunho",entidade:"InPACTAS",equipe:"",dataSubmissao:"",dataResultado:"",dataExecucao:"",valor:"",obs:""};
+const LS_PROJ="inpactas_proj_v1", LS_EDS="inpactas_eds_v1";
+
+function StatusBadge({s}){
+  const c=STATUS_COR[s]||["#eee","#333"];
+  return <span style={{background:c[0],color:c[1],fontSize:"0.68rem",fontWeight:700,padding:"0.2rem 0.55rem",borderRadius:"2rem",letterSpacing:"0.03em",whiteSpace:"nowrap"}}>{s}</span>;
 }
-function tagClass(e){return{'013':'tag-013','009':'tag-009','008':'tag-008','002':'tag-002','004':'tag-004','007':'tag-007'}[e]||'';}
-function renderProjects(list){
-  document.getElementById('projects-count').innerHTML=`Exibindo <strong>${list.length}</strong> de 22 projeto(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small>`;
-  document.getElementById('projects-list').innerHTML=list.map(p=>`
-    <div class="project-card" onclick="openModal(${p.n-1})">
-      <div class="project-num">N° ${String(p.n).padStart(2,'0')}</div>
-      <span class="project-edital-tag ${tagClass(p.edital)}">${p.nome} ${p.edital}/2026</span>
-      <div class="project-title">${p.titulo}</div>
-      <div class="project-meta">
-        <span>👤 ${p.proponente}</span>
-        <span>✍️ ${p.autor}</span>
+function EditalBadge({id,eds}){
+  const e=eds.find(x=>x.id===id);
+  if(!e)return null;
+  return <span style={{background:e.cor,color:e.corT,fontSize:"0.65rem",fontWeight:700,padding:"0.15rem 0.55rem",borderRadius:"2rem",letterSpacing:"0.05em",textTransform:"uppercase",whiteSpace:"nowrap"}}>{e.nome} {e.codigo}/2026</span>;
+}
+function Overlay({open,onClose,children}){
+  if(!open)return null;
+  return(
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(26,35,22,0.6)",zIndex:9999,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"60px 16px 16px",overflowY:"auto"}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:WHITE,borderRadius:14,width:"100%",maxWidth:560,maxHeight:"82vh",overflowY:"auto",boxShadow:"0 24px 80px rgba(26,35,22,0.3)"}}>
+        {children}
       </div>
-      <div class="project-arrow">Ver detalhes →</div>
-    </div>`).join('');
+    </div>
+  );
 }
-function applyFilters(){
-  const q=document.getElementById('f-search').value.toLowerCase(),ed=document.getElementById('f-edital').value,pr=document.getElementById('f-proponente').value,au=document.getElementById('f-autor').value;
-  renderProjects(PROJECTS.filter(p=>(!q||p.titulo.toLowerCase().includes(q)||p.proponente.toLowerCase().includes(q)||p.autor.toLowerCase().includes(q))&&(!ed||p.edital===ed)&&(!pr||p.proponente===pr)&&(!au||p.autor===au)));
-}
-function clearFilters(){document.getElementById('f-search').value='';document.getElementById('f-edital').value='';document.getElementById('f-proponente').value='';document.getElementById('f-autor').value='';renderProjects(PROJECTS);}
-function openModal(idx){
-  const p=PROJECTS[idx];
-  document.getElementById('m-num').textContent='N° '+String(p.n).padStart(2,'0');
-  document.getElementById('m-title').textContent=p.titulo;
-  document.getElementById('m-edital').textContent=p.nome+' — Edital '+p.edital+'/2026';
-  document.getElementById('m-proponente').textContent=p.proponente;
-  document.getElementById('m-autor').textContent=p.autor;
-  document.getElementById('m-tema').textContent=p.tema;
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function fecharModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
-function closeModal(e){if(e.target===document.getElementById('modal'))fecharModal();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModal();});
-function renderEquipe(){
-  document.getElementById('list-proponentes').innerHTML=PROPONENTES.map(p=>`<div class="pessoa-item"><span class="pessoa-name">${p.nome}</span><span class="pessoa-count">${p.qtd} ${p.qtd===1?'projeto':'projetos'}</span></div>`).join('');
-  document.getElementById('list-autores').innerHTML=AUTORES.map(a=>`<div class="pessoa-item"><span class="pessoa-name">${a.nome}</span><span class="pessoa-count">${a.qtd} ${a.qtd===1?'projeto':'projetos'}</span></div>`).join('');
-}
-function buildCharts(){
-  const gp=['#1A3D2B','#2D7A4F','#4CAF80','#81C99A','#B2DBBF','#D6EDE0'],op=['#E65100','#EF6C00','#F57C00','#FB8C00','#FFA726','#FFCC80','#FFE0B2','#FFF8E1','#FFFDE7'];
-  new Chart(document.getElementById('chart-editais').getContext('2d'),{type:'doughnut',data:{labels:['POP CT&I 002 (12)','Socio Tech 009 (4)','Amazônidas 013 (2)','PROVIDA-AM 008 (2)','PROSPAM 004 (1)','PAINTER 007 (1)'],datasets:[{data:[12,4,2,2,1,1],backgroundColor:gp,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12,padding:8}}}}});
-  new Chart(document.getElementById('chart-autores').getContext('2d'),{type:'bar',data:{labels:AUTORES.map(a=>a.nome.split(' ').slice(0,2).join(' ')),datasets:[{data:AUTORES.map(a=>a.qtd),backgroundColor:op,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{stepSize:1},grid:{color:'rgba(0,0,0,.05)'}},y:{ticks:{font:{size:10}}}}}});
-}
-function copyLink(){const u='https://cleytoncidlog17-a11y.github.io/painel-inpactas/';navigator.clipboard.writeText(u).then(()=>alert('Link copiado!')).catch(()=>prompt('Copie o link:',u));}
-
-function gerarPDF(){
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF('p','mm','a4');
-  const W=210,H=297;
-  const G1=[26,61,43],G2=[45,122,79],SAND=[249,247,243],INK=[26,35,22],INKL=[74,94,82];
-
-  /* ── CAPA ── */
-  doc.setFillColor(...G1);doc.rect(0,0,W,H,'F');
-  doc.setFillColor(...G2);doc.rect(0,0,W,3,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(26);doc.setTextColor(255,255,255);
-  doc.text('InPACTAS & SEMCTI',W/2,52,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(180,210,190);
-  doc.text('Benjamin Constant · Alto Solimões · Tríplice Fronteira BR/CO/PE',W/2,61,{align:'center'});
-  doc.setDrawColor(...G2);doc.setLineWidth(0.5);doc.line(30,68,W-30,68);
-  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(180,210,190);
-  doc.text('EDITAIS FAPEAM 2026',W/2,79,{align:'center'});
-  doc.setFontSize(22);doc.setTextColor(255,255,255);
-  doc.text('Relatório Executivo',W/2,93,{align:'center'});
-  doc.setFontSize(14);doc.text('Portfólio de 22 Projetos de CT&I',W/2,103,{align:'center'});
-  doc.setDrawColor(200,230,210);doc.setLineWidth(0.3);doc.line(40,110,W-40,110);
-
-  /* KPIs */
-  const kpis=[['22','Projetos'],['6','Editais'],['12','Proponentes'],['9','Autores']];
-  const cw=35,ch=22,cy=118,cx0=(W-(kpis.length*cw+(kpis.length-1)*6))/2;
-  kpis.forEach((k,i)=>{
-    const x=cx0+i*(cw+6);
-    doc.setFillColor(40,80,55);doc.setDrawColor(80,150,100);doc.roundedRect(x,cy,cw,ch,3,3,'FD');
-    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(255,255,255);
-    doc.text(k[0],x+cw/2,cy+11,{align:'center'});
-    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(180,210,190);
-    doc.text(k[1].toUpperCase(),x+cw/2,cy+18,{align:'center'});
-  });
-
-  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,210,190);
-  doc.text('22 projetos de CT&I submetidos pela InPACTAS, SEMCTI e INC/UFAM aos editais FAPEAM 2026',W/2,153,{align:'center'});
-  doc.text('com foco em bioeconomia, saúde pública, popularização da ciência e protagonismo feminino.',W/2,160,{align:'center'});
-
-  doc.setFillColor(20,50,32);doc.rect(0,H-38,W,38,'F');
-  doc.setFillColor(...G2);doc.rect(0,H-38,W,0.4,'F');
-  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(140,190,160);
-  doc.text('Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC',W/2,H-27,{align:'center'});
-  doc.text('Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM',W/2,H-20,{align:'center'});
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(180,210,190);
-  doc.text('Gerado em 20 de maio de 2026',W/2,H-10,{align:'center'});
-
-  /* ── PÁG 2 — SUMÁRIO EXECUTIVO ── */
-  doc.addPage();_hdr(doc,G1,G2,W,'Sumário Executivo');
-  let y=36;
-  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(...INKL);
-  doc.text('A Incubadora InPACTAS, a SEMCTI e o INC/UFAM consolidaram em Benjamin Constant a maior submissão coletiva',15,y);y+=5;
-  doc.text('de projetos da região aos editais FAPEAM 2026. Este relatório reúne a visão completa das 22 propostas.',15,y);y+=10;
-
-  doc.autoTable({startY:y,
-    head:[['Indicador','Valor']],
-    body:[['Total de projetos submetidos','22'],['Editais contemplados','6'],['Pesquisadores proponentes','12'],['Autores / redatores','9'],['Instituições parceiras','InPACTAS, SEMCTI, UFAM/INC'],['Alcance territorial','Benjamin Constant — Tríplice Fronteira BR/CO/PE']],
-    styles:{font:'helvetica',fontSize:9,cellPadding:4},
-    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold'},
-    alternateRowStyles:{fillColor:SAND},
-    columnStyles:{0:{fontStyle:'bold',textColor:INK,cellWidth:110},1:{textColor:INK}},
-    margin:{left:15,right:15}});
-  y=doc.lastAutoTable.finalY+10;
-
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
-  doc.text('Distribuição por Edital',15,y);y+=4;
-  doc.autoTable({startY:y,
-    head:[['Edital','Nome','Eixo Temático','Projetos']],
-    body:[['013/2026','Amazônidas','Meninas e Mulheres na Ciência','2'],
-          ['009/2026','Socio Tech','Tecnologias Sociais de Baixo Custo','4'],
-          ['008/2026','PROVIDA-AM','Saúde Pública e Diagnóstico','2'],
-          ['002/2026','POP CT&I','Popularização da Ciência','12'],
-          ['004/2026','PROSPAM','Produtividade Pesqueira Sustentável','1'],
-          ['007/2026','PAINTER Ecoturismo','Ecoturismo Científico Digital','1']],
-    styles:{font:'helvetica',fontSize:8.5,cellPadding:3.5},
-    headStyles:{fillColor:G2,textColor:[255,255,255],fontStyle:'bold'},
-    alternateRowStyles:{fillColor:SAND},
-    columnStyles:{0:{fontStyle:'bold',cellWidth:22,textColor:G1},1:{cellWidth:38},2:{cellWidth:90},3:{cellWidth:20,halign:'center',fontStyle:'bold',textColor:G1}},
-    margin:{left:15,right:15}});
-  _ftr(doc,G1,W,H,'2');
-
-  /* ── PÁG 3+ — PROJETOS ── */
-  doc.addPage();_hdr(doc,G1,G2,W,'Lista Completa de Projetos');
-  doc.autoTable({startY:36,
-    head:[['N°','Edital','Título do Projeto','Proponente','Autor']],
-    body:PROJECTS.map(p=>[String(p.n).padStart(2,'0'),p.nome+'\n'+p.edital+'/2026',p.titulo,p.proponente,p.autor]),
-    styles:{font:'helvetica',fontSize:7.5,cellPadding:3,overflow:'linebreak',valign:'top'},
-    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold',fontSize:8},
-    alternateRowStyles:{fillColor:SAND},
-    columnStyles:{0:{cellWidth:10,halign:'center',fontStyle:'bold',textColor:G1},1:{cellWidth:26,fontSize:7,textColor:G2,fontStyle:'bold'},2:{cellWidth:88,textColor:INK},3:{cellWidth:38,fontSize:7,textColor:INKL},4:{cellWidth:28,fontSize:7,textColor:INKL}},
-    margin:{left:10,right:10},showHead:'everyPage',
-    didDrawPage:()=>{ _hdr(doc,G1,G2,W,'Lista Completa de Projetos'); }});
-
-  const pg3=doc.getNumberOfPages();
-  for(let i=2;i<=pg3;i++){doc.setPage(i);_ftr(doc,G1,W,H,String(i));}
-
-  /* ── EQUIPE ── */
-  doc.addPage();_hdr(doc,G1,G2,W,'Equipe — Pesquisadores e Autores');
-  let ey=36;
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
-  doc.text('Proponentes',15,ey);
-  doc.setFont('helvetica','italic');doc.setFontSize(8.5);doc.setTextColor(...INKL);
-  doc.text('— 12 pesquisadores',58,ey);ey+=4;
-  doc.autoTable({startY:ey,
-    head:[['Pesquisador Proponente','Projetos']],
-    body:PROPONENTES.map(p=>[p.nome,p.qtd+' '+(p.qtd===1?'projeto':'projetos')]),
-    styles:{font:'helvetica',fontSize:9,cellPadding:3.5},
-    headStyles:{fillColor:G1,textColor:[255,255,255],fontStyle:'bold'},
-    alternateRowStyles:{fillColor:SAND},
-    columnStyles:{0:{cellWidth:155},1:{cellWidth:25,halign:'center',fontStyle:'bold',textColor:G2}},
-    margin:{left:15,right:15}});
-  ey=doc.lastAutoTable.finalY+12;
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...G1);
-  doc.text('Autores / Redatores',15,ey);
-  doc.setFont('helvetica','italic');doc.setFontSize(8.5);doc.setTextColor(...INKL);
-  doc.text('— 9 redatores',66,ey);ey+=4;
-  doc.autoTable({startY:ey,
-    head:[['Autor / Redator','Projetos']],
-    body:AUTORES.map(a=>[a.nome,a.qtd+' '+(a.qtd===1?'projeto':'projetos')]),
-    styles:{font:'helvetica',fontSize:9,cellPadding:3.5},
-    headStyles:{fillColor:G2,textColor:[255,255,255],fontStyle:'bold'},
-    alternateRowStyles:{fillColor:SAND},
-    columnStyles:{0:{cellWidth:155},1:{cellWidth:25,halign:'center',fontStyle:'bold',textColor:G1}},
-    margin:{left:15,right:15}});
-  ey=doc.lastAutoTable.finalY+16;
-  doc.setFillColor(...G1);doc.rect(15,ey,W-30,0.4,'F');
-  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...INKL);
-  doc.text('© 2026 · InPACTAS & SEMCTI Benjamin Constant. Todos os direitos reservados.',W/2,ey+7,{align:'center'});
-  const totalPg=doc.getNumberOfPages();
-  _ftr(doc,G1,W,H,String(totalPg));
-  doc.save('Relatorio-Executivo-InPACTAS-FAPEAM2026.pdf');
+function Field({label,children}){
+  return(
+    <div style={{marginBottom:10}}>
+      <label style={{fontSize:12,color:INKL,display:"block",marginBottom:3}}>{label}</label>
+      {children}
+    </div>
+  );
 }
 
-function _hdr(doc,G1,G2,W,title){
-  doc.setFillColor(...G1);doc.rect(0,0,W,22,'F');
-  doc.setFillColor(...G2);doc.rect(0,22,W,0.5,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(180,210,190);
-  doc.text('InPACTAS & SEMCTI — Editais FAPEAM 2026',10,13);
-  doc.setFontSize(11);doc.setTextColor(255,255,255);
-  doc.text(title,W-10,13,{align:'right'});
+function App(){
+  const [proj,setProj]=useState(PROJETOS);
+  const [eds,setEds]=useState(EDITAIS_BASE);
+  const [aba,setAba]=useState("projetos");
+  const [isAdmin,setIsAdmin]=useState(false);
+  const [pin,setPin]=useState("");
+  const [pinErr,setPinErr]=useState(false);
+  const [showLogin,setShowLogin]=useState(false);
+  const [showEdModal,setShowEdModal]=useState(false);
+  const [fStatus,setFStatus]=useState("Todos");
+  const [fEdital,setFEdital]=useState("");
+  const [fEnt,setFEnt]=useState("");
+  const [busca,setBusca]=useState("");
+  const [detalhe,setDetalhe]=useState(null);
+  const [formOpen,setFormOpen]=useState(false);
+  const [delId,setDelId]=useState(null);
+  const [form,setForm]=useState(EMPTY);
+  const [editId,setEditId]=useState(null);
+  const [novoEd,setNovoEd]=useState({codigo:"",financiador:"FAPEAM",nome:"",desc:""});
+  const [exportTxt,setExportTxt]=useState("");
+  const [copied,setCopied]=useState(false);
+  const c1=useRef(null),c2=useRef(null),ci1=useRef(null),ci2=useRef(null);
+
+  useEffect(()=>{
+    try{
+      const rp=localStorage.getItem(LS_PROJ);
+      const re=localStorage.getItem(LS_EDS);
+      if(rp)setProj(JSON.parse(rp));
+      if(re)setEds(JSON.parse(re));
+    }catch(e){}
+  },[]);
+
+  const saveP=l=>{try{localStorage.setItem(LS_PROJ,JSON.stringify(l));}catch(e){}};
+  const saveE=l=>{try{localStorage.setItem(LS_EDS,JSON.stringify(l));}catch(e){}};
+
+  useEffect(()=>{
+    if(aba!=="dashboard")return;
+    if(!c1.current||!c2.current)return;
+    if(ci1.current)ci1.current.destroy();
+    if(ci2.current)ci2.current.destroy();
+    const gp=["#1A3D2B","#2D7A4F","#4CAF80","#81C99A","#B2DBBF","#D6EDE0"];
+    ci1.current=new Chart(c1.current,{
+      type:"doughnut",
+      data:{labels:eds.map(e=>e.nome+" "+e.codigo),datasets:[{data:eds.map(e=>proj.filter(p=>p.editalId===e.id).length),backgroundColor:gp.slice(0,eds.length),borderWidth:2,borderColor:WHITE}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"right",labels:{font:{size:10},boxWidth:12,padding:8}}}}
+    });
+    ci2.current=new Chart(c2.current,{
+      type:"bar",
+      data:{labels:STATUS_LIST,datasets:[{data:STATUS_LIST.map(s=>proj.filter(p=>p.status===s).length),backgroundColor:["#E4E0D8","#BFDBFE","#FDE68A","#A7F3D0","#FECACA","#6EE7B7"],borderRadius:4,borderWidth:0}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},autoSkip:false,maxRotation:30},grid:{display:false}},y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:"rgba(0,0,0,.05)"}}}}
+    });
+  },[aba,proj,eds]);
+
+  const login=()=>{
+    if(pin===ADMIN_PIN){setIsAdmin(true);setShowLogin(false);setPinErr(false);setPin("");}
+    else setPinErr(true);
+  };
+
+  const filtrados=proj.filter(p=>
+    (!busca||p.titulo.toLowerCase().includes(busca.toLowerCase()))&&
+    (!fEdital||p.editalId===fEdital)&&
+    (!fEnt||p.entidade===fEnt)&&
+    (fStatus==="Todos"||p.status===fStatus)
+  );
+
+  const salvar=()=>{
+    if(!form.titulo.trim())return;
+    const l=editId
+      ?proj.map(p=>p.id===editId?Object.assign({},form,{id:editId,valor:Number(form.valor)||0}):p)
+      :proj.concat([Object.assign({},form,{id:Date.now(),valor:Number(form.valor)||0})]);
+    setProj(l);saveP(l);
+    setFormOpen(false);setEditId(null);setForm(EMPTY);
+  };
+
+  const excluir=id=>{
+    const l=proj.filter(p=>p.id!==id);
+    setProj(l);saveP(l);
+    setDelId(null);setDetalhe(null);
+  };
+
+  const addEd=()=>{
+    if(!novoEd.codigo||!novoEd.nome)return;
+    const cores=["#FFF0F5","#E8F5E9","#E3F2FD","#FFF8E1","#F3E5F5","#E0F7FA"];
+    const txts=["#C2185B","#2E7D32","#1565C0","#E65100","#6A1B9A","#00695C"];
+    const i=eds.length%6;
+    const l=eds.concat([Object.assign({id:novoEd.financiador+"-"+novoEd.codigo},novoEd,{cor:cores[i],corT:txts[i]})]);
+    setEds(l);saveE(l);
+    setNovoEd({codigo:"",financiador:"FAPEAM",nome:"",desc:""});
+  };
+
+  const gerarCSV=()=>{
+    const cols=["N","Titulo","Edital","Status","Entidade","Equipe","Valor","Submissao"];
+    const rows=proj.map(p=>{
+      const e=eds.find(x=>x.id===p.editalId);
+      return [p.id,p.titulo,e?(e.codigo+"-"+e.nome):p.editalId,p.status,p.entidade,p.equipe,p.valor||0,p.dataSubmissao]
+        .map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",");
+    });
+    setExportTxt([cols.join(","),...rows].join("\n"));
+    setCopied(false);
+  };
+
+  const gerarRelatorio=()=>{
+    const linhas=proj.map(p=>{
+      const e=eds.find(x=>x.id===p.editalId);
+      let txt=String(p.id).padStart(2,"0")+". "+p.titulo+"\n";
+      txt+="   Edital: "+(e?(e.nome+" "+e.codigo):"—")+" | Entidade: "+p.entidade+" | Status: "+p.status;
+      if(p.valor)txt+=" | R$ "+Number(p.valor).toLocaleString("pt-BR");
+      if(p.equipe)txt+="\n   Equipe: "+p.equipe;
+      return txt+"\n";
+    }).join("\n");
+    const resumo=eds.map(e=>{
+      const ps=proj.filter(p=>p.editalId===e.id);
+      return "  "+e.financiador+" "+e.codigo+" — "+e.nome+": "+ps.length+" proposta(s)\n";
+    }).join("");
+    const txt=
+      "INPACTAS & SEMCTI — GESTAO DE PROPOSTAS\n"+
+      "Benjamin Constant · Alto Solimoes · Triplice Fronteira\n"+
+      "Gerado em: "+new Date().toLocaleDateString("pt-BR")+"\n\n"+
+      "KPIs\n"+
+      "  Total: "+proj.length+" | Editais: "+eds.length+
+      " | Em andamento: "+proj.filter(p=>["Submetido","Em Análise"].includes(p.status)).length+
+      " | Aprovados: "+proj.filter(p=>p.status==="Aprovado").length+"\n\n"+
+      "RESUMO POR EDITAL\n"+resumo+"\n"+
+      "LISTA COMPLETA\n"+linhas;
+    setExportTxt(txt);
+    setCopied(false);
+  };
+
+  const copiar=()=>{
+    try{
+      navigator.clipboard.writeText(exportTxt).then(()=>setCopied(true));
+    }catch(e){
+      const t=document.createElement("textarea");
+      t.value=exportTxt;document.body.appendChild(t);t.select();
+      document.execCommand("copy");document.body.removeChild(t);
+      setCopied(true);
+    }
+  };
+
+  const totalV=proj.reduce((s,p)=>s+(Number(p.valor)||0),0);
+  const W={width:"100%",boxSizing:"border-box"};
+  const btnP={display:"inline-flex",alignItems:"center",background:GD,color:WHITE,fontSize:"0.83rem",fontWeight:600,padding:"0.55rem 1.1rem",borderRadius:4,border:"none",cursor:"pointer",fontFamily:"Inter,sans-serif"};
+  const btnS={display:"inline-flex",alignItems:"center",background:"transparent",color:GD,fontSize:"0.83rem",fontWeight:600,padding:"0.55rem 1.1rem",borderRadius:4,border:"1.5px solid "+GD,cursor:"pointer",fontFamily:"Inter,sans-serif"};
+  const abas=[["projetos","Projetos"],["dashboard","Dashboard"],["kanban","Kanban"],["tabela","Tabela"],["relatorios","Relatórios"]];
+
+  return(
+    <div style={{fontFamily:"Inter,sans-serif",background:WHITE,color:INK,position:"relative",minHeight:"100vh"}}>
+
+      <Overlay open={!!detalhe} onClose={()=>setDetalhe(null)}>
+        {detalhe&&(
+          <React.Fragment>
+            <div style={{padding:"1.5rem 2rem 1rem",borderBottom:"1px solid "+CB,display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
+              <div>
+                <div style={{fontSize:"0.72rem",fontWeight:700,color:INKL,marginBottom:6,letterSpacing:".05em"}}>Nº {String(detalhe.id).padStart(2,"0")}</div>
+                <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:INK,lineHeight:1.4}}>{detalhe.titulo}</div>
+              </div>
+              <button onClick={()=>setDetalhe(null)} style={{background:"none",border:"none",fontSize:22,cursor:"pointer",color:INKL,flexShrink:0}}>✕</button>
+            </div>
+            <div style={{padding:"1.25rem 2rem 1.75rem"}}>
+              {[
+                ["Edital",(function(){const e=eds.find(x=>x.id===detalhe.editalId);return e?(e.nome+" — Edital "+e.codigo+"/2026"):"—";})()],
+                ["Status",detalhe.status],
+                ["Entidade",detalhe.entidade],
+                ["Equipe responsável",detalhe.equipe],
+                ["Descrição",detalhe.descricao],
+                ["Valor solicitado",fmtBRL(detalhe.valor)],
+                ["Data de submissão",fmtData(detalhe.dataSubmissao)],
+                ["Data de resultado",fmtData(detalhe.dataResultado)],
+                ["Data de execução",fmtData(detalhe.dataExecucao)],
+                ["Observações",detalhe.obs]
+              ].map(function(item){
+                const l=item[0],v=item[1];
+                if(!v||v==="—")return null;
+                return (
+                  <div key={l} style={{marginBottom:14}}>
+                    <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:INKL,marginBottom:3}}>{l}</div>
+                    <div style={{fontSize:"0.9rem",color:INKM,lineHeight:1.6}}>{l==="Status"?<StatusBadge s={v}/>:v}</div>
+                  </div>
+                );
+              })}
+              {isAdmin&&(
+                <div style={{display:"flex",gap:8,marginTop:16,paddingTop:14,borderTop:"1px solid "+CB}}>
+                  <button onClick={()=>{setForm(Object.assign({},detalhe,{valor:detalhe.valor||""}));setEditId(detalhe.id);setFormOpen(true);setDetalhe(null);}} style={Object.assign({},btnP,{fontSize:"0.8rem",padding:"0.45rem 1rem"})}>Editar</button>
+                  <button onClick={()=>setDelId(detalhe.id)} style={Object.assign({},btnP,{background:"#991B1B",fontSize:"0.8rem",padding:"0.45rem 1rem"})}>Excluir</button>
+                </div>
+              )}
+            </div>
+          </React.Fragment>
+        )}
+      </Overlay>
+
+      <Overlay open={showLogin} onClose={()=>setShowLogin(false)}>
+        <div style={{padding:"1.5rem 2rem"}}>
+          <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.2rem",fontWeight:700,color:INK,marginBottom:8}}>Acesso administrativo</div>
+          <div style={{fontSize:"0.85rem",color:INKL,marginBottom:16}}>Digite a senha para editar e cadastrar propostas.</div>
+          <input type="password" placeholder="Senha" value={pin} onChange={e=>{setPin(e.target.value);setPinErr(false);}} onKeyDown={e=>e.key==="Enter"&&login()} style={Object.assign({},W,{marginBottom:8,padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/>
+          {pinErr&&<div style={{color:"#991B1B",fontSize:12,marginBottom:8}}>Senha incorreta.</div>}
+          <div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:8}}>
+            <button onClick={()=>setShowLogin(false)} style={btnS}>Cancelar</button>
+            <button onClick={login} style={btnP}>Entrar</button>
+          </div>
+        </div>
+      </Overlay>
+
+      <Overlay open={showEdModal} onClose={()=>setShowEdModal(false)}>
+        <div style={{padding:"1.5rem 2rem"}}>
+          <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:INK,marginBottom:14}}>Gerenciar editais</div>
+          <div style={{marginBottom:14,maxHeight:130,overflowY:"auto"}}>
+            {eds.map(e=>(
+              <div key={e.id} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,paddingBottom:6,borderBottom:"1px solid "+CB}}>
+                <EditalBadge id={e.id} eds={eds}/>
+                <span style={{fontSize:12,color:INKL}}>{e.desc}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:"1px solid "+CB,paddingTop:14}}>
+            <div style={{fontSize:13,fontWeight:600,color:INK,marginBottom:10}}>Adicionar novo edital</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              <Field label="Financiador"><select value={novoEd.financiador} onChange={e=>setNovoEd(Object.assign({},novoEd,{financiador:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}>{FINANCIADORES.map(f=><option key={f}>{f}</option>)}</select></Field>
+              <Field label="Código"><input value={novoEd.codigo} onChange={e=>setNovoEd(Object.assign({},novoEd,{codigo:e.target.value}))} placeholder="ex: 016" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+              <Field label="Nome"><input value={novoEd.nome} onChange={e=>setNovoEd(Object.assign({},novoEd,{nome:e.target.value}))} placeholder="ex: Centelha AM" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+              <Field label="Descrição"><input value={novoEd.desc} onChange={e=>setNovoEd(Object.assign({},novoEd,{desc:e.target.value}))} placeholder="ex: Startups" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+            </div>
+            <div style={{display:"flex",gap:8,marginTop:10,justifyContent:"flex-end"}}>
+              <button onClick={()=>setShowEdModal(false)} style={btnS}>Fechar</button>
+              <button onClick={addEd} style={btnP}>Adicionar</button>
+            </div>
+          </div>
+        </div>
+      </Overlay>
+
+      <Overlay open={formOpen} onClose={()=>{setFormOpen(false);setEditId(null);setForm(EMPTY);}}>
+        <div style={{padding:"1.5rem 2rem"}}>
+          <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:INK,marginBottom:14}}>{editId?"Editar proposta":"Nova proposta"}</div>
+          <Field label="Título *"><input value={form.titulo} onChange={e=>setForm(Object.assign({},form,{titulo:e.target.value}))} placeholder="Título do projeto" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          <Field label="Descrição"><textarea value={form.descricao} onChange={e=>setForm(Object.assign({},form,{descricao:e.target.value}))} rows="2" style={Object.assign({},W,{resize:"vertical",padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
+            <Field label="Edital"><select value={form.editalId} onChange={e=>setForm(Object.assign({},form,{editalId:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}>{eds.map(e=><option key={e.id} value={e.id}>{e.financiador+" "+e.codigo+" — "+e.nome}</option>)}</select></Field>
+            <Field label="Status"><select value={form.status} onChange={e=>setForm(Object.assign({},form,{status:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select></Field>
+            <Field label="Entidade"><select value={form.entidade} onChange={e=>setForm(Object.assign({},form,{entidade:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}>{ENTIDADES.map(e=><option key={e}>{e}</option>)}</select></Field>
+            <Field label="Valor (R$)"><input type="number" value={form.valor} onChange={e=>setForm(Object.assign({},form,{valor:e.target.value}))} placeholder="0" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+            <Field label="Data submissão"><input type="date" value={form.dataSubmissao} onChange={e=>setForm(Object.assign({},form,{dataSubmissao:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+            <Field label="Data resultado"><input type="date" value={form.dataResultado} onChange={e=>setForm(Object.assign({},form,{dataResultado:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          </div>
+          <Field label="Equipe responsável"><input value={form.equipe} onChange={e=>setForm(Object.assign({},form,{equipe:e.target.value}))} placeholder="Proponente · Autor" style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          <Field label="Data de execução"><input type="date" value={form.dataExecucao} onChange={e=>setForm(Object.assign({},form,{dataExecucao:e.target.value}))} style={Object.assign({},W,{padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          <Field label="Observações"><textarea value={form.obs} onChange={e=>setForm(Object.assign({},form,{obs:e.target.value}))} rows="2" style={Object.assign({},W,{resize:"vertical",padding:"0.5rem",border:"1px solid "+CB,borderRadius:6})}/></Field>
+          <div style={{display:"flex",gap:8,justifyContent:"flex-end",marginTop:12}}>
+            <button onClick={()=>{setFormOpen(false);setEditId(null);setForm(EMPTY);}} style={btnS}>Cancelar</button>
+            <button onClick={salvar} style={btnP}>Salvar</button>
+          </div>
+        </div>
+      </Overlay>
+
+      <Overlay open={!!delId} onClose={()=>setDelId(null)}>
+        <div style={{padding:"1.5rem 2rem"}}>
+          <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:INK,marginBottom:8}}>Confirmar exclusão</div>
+          <div style={{fontSize:"0.88rem",color:INKL,marginBottom:20}}>Tem certeza? Esta ação não pode ser desfeita.</div>
+          <div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
+            <button onClick={()=>setDelId(null)} style={btnS}>Cancelar</button>
+            <button onClick={()=>excluir(delId)} style={Object.assign({},btnP,{background:"#991B1B"})}>Excluir</button>
+          </div>
+        </div>
+      </Overlay>
+
+      <nav style={{background:WHITE,borderBottom:"1px solid "+CB,padding:"0 1.5rem",height:56,display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+        <div>
+          <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1rem",fontWeight:700,color:GD,letterSpacing:"-0.02em"}}>InPACTAS & SEMCTI</div>
+          <div style={{fontSize:"0.62rem",color:INKL,letterSpacing:"0.04em",textTransform:"uppercase"}}>Benjamin Constant · Alto Solimões</div>
+        </div>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          {isAdmin
+            ?<React.Fragment>
+                <span style={{background:GP,color:GM,fontSize:11,padding:"3px 10px",borderRadius:"2rem",fontWeight:600,border:"1px solid rgba(45,122,79,.2)"}}>Admin: Cleyton Cid</span>
+                <button onClick={()=>setIsAdmin(false)} style={Object.assign({},btnS,{fontSize:"0.75rem",padding:"0.3rem 0.8rem"})}>Sair</button>
+              </React.Fragment>
+            :<button onClick={()=>setShowLogin(true)} style={Object.assign({},btnP,{fontSize:"0.78rem",padding:"0.38rem 0.9rem"})}>Entrar como admin</button>
+          }
+        </div>
+      </nav>
+
+      <div style={{background:CREAM,borderBottom:"1px solid "+CB,padding:"2.5rem 1.5rem 2rem"}}>
+        <div style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"1fr auto",gap:"2rem",alignItems:"center"}}>
+          <div>
+            <div style={{display:"inline-block",background:GP,color:GM,border:"1px solid rgba(45,122,79,.2)",fontSize:"0.7rem",fontWeight:600,letterSpacing:"0.06em",textTransform:"uppercase",padding:"0.28rem 0.7rem",borderRadius:"2rem",marginBottom:"1rem"}}>Gestão de Propostas · FAPEAM 2026</div>
+            <h1 style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"clamp(1.7rem,3.5vw,2.6rem)",fontWeight:800,color:INK,lineHeight:1.15,letterSpacing:"-0.02em",marginBottom:"0.75rem"}}>
+              Ciência e inovação <em style={{fontStyle:"italic",color:GM}}>articuladas</em><br/>no Alto Solimões.
+            </h1>
+            <p style={{fontSize:"0.88rem",color:INKL,lineHeight:1.8,maxWidth:480,marginBottom:"1.25rem"}}>
+              {proj.length} propostas de CT&I submetidas pela InPACTAS, SEMCTI e INC/UFAM aos editais FAPEAM 2026 — monitoradas em tempo real.
+            </p>
+            <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+              <button onClick={()=>setAba("projetos")} style={btnP}>Explorar propostas →</button>
+              <button onClick={()=>setAba("dashboard")} style={btnS}>Ver dashboard</button>
+            </div>
+          </div>
+          <div style={{background:WHITE,border:"1px solid "+CB,borderRadius:12,padding:"1.5rem 2rem",boxShadow:"0 4px 24px rgba(26,61,43,.08)",minWidth:190}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1.25rem 1.5rem",marginBottom:"1.25rem"}}>
+              {[[proj.length,"Propostas"],[eds.length,"Editais"],[12,"Proponentes"],[9,"Autores"]].map(function(item){
+                return (
+                  <div key={item[1]} style={{textAlign:"center"}}>
+                    <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"2rem",fontWeight:700,color:GD,lineHeight:1}}>{item[0]}</div>
+                    <div style={{fontSize:"0.68rem",fontWeight:600,color:INKL,letterSpacing:"0.08em",textTransform:"uppercase",marginTop:3}}>{item[1]}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{borderTop:"1px solid "+CB,paddingTop:"0.75rem",fontSize:"0.72rem",color:INKL}}>📍 Alto Solimões — Tríplice Fronteira BR/CO/PE</div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{background:SAND,borderBottom:"1px solid "+CB,padding:"0 1.5rem",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}>
+        <div style={{display:"flex"}}>
+          {abas.map(function(item){
+            const k=item[0],l=item[1];
+            return <button key={k} onClick={()=>setAba(k)} style={{background:"none",border:"none",borderBottom:aba===k?("2px solid "+GD):"2px solid transparent",color:aba===k?GD:INKL,fontWeight:aba===k?600:400,fontSize:"0.84rem",padding:"0.8rem 1rem",cursor:"pointer",fontFamily:"Inter,sans-serif",transition:"color .2s"}}>{l}</button>;
+          })}
+        </div>
+        <div style={{display:"flex",gap:8,padding:"0.4rem 0"}}>
+          {isAdmin&&<button onClick={()=>setShowEdModal(true)} style={Object.assign({},btnS,{fontSize:"0.75rem",padding:"0.35rem 0.8rem"})}>+ Edital</button>}
+          {isAdmin&&<button onClick={()=>{setForm(EMPTY);setEditId(null);setFormOpen(true);}} style={Object.assign({},btnP,{fontSize:"0.75rem",padding:"0.35rem 0.8rem"})}>+ Proposta</button>}
+        </div>
+      </div>
+
+      <div style={{maxWidth:1000,margin:"0 auto",padding:"2rem 1.5rem"}}>
+
+        {aba==="projetos"&&(
+          <React.Fragment>
+            <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1rem 1.25rem",display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr auto",gap:"0.75rem",alignItems:"end",marginBottom:"1.5rem"}}>
+              <div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:INKL,marginBottom:4}}>Buscar</div>
+                <input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Título, equipe..." style={{width:"100%",boxSizing:"border-box",fontSize:"0.83rem",border:"1px solid "+CB,borderRadius:6,padding:"0.48rem 0.7rem"}}/>
+              </div>
+              <div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:INKL,marginBottom:4}}>Edital</div>
+                <select value={fEdital} onChange={e=>setFEdital(e.target.value)} style={{width:"100%",boxSizing:"border-box",fontSize:"0.83rem",border:"1px solid "+CB,borderRadius:6,padding:"0.48rem 0.7rem"}}>
+                  <option value="">Todos</option>
+                  {eds.map(e=><option key={e.id} value={e.id}>{e.nome+" "+e.codigo}</option>)}
+                </select>
+              </div>
+              <div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:INKL,marginBottom:4}}>Entidade</div>
+                <select value={fEnt} onChange={e=>setFEnt(e.target.value)} style={{width:"100%",boxSizing:"border-box",fontSize:"0.83rem",border:"1px solid "+CB,borderRadius:6,padding:"0.48rem 0.7rem"}}>
+                  <option value="">Todas</option>
+                  {[...new Set(proj.map(p=>p.entidade))].map(e=><option key={e}>{e}</option>)}
+                </select>
+              </div>
+              <div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:INKL,marginBottom:4}}>Status</div>
+                <select value={fStatus} onChange={e=>setFStatus(e.target.value)} style={{width:"100%",boxSizing:"border-box",fontSize:"0.83rem",border:"1px solid "+CB,borderRadius:6,padding:"0.48rem 0.7rem"}}>
+                  <option value="Todos">Todos</option>
+                  {STATUS_LIST.map(s=><option key={s}>{s}</option>)}
+                </select>
+              </div>
+              <button onClick={()=>{setBusca("");setFEdital("");setFEnt("");setFStatus("Todos");}} style={{background:"none",border:"1.5px solid "+CB,borderRadius:6,padding:"0.48rem 0.8rem",fontSize:"0.8rem",fontWeight:600,color:INKL,cursor:"pointer",alignSelf:"flex-end"}}>Limpar</button>
+            </div>
+            <p style={{fontSize:"0.8rem",color:INKL,marginBottom:"1.25rem",fontWeight:500}}>
+              Exibindo <strong style={{color:INK}}>{filtrados.length}</strong> de {proj.length} proposta(s) &nbsp;·&nbsp; <small>Clique em um card para ver detalhes</small>
+            </p>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(270px,1fr))",gap:"1rem"}}>
+              {filtrados.map(function(p){
+                const partes=p.equipe.split("·");
+                const prop=partes[0]?partes[0].replace(/\(.*\)/,"").trim():"";
+                const aut=partes[1]?partes[1].replace(/\(.*\)/,"").trim():"";
+                return (
+                  <div key={p.id} onClick={()=>setDetalhe(p)}
+                    style={{background:WHITE,border:"1px solid "+CB,borderRadius:10,padding:"1.25rem",cursor:"pointer",display:"flex",flexDirection:"column",gap:"0.5rem",transition:"box-shadow .2s,transform .2s,border-color .2s"}}
+                    onMouseEnter={e=>{e.currentTarget.style.boxShadow="0 4px 20px rgba(26,61,43,.1)";e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.borderColor=GM;}}
+                    onMouseLeave={e=>{e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";e.currentTarget.style.borderColor=CB;}}>
+                    <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"0.78rem",fontWeight:700,color:CB}}>{String(p.id).padStart(2,"0")}</div>
+                    <EditalBadge id={p.editalId} eds={eds}/>
+                    <div style={{fontSize:"0.86rem",fontWeight:600,color:INK,lineHeight:1.45,flex:1}}>{p.titulo}</div>
+                    <div style={{fontSize:"0.73rem",color:INKL,paddingTop:"0.5rem",borderTop:"1px solid "+CB,marginTop:"auto",display:"flex",flexDirection:"column",gap:2}}>
+                      <span>👤 {prop}</span>
+                      {aut&&<span>✍️ {aut}</span>}
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <StatusBadge s={p.status}/>
+                      <span style={{fontSize:"0.72rem",color:GM,fontWeight:600}}>Ver detalhes →</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </React.Fragment>
+        )}
+
+        {aba==="dashboard"&&(
+          <React.Fragment>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:10,marginBottom:20}}>
+              {[[proj.length,"Propostas"],[eds.length,"Editais"],[proj.filter(p=>["Submetido","Em Análise"].includes(p.status)).length,"Em andamento"],[proj.filter(p=>p.status==="Aprovado").length,"Aprovados"],[fmtBRL(totalV),"Valor total"]].map(function(item){
+                return (
+                  <div key={item[1]} style={{background:WHITE,border:"1px solid "+CB,borderRadius:8,padding:"1rem",textAlign:"center"}}>
+                    <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.75rem",fontWeight:700,color:GD}}>{item[0]}</div>
+                    <div style={{fontSize:"0.68rem",fontWeight:600,color:INKL,letterSpacing:"0.08em",textTransform:"uppercase",marginTop:4}}>{item[1]}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+              <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1.25rem"}}>
+                <div style={{fontSize:"0.75rem",fontWeight:700,color:INKM,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:"1rem"}}>Distribuição por edital</div>
+                <div style={{position:"relative",height:180}}><canvas ref={c1}></canvas></div>
+              </div>
+              <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1.25rem"}}>
+                <div style={{fontSize:"0.75rem",fontWeight:700,color:INKM,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:"1rem"}}>Por status</div>
+                <div style={{position:"relative",height:180}}><canvas ref={c2}></canvas></div>
+              </div>
+            </div>
+          </React.Fragment>
+        )}
+
+        {aba==="kanban"&&(
+          <div style={{overflowX:"auto"}}>
+            <div style={{display:"flex",gap:10,minWidth:960}}>
+              {STATUS_LIST.map(function(s){
+                const ps=proj.filter(p=>p.status===s);
+                const c=STATUS_COR[s];
+                return(
+                  <div key={s} style={{flex:"0 0 155px",background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"0.75rem"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10}}>
+                      <span style={{background:c[0],color:c[1],fontSize:"0.65rem",fontWeight:700,padding:"0.2rem 0.5rem",borderRadius:"2rem"}}>{s}</span>
+                      <span style={{fontSize:11,color:INKL}}>{ps.length}</span>
+                    </div>
+                    {ps.map(function(p){
+                      return (
+                        <div key={p.id} onClick={()=>setDetalhe(p)}
+                          style={{background:WHITE,border:"1px solid "+CB,borderRadius:8,padding:"0.65rem",marginBottom:6,cursor:"pointer"}}>
+                          <div style={{fontWeight:600,fontSize:11,color:INK,marginBottom:5,lineHeight:1.35}}>{p.titulo}</div>
+                          <EditalBadge id={p.editalId} eds={eds}/>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {aba==="tabela"&&(
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
+              <thead>
+                <tr style={{background:SAND,borderBottom:"2px solid "+CB}}>
+                  {["N°","Título","Edital","Entidade","Status","Valor","Submissão"].map(h=>(
+                    <th key={h} style={{padding:"0.6rem 0.75rem",textAlign:"left",fontWeight:600,color:INKL,fontSize:"0.7rem",letterSpacing:"0.05em",textTransform:"uppercase",whiteSpace:"nowrap"}}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {proj.map(function(p,i){
+                  return (
+                    <tr key={p.id} onClick={()=>setDetalhe(p)}
+                      style={{borderBottom:"1px solid "+CB,cursor:"pointer",background:i%2===0?WHITE:SAND}}>
+                      <td style={{padding:"0.6rem 0.75rem",fontFamily:"Playfair Display,Georgia,serif",fontWeight:700,color:CB}}>{String(p.id).padStart(2,"0")}</td>
+                      <td style={{padding:"0.6rem 0.75rem",color:INK,maxWidth:220,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.titulo}</td>
+                      <td style={{padding:"0.6rem 0.75rem"}}><EditalBadge id={p.editalId} eds={eds}/></td>
+                      <td style={{padding:"0.6rem 0.75rem",color:INKL,whiteSpace:"nowrap"}}>{p.entidade}</td>
+                      <td style={{padding:"0.6rem 0.75rem"}}><StatusBadge s={p.status}/></td>
+                      <td style={{padding:"0.6rem 0.75rem",color:INKL,whiteSpace:"nowrap"}}>{fmtBRL(p.valor)}</td>
+                      <td style={{padding:"0.6rem 0.75rem",color:INKL,whiteSpace:"nowrap"}}>{fmtData(p.dataSubmissao)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {aba==="relatorios"&&(
+          <React.Fragment>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:14,marginBottom:20}}>
+              <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1.5rem",display:"flex",flexDirection:"column",gap:"0.75rem"}}>
+                <div style={{width:40,height:40,background:GP,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.2rem"}}>📊</div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:GM}}>Exportar</div>
+                <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1rem",fontWeight:700,color:INK}}>Planilha CSV</div>
+                <div style={{fontSize:"0.82rem",color:INKL,lineHeight:1.7,flex:1}}>Gera dados formatados para copiar no Excel ou Google Sheets.</div>
+                <button onClick={gerarCSV} style={btnP}>Gerar CSV</button>
+              </div>
+              <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1.5rem",display:"flex",flexDirection:"column",gap:"0.75rem"}}>
+                <div style={{width:40,height:40,background:GP,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.2rem"}}>📄</div>
+                <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:GM}}>Exportar</div>
+                <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1rem",fontWeight:700,color:INK}}>Relatório completo</div>
+                <div style={{fontSize:"0.82rem",color:INKL,lineHeight:1.7,flex:1}}>Relatório com KPIs, resumo por edital e lista de propostas.</div>
+                <button onClick={gerarRelatorio} style={btnP}>Gerar relatório</button>
+              </div>
+            </div>
+            {exportTxt&&(
+              <div style={{background:WHITE,border:"1px solid "+CB,borderRadius:10,padding:"1.25rem",marginBottom:16}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                  <div style={{fontWeight:600,fontSize:13,color:INK}}>Conteúdo gerado — clique em "Copiar tudo"</div>
+                  <div style={{display:"flex",gap:8}}>
+                    <button onClick={copiar} style={Object.assign({},btnP,{background:copied?"#065F46":GD,fontSize:"0.78rem",padding:"0.38rem 0.9rem"})}>{copied?"✓ Copiado!":"Copiar tudo"}</button>
+                    <button onClick={()=>setExportTxt("")} style={Object.assign({},btnS,{fontSize:"0.78rem",padding:"0.38rem 0.75rem"})}>✕</button>
+                  </div>
+                </div>
+                <textarea readOnly value={exportTxt} onFocus={e=>e.target.select()} style={{width:"100%",boxSizing:"border-box",height:240,fontFamily:"monospace",fontSize:11,resize:"vertical",background:SAND,border:"1px solid "+CB,borderRadius:6,padding:"0.75rem",color:INK,lineHeight:1.6}}/>
+              </div>
+            )}
+            <div style={{background:SAND,border:"1px solid "+CB,borderRadius:10,padding:"1.25rem"}}>
+              <div style={{fontSize:"0.72rem",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",color:GM,marginBottom:12}}>Resumo por edital</div>
+              {eds.map(function(e){
+                const ps=proj.filter(p=>p.editalId===e.id);
+                const tot=ps.reduce((s,p)=>s+(Number(p.valor)||0),0);
+                return(
+                  <div key={e.id} style={{display:"flex",alignItems:"center",gap:10,padding:"0.6rem 0",borderBottom:"1px solid "+CB}}>
+                    <EditalBadge id={e.id} eds={eds}/>
+                    <span style={{fontSize:12,color:INKL}}>{ps.length} proposta(s)</span>
+                    {tot>0&&<span style={{fontSize:12,color:INKL,marginLeft:"auto",fontWeight:600}}>{fmtBRL(tot)}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </React.Fragment>
+        )}
+      </div>
+
+      <footer style={{background:INK,color:"rgba(255,255,255,.6)",padding:"2.5rem 1.5rem 1.5rem",marginTop:"1rem"}}>
+        <div style={{maxWidth:1000,margin:"0 auto"}}>
+          <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr",gap:"2rem",paddingBottom:"2rem",borderBottom:"1px solid rgba(255,255,255,.1)",marginBottom:"1.5rem"}}>
+            <div>
+              <div style={{fontFamily:"Playfair Display,Georgia,serif",fontSize:"1.1rem",fontWeight:700,color:WHITE,marginBottom:"0.5rem"}}>InPACTAS & SEMCTI</div>
+              <p style={{fontSize:"0.76rem",lineHeight:1.7,color:"rgba(255,255,255,.5)"}}>Incubadora de Negócios de Impacto Socioambiental do Alto Solimões — UFAM/INC<br/>Secretaria Municipal de Ciência, Tecnologia e Inovação de Benjamin Constant — AM<br/><br/>Brasil · Tríplice Fronteira</p>
+            </div>
+            <div>
+              <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(255,255,255,.4)",marginBottom:"0.75rem"}}>Navegar</div>
+              {abas.map(function(item){
+                const k=item[0],l=item[1];
+                return <button key={k} onClick={()=>setAba(k)} style={{display:"block",background:"none",border:"none",color:"rgba(255,255,255,.6)",fontSize:"0.82rem",cursor:"pointer",padding:"0.2rem 0",textAlign:"left"}}>{l}</button>;
+              })}
+            </div>
+            <div>
+              <div style={{fontSize:"0.68rem",fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(255,255,255,.4)",marginBottom:"0.75rem"}}>Parcerias</div>
+              {["FAPEAM","UFAM — INC","Prefeitura de Benjamin Constant","SEMCTI"].map(function(p){
+                return <div key={p} style={{fontSize:"0.8rem",color:"rgba(255,255,255,.5)",marginBottom:4}}>{p}</div>;
+              })}
+            </div>
+          </div>
+          <div style={{fontSize:"0.72rem",color:"rgba(255,255,255,.3)",textAlign:"center"}}>© 2026 · InPACTAS & SEMCTI Benjamin Constant. Todos os direitos reservados.</div>
+        </div>
+      </footer>
+    </div>
+  );
 }
-function _ftr(doc,G1,W,H,pg){
-  doc.setFillColor(...G1);doc.rect(0,H-12,W,12,'F');
-  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(140,190,160);
-  doc.text('Relatório Executivo · InPACTAS & SEMCTI Benjamin Constant',10,H-4.5);
-  doc.setFont('helvetica','bold');doc.text('Pág. '+pg,W-10,H-4.5,{align:'right'});
-}
-function toggleMenu(){const l=document.querySelector('.nav-links');const v=l.style.display==='flex';l.style.display=v?'none':'flex';if(!v){l.style.flexDirection='column';l.style.position='absolute';l.style.top='60px';l.style.left='0';l.style.right='0';l.style.background='#fff';l.style.padding='1rem 2rem';l.style.borderBottom='1px solid var(--cream-border)';l.style.zIndex='99';}}
-populateSelects();renderProjects(PROJECTS);renderEquipe();buildCharts();
+
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
 </script>
 </body>
 </html>
